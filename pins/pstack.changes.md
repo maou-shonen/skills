@@ -1,6 +1,6 @@
 # pstack → omp 替換
 
-基底：`pins/pstack.pin`（0.15.21 / `997ffc7fe26bdaa6478a14e7f5b8d5f9ed747102`）
+基底：`pins/pstack.pin`（0.15.21）
 
 流程留下。Cursor 機制改成這台 omp 18.10.3 實際有的介面。種類不同的差異寫在 `skills/omp-mechanics`，派工以 `skills/pstack-omp` 的現場工具面為準。
 

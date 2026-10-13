@@ -10,7 +10,7 @@ const root = path.dirname(globalThis.__dirname)
 const pinFile = path.join(root, 'pins/pstack.pin')
 const cache = path.join(root, '.follow/cursor-plugins')
 
-const specPattern = /^(?:latest|\d+\.\d+\.\d+|[0-9a-f]{7,40})$/i
+const specPattern = /^(?:latest|\d+\.\d+\.\d+)$/i
 
 function die(msg) {
   echo(`follow-pstack: ${msg}`)
@@ -21,7 +21,7 @@ function usage() {
   echo(`follow-pstack.ts apply <版本>
 follow-pstack.ts diff [版本]
 
-版本是 plugin 版本（0.15.21）、commit，或 latest。
+版本是 plugin 版本（0.15.21）或 latest。pin 只存版本號，sha 每次用版本現算，不跟 main HEAD。
 diff 省略版本等於 latest，也就是 origin/main 上的 pstack/。
 apply 只更新 pins/pstack.pin。不改 skills/。`)
   process.exit(1)
@@ -63,34 +63,25 @@ async function resolve(spec) {
     const sha = (await $`git -C ${cache} rev-parse origin/main`.quiet()).stdout.trim()
     const version = await readVersion(sha)
     if (!version) die(`origin/main 沒有 pstack/.cursor-plugin/plugin.json`)
-    return { version, sha }
-  }
-  if (/^[0-9a-f]{7,40}$/i.test(spec)) {
-    const parsed = await $`git -C ${cache} rev-parse --verify ${spec}^{commit}`.quiet().nothrow()
-    if (parsed.exitCode !== 0) die(`找不到 commit ${spec}`)
-    const sha = parsed.stdout.trim()
-    const version = await readVersion(sha)
-    if (!version) die(`${sha} 沒有 pstack/.cursor-plugin/plugin.json`)
-    return { version, sha }
+    return { version, sha: await findBump(version) }
   }
   return { version: spec, sha: await findBump(spec) }
 }
 
 async function readPin() {
   if (!(await fs.pathExists(pinFile))) die('尚未記錄已處理版本，先跑 apply')
-  const [version, sha] = (await fs.readFile(pinFile, 'utf8')).trim().split(/\s+/)
-  if (!version || !/^[0-9a-f]{40}$/.test(sha ?? '')) die('pins/pstack.pin 應為 "<version> <sha>"')
-  return { version, sha }
+  const version = (await fs.readFile(pinFile, 'utf8')).trim()
+  if (!/^\d+\.\d+\.\d+$/.test(version)) die('pins/pstack.pin 應為版本號一行，如 0.15.21')
+  return { version, sha: await findBump(version) }
 }
 
 async function apply(spec) {
   if (!spec) usage()
   const resolved = await resolve(spec)
   const previous = (await fs.pathExists(pinFile)) ? (await fs.readFile(pinFile, 'utf8')).trim() : ''
-  const next = `${resolved.version} ${resolved.sha}`
-  await fs.writeFile(pinFile, `${next}\n`)
-  echo(`pinned ${next}`)
-  if (previous && previous !== next) echo(`was ${previous}`)
+  await fs.writeFile(pinFile, `${resolved.version}\n`)
+  echo(`pinned ${resolved.version}`)
+  if (previous && previous !== resolved.version) echo(`was ${previous}`)
 }
 
 async function diff(spec = 'latest') {
@@ -111,6 +102,7 @@ async function diff(spec = 'latest') {
   const patch = await $`git -C ${cache} diff ${pin.sha} ${target.sha} -- pstack/`.quiet()
   process.stdout.write(patch.stdout)
 }
+
 
 const [command, spec, extra] = argv._.map(String)
 if (extra) usage()
