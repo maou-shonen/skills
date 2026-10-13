@@ -24,7 +24,7 @@ Before spawning reviewers, state the intent in one clear paragraph from the user
 
 ## Step 3, Spawn Reviewers
 
-Launch Reviewer A and Reviewer B in one `task` call with two items in `tasks[]`. Add seats when the diff spans multiple unrelated areas. Each reviewer gets `agent`: `task` (omp's general-purpose bundled agent) with read-only posture in the brief. Model per seat is omp's business.
+Launch Reviewer A and Reviewer B as separate `task` calls. Add reviewers when the diff spans multiple unrelated areas. Each reviewer gets `agent`: `task` (omp's general-purpose bundled agent) with read-only posture in the brief. Model per reviewer is omp's business.
 
 | Subagent | Lens |
 |----------|------|

@@ -16,7 +16,7 @@ Find this conversation's transcript via `history://` (bare lists agents, `histor
 
 ## 2. Spawn three reviewers in parallel
 
-One `task` call with three items in `tasks[]`, each `agent`: `task` (omp's general-purpose bundled agent), full tools per spawn. Reviewers need MCP access to look up the tickets, chat threads, and observability traces the transcript references. There is no `readonly` field, so nothing strips MCP. The brief still forbids writes.
+One `task` call per reviewer, each `agent`: `task` (omp's general-purpose bundled agent), full tools per spawn. Reviewers need MCP access to look up the tickets, chat threads, and observability traces the transcript references. There is no `readonly` field, so nothing strips MCP. The brief still forbids writes.
 
 Model per seat is omp's business: seats run on whatever the user's configuration assigns, and unconfigured seats run on the parent model.
 

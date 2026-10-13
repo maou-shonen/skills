@@ -27,7 +27,7 @@ Open a todolist with one entry per phase before launching anything.
 
 ## Phase B: Fan out
 
-Spawn all N workers in one `task` call with all items in `tasks[]`, each with `agent`: `task` (omp's general-purpose bundled agent) and `isolated: true`.
+Spawn one `task` call per worker, each with `agent`: `task` (omp's general-purpose bundled agent) and `isolated: true`. Fire independent workers together so they run concurrently.
 
 When a worker must start from a non-default base, create its `git worktree` on that base first and point the worker at that path.
 
