@@ -12,17 +12,13 @@ Invoke when the user says "reflect" or "/reflect". Skip when the conversation is
 
 ## 1. Locate the active transcript
 
-For an agent in this process, skip the filesystem glob. Bare `history://` lists agents, `history://<id>` is the transcript, and `agent://<id>` is the final output.
-
-Otherwise find this conversation in the session store. The root defaults to `~/.omp/agent/sessions/`. `PI_CODING_AGENT_DIR` or `XDG_DATA_HOME` can move it. The bucket is the cwd with `$HOME` stripped and each `/` rewritten to `-`, so a path under `$HOME` keeps a leading hyphen. Do not glob sibling buckets. That crosses workspace boundaries and reads private chats from unrelated projects.
-
-One transcript layout: a flat `<timestamp>_<session-id>.jsonl` in the bucket, with `<AgentId>.jsonl` sidecars in the sibling directory named for that stem. The first line is a fixed-width `type:title` slot, not a message. Roles are camelCase (`toolResult`). Scan for the first `type:message` line with `role:user` and match the opening user prompt. If none matches, pass a tight digest of the session instead.
+Find this conversation's transcript via `history://` (bare lists agents, `history://<id>` pages one). Do not read other sessions.
 
 ## 2. Spawn three reviewers in parallel
 
 One `task` call with three items in `tasks[]`, each `agent`: `task` (omp's general-purpose bundled agent), full tools per spawn. Reviewers need MCP access to look up the tickets, chat threads, and observability traces the transcript references. There is no `readonly` field, so nothing strips MCP. The brief still forbids writes.
 
-Each reviewer and the synthesizer name a role line in the `task.agentModelOverrides` map in `~/.omp/agent/config.yml` and a default. The `task` tool takes no per-call `model`. Bind that role in `task.agentModelOverrides`, or leave it out when the value is `auto` or `inherit-parent` so the worker runs on the parent model. A role with no entry runs on the parent model.
+Each reviewer and the synthesizer name a role line in the `task.agentModelOverrides` map in `~/.omp/agent/config.yml` and a default. The `task` tool takes no per-call `model`. Bind that role in `task.agentModelOverrides`, or leave it out when the value is `auto` or `inherit-parent` so the worker runs on the parent model.
 
 | Lens | Role line | Default `model` | Prompt template |
 |---|---|---|---|
@@ -34,7 +30,7 @@ Pass each template verbatim, substituting the transcript path or digest where ma
 
 ## 3. Synthesize
 
-One `Task` call, `agent`: `task` (omp's general-purpose bundled agent), `model` from the `reflect judgment, divergent, synthesizer` line (default your strongest judgment model), full tools per spawn. It spot-verifies citations through MCP, and readonly strips MCPs. Pass `references/synthesizer.md` verbatim, with each reviewer's full output inlined where marked. It returns an Accepted / Rejected / Backlog list.
+One `task` call, `agent`: `task` (omp's general-purpose bundled agent), role from the `reflect judgment, divergent, synthesizer` line (default your strongest judgment model), full tools per spawn. It spot-verifies citations through MCP. Pass `references/synthesizer.md` verbatim, with each reviewer's full output inlined where marked. It returns an Accepted / Rejected / Backlog list.
 
 ## 4. Structural enforcement check
 
