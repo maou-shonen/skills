@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Explore the codebase to answer "how does X work?" questions. Produce architectural explanations at the level of a senior engineer onboarding onto a subsystem, enough to build a working mental model, not so much that it reads like annotated source code.
 
-Every spawn is a `task` worker with read-only posture in the brief (no `readonly` field on this wire). Explorers default to your fast code model, explainers to your strongest judgment model; bind either in `task.agentModelOverrides`, or leave it out to run on the parent model.
+Every spawn is a `task` worker with read-only posture in the brief (no `readonly` field on this wire). Model per seat is omp's business: seats run on whatever the user's configuration assigns, and unconfigured seats run on the parent model.
 
 ## 1. Assess complexity
 

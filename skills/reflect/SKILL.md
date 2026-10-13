@@ -18,19 +18,19 @@ Find this conversation's transcript via `history://` (bare lists agents, `histor
 
 One `task` call with three items in `tasks[]`, each `agent`: `task` (omp's general-purpose bundled agent), full tools per spawn. Reviewers need MCP access to look up the tickets, chat threads, and observability traces the transcript references. There is no `readonly` field, so nothing strips MCP. The brief still forbids writes.
 
-Each reviewer and the synthesizer name a role line in the `task.agentModelOverrides` map in `~/.omp/agent/config.yml` and a default. The `task` tool takes no per-call `model`. Bind that role in `task.agentModelOverrides`, or leave it out when the value is `auto` or `inherit-parent` so the worker runs on the parent model.
+Model per seat is omp's business: seats run on whatever the user's configuration assigns, and unconfigured seats run on the parent model.
 
-| Lens | Role line | Default `model` | Prompt template |
-|---|---|---|---|
-| Judgment | `reflect judgment, divergent, synthesizer` | your strongest judgment model | `references/judgment-reviewer.md` |
-| Tooling | `reflect tooling` | your fast code model | `references/tooling-reviewer.md` |
-| Divergent | `reflect judgment, divergent, synthesizer` | your strongest judgment model | `references/divergent-reviewer.md` |
+| Lens | Prompt template |
+|---|---|
+| Judgment | `references/judgment-reviewer.md` |
+| Tooling | `references/tooling-reviewer.md` |
+| Divergent | `references/divergent-reviewer.md` |
 
 Pass each template verbatim, substituting the transcript path or digest where marked. Reviewers return findings in the `Task` response body.
 
 ## 3. Synthesize
 
-One `task` call, `agent`: `task` (omp's general-purpose bundled agent), role from the `reflect judgment, divergent, synthesizer` line (default your strongest judgment model), full tools per spawn. It spot-verifies citations through MCP. Pass `references/synthesizer.md` verbatim, with each reviewer's full output inlined where marked. It returns an Accepted / Rejected / Backlog list.
+One `task` call, `agent`: `task` (omp's general-purpose bundled agent), full tools per spawn. It spot-verifies citations through MCP. Pass `references/synthesizer.md` verbatim, with each reviewer's full output inlined where marked. It returns an Accepted / Rejected / Backlog list.
 
 ## 4. Structural enforcement check
 
