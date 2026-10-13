@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Investigate the motivation and intent behind code. The companion `how` skill answers what the code does and how it works. `why` answers what forces led to its shape.
 
-Each spawn below names a role line in the `task.agentModelOverrides` map in `~/.omp/agent/config.yml` and a default. The `task` tool takes no per-call `model`. Bind that role in `task.agentModelOverrides`, or leave it out when the value is `auto` or `inherit-parent` so the worker runs on the parent model. A role with no entry runs on the parent model.
+Each spawn below names a role line in the `task.agentModelOverrides` map in `~/.omp/agent/config.yml` and a default. The `task` tool takes no per-call `model`. Bind that role in `task.agentModelOverrides`, or leave it out when the value is `auto` or `inherit-parent` so the worker runs on the parent model.
 
 Every spawn is `task` (omp's general-purpose bundled agent) with full tools. There is no `readonly` field and no Ask mode, so nothing strips MCP. Investigators still shouldn't write anything.
 
