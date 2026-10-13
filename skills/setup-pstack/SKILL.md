@@ -1,74 +1,52 @@
 ---
 name: setup-pstack
-description: Configure which models pstack uses per role and at what reasoning budget. Detects your available models and writes an always-applied rule that overrides the skill defaults. Use for /setup-pstack, "configure pstack models", "pstack budget", or changing pstack's model choices.
+description: Show the operator what models pstack roles resolve to and record per-role choices. Use for /setup-pstack, "configure pstack models", or changing pstack's model choices.
 ---
 
 # Setup pstack
 
-Write `task.agentModelOverrides` in `~/.omp/agent/config.yml`, the keyed override map that sets pstack's model per role agent. The chat model stays the operator's choice, made with `/model`, and pstack never overrides it. File keys are `task.agentModelOverrides` and `modelRoles`; the table in step 5 is role-to-capability, not the file format.
+Skills never pick a model. Every spawn runs on whatever the user's configuration assigns, and an unconfigured role runs on the parent chat model. This skill is a mirror: it shows what each role resolves to today and records the operator's per-role choices in `task.agentModelOverrides`. The chat model stays the operator's choice, made with `/model`, and pstack never overrides it. Slugs live in `modelRoles` only. This skill never writes a slug.
 
 ## Steps
 
-### 1. Detect available models
+### 1. Show the current picture
 
-Run `omp models` to list the models configured on this machine. That is the dependable source. If you cannot detect any, ask the user to paste the slugs they have access to. Never write a real slug you have not confirmed is available. The aliases `inherit-parent` and `auto` are always valid even though they are not detected slugs.
+Run these three and present the result as one table, one row per role:
 
-### 2. Load current state
+- `omp models` lists the models configured on this machine. Group them by wallet: subscription, metered, free. That grouping is the budget picture.
+- `omp config get modelRoles` shows what each alias points at today.
+- `omp config get task.agentModelOverrides` shows which roles the operator already pinned. Empty means every role runs on the parent model, which is a valid standing choice, not a missing setup.
 
-The default role-to-model mapping is the rule shape shown in step 5 below. If `task.agentModelOverrides` in `~/.omp/agent/config.yml` already exists, read it and treat its `# budget` line and its role values as the current choices. Otherwise start from those defaults. A line whose role is not in step 5, such as `how critics`, is from a retired role. Drop it.
+### 2. Ask what to change
 
-### 3. Budget, map, and confirm
+Ask the operator role by role whether to pin it to an alias or leave it on the parent model. Three capability tiers guide the choice: judgment work deserves the best model, code work deserves a cheap fast one, mechanical work deserves whatever is free. Which alias that is lives in `modelRoles`, not here. Prefer `ask` over free text. A dropped line from a prior run (a role no longer in step 4) gets named and removed.
 
-**(a) Ask for a budget.** Prefer `ask` over free text. Offer these four options with these exact labels, and name the current budget when the rule records one. With no rule, say that `large` matches the skill defaults.
+Budget tiers (`unlimited` / `large` / `medium` / `small` effort scaling) are not supported yet. Quota gaps across providers are tenfold and reset weekly, so effort scaling without wallet awareness misleads. Leave budget control to the operator's pane and `modelRoles` choices until a wallet-aware design lands.
 
-- `unlimited — max reasoning`
-- `large — xhigh reasoning`
-- `medium — high reasoning`
-- `small — medium reasoning`
+### 3. Validate
 
-**(b) Apply it.** Build the working table from the skill defaults, and on a re-run keep any role you changed by family, list, or alias (`inherit-parent`, `auto`). `unlimited`, `large`, `medium`, and `small` set the effort token of every real slug, panel entries included, to `max`, `xhigh`, `high`, or `medium`. The effort token is the last token, or the one before a trailing `fast`, on the ladder `max` > `xhigh` > `high` > `medium` > `low`. If the result is not a detected slug, use the same family's detected slug with the highest effort at or below the target, else mark the role as needing a choice. `inherit-parent` and `auto` do not change. Example: under `small`, a role defaulting to your strongest judgment model takes that family's detected slug with the highest effort at or below `medium`.
+Every value written is an alias in `modelRoles`, or the role is left out to run on the parent model. Never write a slug. If a chosen alias is not in `modelRoles`, stop and ask again.
 
-**(c) Show the roles and confirm.** Show every role with its model, marking any real slug not in the detected set as needing a choice. Also list each line step 2 dropped. Ask whether to accept as-is or change specific roles, offering the detected models plus `inherit-parent` and `auto` (both mean: this role runs on the parent chat model, which is how Auto users stay on Auto) as the options. Prefer `ask` over free text. For panel roles (`arena runners`, `architect runners`, `interrogate reviewers`) the value is a seat count. `arena cross-judge pool` is 1. `swarm workers` is the default model for every worker unless a race or comparison assigns another model per arm.
+### 4. Write the rule
 
-### 4. Validate
-
-Every real slug written must be in the detected set. `inherit-parent` and `auto` always pass. If a chosen real slug is not available, stop and ask again.
-
-### 5. Write the rule
-
-Write `task.agentModelOverrides` and `modelRoles` in `~/.omp/agent/config.yml`, with a `# budget` comment carrying the chosen label and its target effort, and one entry per role agent, using the same labels poteto-mode uses. Overwrite the whole pstack part of both maps so re-runs stay idempotent. The block below is the role-to-capability table and not the file format. Shape:
+Write `task.agentModelOverrides` in `~/.omp/agent/config.yml`, one entry per pinned role, using the same labels poteto-mode uses. Overwrite the whole pstack part of the map so re-runs stay idempotent. Delete a line to fall back to the parent model. The block below is the role-to-capability table and not the file format. Shape:
 
 ```
----
-description: pstack per-role model choices (overrides skill defaults)
----
-# pstack model configuration. One line per role. Delete a line to fall back to the skill default.
-# `inherit-parent` or `auto` as a value: the role runs on the parent chat model (leave it out of `task.agentModelOverrides`). Alias entries in a panel list still count toward its fan-out.
-# budget: large (xhigh)
-feature, refactoring: your fast code model
-bug-fix: your fast code model
-perf-issue: your fast code model
-hillclimb: your fast code model
-judgment and prose: your strongest judgment model
-hardest tasks: your strongest judgment model
-how explorer: your fast code model
-how explainer: your strongest judgment model
-why investigators: your fast code model
-why synthesizer: your strongest judgment model
-reflect tooling: your fast code model
-reflect judgment, divergent, synthesizer: your strongest judgment model
-swarm workers: your fast code model
-# Panel roles take one seat per entry. Seats run on whatever the user's configuration assigns.
-arena runners: 2
-arena cross-judge pool: 1
-architect runners: 2
-interrogate reviewers: 2
+# pstack per-role choices. One line per pinned role. Delete a line to run that role on the parent model.
+feature, refactoring: code work, cheap fast alias
+bug-fix: code work, cheap fast alias
+perf-issue: code work, cheap fast alias
+hillclimb: code work, cheap fast alias
+judgment and prose: judgment work, best alias
+hardest tasks: judgment work, best alias
+how explorer: code work, cheap fast alias
+how explainer: judgment work, best alias
+why investigators: code work, cheap fast alias
+why synthesizer: judgment work, best alias
+reflect tooling: code work, cheap fast alias
+reflect judgment, divergent, synthesizer: judgment work, best alias
 ```
 
-### 6. Confirm
+### 5. Confirm
 
 Tell the user which entries were written and that they apply to new sessions. Re-running this skill updates it.
-
-### 7. Offer a verification skill (optional)
-
-Check whether the project has a way to drive the real app for proof (a `verify-*` skill, or an existing harness). If not, offer once: "want a project-local verification skill, so agents can drive the app the way a user does and prove changes work? I can generate one with `/skill:create-verification-skill`." On yes, invoke that skill. On no, move on without pushing.
