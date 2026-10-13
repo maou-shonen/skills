@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Explore the codebase to answer "how does X work?" questions. Produce architectural explanations at the level of a senior engineer onboarding onto a subsystem, enough to build a working mental model, not so much that it reads like annotated source code.
 
-Every spawn is a Task subagent with `agent`: `task` (omp's general-purpose bundled agent) and `read-only posture, granted in the brief`. Explorers use the `how explorer` line in the `task.agentModelOverrides` map in `~/.omp/agent/config.yml` (default your fast code model), and every explainer uses the `how explainer` line (default your strongest judgment model). The `task` tool takes no per-call `model`. Bind that role in `task.agentModelOverrides`, or leave it out when the value is `auto` or `inherit-parent` so the worker runs on the parent model. A role with no entry runs on the parent model.
+Every spawn is a `task` worker with read-only posture in the brief (no `readonly` field on this wire). Explorers default to your fast code model, explainers to your strongest judgment model; bind either in `task.agentModelOverrides`, or leave it out to run on the parent model.
 
 ## 1. Assess complexity
 
