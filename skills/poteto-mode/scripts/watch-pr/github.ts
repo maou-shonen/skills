@@ -334,17 +334,21 @@ function isBugbot(comment: T.ReviewComment | null): boolean {
   if (comment === null) return false;
   const author = (comment.authorLogin ?? "").toLowerCase();
   const body = comment.body.toLowerCase();
-  return (
+  const automation = [
+    "bugbot",
+    "cursor_automation_id",
+    "agentic security review",
+    "review automation",
+    "security review",
+    "description start",
+    "severity",
+  ].some((token) => body.includes(token));
+  const bot =
     author.includes("bugbot") ||
-    (author === "cursor" &&
-      [
-        "bugbot",
-        "cursor_automation_id",
-        "agentic security review",
-        "description start",
-        "severity",
-      ].some((token) => body.includes(token)))
-  );
+    author.includes("security-reviewer") ||
+    author.includes("security_reviewer") ||
+    author.endsWith("[bot]");
+  return author.includes("bugbot") || (author === "cursor" && automation) || (bot && automation);
 }
 function passKey(comment: T.ReviewComment | null): string | null {
   if (comment === null) return null;

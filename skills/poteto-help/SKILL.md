@@ -24,7 +24,7 @@ Infer the need from the message and the conversation. A named situation, such as
 
 Check the state that changes the answer, and mention it only when it does:
 
-- No `~/.cursor/rules/pstack-models.mdc` means `/setup-pstack` hasn't run for this user, so every role uses its default model.
+- No `task.agentModelOverrides` in `~/.omp/agent/config.yml` means `/setup-pstack` hasn't run for this user, so every role uses its default model.
 - No `verify-*` skill or other app harness in the project means agents have no scripted way to drive the app. Mention `/create-verification-skill` when the question is about proving a change works.
 
 When the model rule is missing and it matters, ask whether the user wants to pick a model for each role and a reasoning budget now. It matters when the user is new, the question is about setup or cost, or the answer depends on which models run. Ask at most once per chat. If the need is also unclear, ask both questions together. Offer two choices:
@@ -54,7 +54,7 @@ Whether `/poteto-mode` stays on depends on how the user starts it:
 - Option+Enter on Mac or Alt+Enter on Windows, or Use as Mode from the skill entry, makes it a Custom Mode. It stays in context every turn until the user exits the mode, and it stays out of casual turns.
 - Cursor's docs list Custom Modes in the Agents Window and the CLI. Elsewhere, start each new task with `/poteto-mode`.
 
-Link [Cursor's skills docs](https://cursor.com/docs/skills) when this comes up. Mid-chat, "new task" makes the mode match a fresh playbook. `/poteto-mode` already uses `poteto-agent` for the subagents its playbook steps spawn. To get the same style from a subagent of your own, spawn it with `subagent_type: "poteto-agent"`.
+Link [Cursor's skills docs](https://cursor.com/docs/skills) when this comes up. Mid-chat, "new task" makes the mode match a fresh playbook. `/poteto-mode` already uses `poteto-agent` for the subagents its playbook steps spawn. To get the same style from a subagent of your own, spawn it with `agent`: `poteto-agent`.
 
 ## Pick a skill
 
@@ -104,8 +104,8 @@ Close calls:
 
 Not in pstack:
 
-- `/deslop`, `control-cli`, and `control-ui` ship in the `cursor-team-kit` plugin.
-- `/loop` and `/create-skill` are Cursor built-ins.
+- the `unslop` skill (`skill://unslop`) plus `omp cleanse --all`, `hub` process ops plus bash, and the `browser` eval prelude ship in the omp's built-in tools plugin.
+- `/loop` is omp's in-session wake. Authoring a skill is the authoring-a-skill playbook, not a Cursor builtin.
 - pstack has no `/orchestrate` skill. Orchestrate is a `/poteto-mode` playbook. If the slash menu shows `/orchestrate`, another plugin provides it.
 
 ## Playbooks and principles
@@ -134,7 +134,7 @@ Principles are one-rule skills that `/poteto-mode` reads and cites in its replie
 | A new model choice had no effect | The rule from `/setup-pstack` applies to new chats. Start one. |
 | Runs cost more than expected | See the cost paragraph under Get set up. |
 | A skill didn't load on its own | Only `/setup-pstack` loads from the user's words. The others load when the user types them or when `/poteto-mode` runs them, and it doesn't run every skill. |
-| Parallel agents overwrote each other | Give each agent its own worktree, or run them as cloud agents, which each get their own machine. |
+| Parallel agents overwrote each other | Give each agent its own worktree, or run them as isolated subagents, which each get their own machine. |
 | An overnight run moved but finished nothing | `/loop` needs a check that can pass or fail, not a duration. See [guide page 7](../../docs/guide/07-overnight.md). |
 | The reply claims success from a green build | Ask for the real command, flow, stored value, or profile. That's the prove-it-works principle. |
 
