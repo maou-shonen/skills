@@ -1,0 +1,85 @@
+name: follow-upstream
+
+# 每日對上游算漂移：有差異就開 issue 通知，不自動改任何檔案。
+# 手動觸發：Actions → follow-upstream → Run workflow。
+
+on:
+  schedule:
+    - cron: '0 1 * * *' # 09:00 台北
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - upstream: matt
+            script: scripts/follow-matt.ts
+          - upstream: pstack
+            script: scripts/follow-pstack.ts
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install zx
+        run: npm install -g zx@8
+
+      - name: Diff upstream
+        id: diff
+        run: |
+          zx "${{ matrix.script }}" diff latest > upstream.diff 2>&1
+          if grep -qx '無變化' upstream.diff; then
+            echo "drift=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "drift=true" >> "$GITHUB_OUTPUT"
+            header="$(grep -E -m1 '^(matt|pstack) [0-9]+\.[0-9]+\.[0-9]+ ' upstream.diff)"
+            echo "header=$header" >> "$GITHUB_OUTPUT"
+          fi
+
+
+      - name: Upload full diff
+        if: steps.diff.outputs.drift == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: upstream-diff-${{ matrix.upstream }}
+          path: upstream.diff
+          retention-days: 30
+
+      - name: Open issue
+        if: steps.diff.outputs.drift == 'true'
+        run: |
+          label="upstream-${{ matrix.upstream }}"
+          gh label create upstream --color 0E8A16 --description "上游追蹤" --force
+          gh label create "$label" --color 1D76DB --description "上游追蹤：${{ matrix.upstream }}" --force
+          open="$(gh issue list --state open --label "$label" --json number --jq length)"
+          if [ "$open" -gt 0 ]; then
+            echo "已有未結 issue，跳過不重開"
+            exit 0
+          fi
+          {
+            echo "上游有新提交，本地 pin 尚未跟進。"
+            echo
+            echo '```'
+            echo "${{ steps.diff.outputs.header }}"
+            echo '```'
+            echo
+            grep -v '^fetch \|^clone ' upstream.diff | awk '/^diff --git/{exit} {print}' | head -c 50000
+            echo
+            echo "---"
+            echo "完整 patch 見 workflow artifact \`upstream-diff-${{ matrix.upstream }}\`。"
+            echo "本地看差：\`zx ${{ matrix.script }} diff latest\`；跟進前先看差再逐件定層級（見 AGENTS.md 追蹤段）。"
+          } > body.txt
+          gh issue create --label "upstream,$label" \
+            --title "上游漂移：${{ matrix.upstream }}（$(date +%F)）" \
+            --body-file body.txt

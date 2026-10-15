@@ -10,3 +10,5 @@
 - ADR 只記權衡：刪、降級、暫不支持。一決策一檔。
 - 跟進上游先看差，再逐件定層級。權衡無 ADR 不動手。
 
+- 上游漂移由 `.github/workflows/follow-upstream.yml` 每日檢查，有差異開 issue 通知，不自動改檔。
+
