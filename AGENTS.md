@@ -1,8 +1,6 @@
 ## Target
 
-基於流行 skills 來做個人化最適配, 由 [pstack](https://github.com/cursor/plugins/tree/main/pstack) 為基礎,
-修改為 oh-my-pi(omp) 適配, 而不是 cursor 適配,
-再加上一些 [matt skills](https://github.com/mattpocock/skills) 的有用技巧
+基於流行 skills 做個人化最適配：pstack 管 orchestration（見 `pins/pstack.changes.md`），matt 取 `domain-modeling` 相關鏈（見 `pins/matt.changes.md`）。
 
 ## 追蹤
 

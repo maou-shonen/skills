@@ -11,4 +11,4 @@
 | `setup-matt-pocock-skills` 寫 `CLAUDE.md` 優先 | 寫 `AGENTS.md`（本 repo 只有它） |
 | `glab` / GitLab tracker 模板 | 刪，只留 `gh` + local（見 ADR-0010） |
 | `triage` 未引 | Section B 自動跳過（上游本來就這麼設計），`triage-labels.md` 照收 |
-| `tdd` / `code-review` 引用（在 `implement` 鏈） | 本輪不引該鏈，延後：等下一輪對齊本地 `tdd` 語意再定 |
+| `implement` / `implement-spec`（`tdd` + `code-review` 引用） | 不引：`implement` 被 poteto Feature 覆蓋，`implement-spec` 等真有多 ticket 併發再說；`tdd` 維持 pstack 版一字不動 |

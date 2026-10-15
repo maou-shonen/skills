@@ -75,6 +75,11 @@ The default answer is `/poteto-mode`, which runs most of the others when its ste
 | Get several attempts at one brief, merged into the best one | [`/arena`](../arena/SKILL.md) |
 | Run parallel checks over slices, or race workers, as isolated subagents | [`/swarm`](../swarm/SKILL.md) |
 | Have isolated reviewers challenge a diff and try to break it | [`/interrogate`](../interrogate/SKILL.md) |
+| Discuss terms, write a GLOSSARY or ADR | [`/domain-modeling`](../domain-modeling/SKILL.md) |
+| Design a module interface, place a seam, deepen a module | [`/codebase-design`](../codebase-design/SKILL.md) |
+| Align quickly before work, only load-bearing questions | [`/draft-a-task`](../draft-a-task/SKILL.md) or [`/draft-a-adr`](../draft-a-adr/SKILL.md) |
+| Turn the conversation into a spec on the tracker | [`/to-spec`](../to-spec/SKILL.md) |
+| Split a spec into tickets with blocking edges | [`/to-tickets`](../to-tickets/SKILL.md) |
 | Fix a bug test-first when a cheap local test exists | [`/tdd`](../tdd/SKILL.md) |
 | Apply TypeScript rules to `.ts` or `.tsx` work | [`/typescript-best-practices`](../typescript-best-practices/SKILL.md) |
 | Strip comments before review, using a reviewer that didn't write them | [`/no-comments`](../no-comments/SKILL.md) |
