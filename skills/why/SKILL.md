@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Investigate the motivation and intent behind code. The companion `how` skill answers what the code does and how it works. `why` answers what forces led to its shape.
 
-Spawns run on whatever the user's configuration assigns; unconfigured seats run on the parent model.
+Spawns run on whatever the user's configuration assigns; unconfigured seats run on the parent model. Pick each subagent's seat for the job, per the Subagents section of the **poteto-mode** skill.
 
 Every spawn is `task` (omp's general-purpose bundled agent) with full tools. There is no `readonly` field and no Ask mode, so nothing strips MCP. Investigators still shouldn't write anything.
 

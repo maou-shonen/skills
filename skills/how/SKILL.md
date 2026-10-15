@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Explore the codebase to answer "how does X work?" questions. Produce architectural explanations at the level of a senior engineer onboarding onto a subsystem, enough to build a working mental model, not so much that it reads like annotated source code.
 
-Every spawn is a `task` worker with read-only posture in the brief (no `readonly` field on this wire). Model per seat is omp's business: seats run on whatever the user's configuration assigns, and unconfigured seats run on the parent model.
+Every spawn is a `task` worker with read-only posture in the brief (no `readonly` field on this wire). Model per seat is omp's business: seats run on whatever the user's configuration assigns, and unconfigured seats run on the parent model. Pick each subagent's seat for the job, per the Subagents section of the **poteto-mode** skill.
 
 ## 1. Assess complexity
 

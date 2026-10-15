@@ -31,7 +31,7 @@ Launch Reviewer A and Reviewer B as separate `task` calls. Add reviewers when th
 | Reviewer A | Correctness and blind spots |
 | Reviewer B | Design and maintainability |
 
-Read `references/reviewer-prompt.md` and fill in the same template for every reviewer with the stated intent, the diff or file contents, the rubric from `references/rubric.md`, and the code-quality lens from `references/code-quality-review.md`.
+Read `references/reviewer-prompt.md` and fill in the same template for every reviewer with the stated intent, the diff or file contents, the rubric from `references/rubric.md`, and the code-quality lens from `references/code-quality-review.md`. Pick each subagent's seat for the job, per the Subagents section of the **poteto-mode** skill.
 
 ## Step 4, Synthesize
 
