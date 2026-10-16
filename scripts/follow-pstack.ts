@@ -72,6 +72,7 @@ async function readPin() {
   if (!(await fs.pathExists(pinFile))) die('尚未記錄已處理版本，先跑 apply')
   const version = (await fs.readFile(pinFile, 'utf8')).trim()
   if (!/^\d+\.\d+\.\d+$/.test(version)) die('pins/pstack.pin 應為版本號一行，如 0.15.21')
+  await ensureCache()
   return { version, sha: await findBump(version) }
 }
 

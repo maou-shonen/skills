@@ -74,7 +74,7 @@ jobs:
             echo "${{ steps.diff.outputs.header }}"
             echo '```'
             echo
-            grep -v '^fetch \|^clone ' upstream.diff | awk '/^diff --git/{exit} {print}' | head -c 50000
+            grep -v '^fetch \|^clone ' upstream.diff | grep -v -E '^(matt|pstack) [0-9.]+ [0-9a-f]+ → ' | awk '/^diff --git/{exit} {print}' | head -c 50000
             echo
             echo "---"
             echo "完整 patch 見 workflow artifact \`upstream-diff-${{ matrix.upstream }}\`。"
