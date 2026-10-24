@@ -23,7 +23,7 @@ function usage() {
 follow-matt.ts diff [版本]
 
 版本是 package.json 版本（1.3.1）或 latest。pin 只存版本號，對應 tag v<版本>。
-diff 省略版本等於 latest，也就是 origin/main 上的 skills/。
+diff 省略版本等於 latest，也就是最新 v* tag（發版）。main 上同版號的 sha 漂移不算。
 apply 只更新 pins/matt.pin。不改 skills/。`)
   process.exit(1)
 }
@@ -50,10 +50,11 @@ async function resolve(spec) {
   if (!specPattern.test(spec)) die(`版本格式不對: ${spec}`)
   await ensureCache()
   if (spec === 'latest') {
-    const sha = (await $`git -C ${cache} rev-parse origin/main`.quiet()).stdout.trim()
-    const version = await readVersion(sha)
-    if (!version) die(`origin/main 沒有 package.json`)
-    return { version, sha }
+    // 只認發版：最新 v* tag。main 上同版號的 sha 漂移不算漂移。
+    const tags = (await $`git -C ${cache} tag -l v* --sort=-v:refname`.quiet()).stdout
+    const tag = tags.split('\n').map((t) => t.trim()).find((t) => /^v\d+\.\d+\.\d+$/.test(t))
+    if (!tag) die('找不到 v* tag')
+    spec = tag.slice(1)
   }
   const tag = `v${spec}`
   const proc = await $`git -C ${cache} rev-list -n 1 ${tag}`.quiet().nothrow()
@@ -80,7 +81,7 @@ async function apply(spec) {
 async function diff(spec = 'latest') {
   const pin = await readPin()
   const target = await resolve(spec)
-  const where = spec === 'latest' ? ' main' : ''
+  const where = spec === 'latest' ? ' latest-tag' : ''
   echo(`matt ${pin.version} ${pin.sha} → ${target.version} ${target.sha}${where}`)
   const stat = await $`git -C ${cache} diff --stat ${pin.sha} ${target.sha} -- skills/`.quiet()
   if (!stat.stdout.trim()) {
