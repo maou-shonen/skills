@@ -24,6 +24,7 @@ npx skills add maou-shonen/skills
 | `docs/adr/` | 權衡決策（刪、降級、暫不支持），一決策一檔 |
 | `scripts/follow-*.ts` | 對上游算漂移，`--port` 輸出本地路徑的補丁（zx） |
 | `scripts/check-links.ts` | 以扁平安裝檢查 skill 內相對連結（zx） |
+| `.github/workflows/validate.yml` | push 與 PR 時跑 `check-links.ts` |
 | `.github/workflows/follow-upstream.yml` | 每日 09:00（台北）檢查漂移，有差異開 issue，不改檔 |
 
 維護規則見 [`AGENTS.md`](AGENTS.md)。
