@@ -18,10 +18,12 @@ npx skills add maou-shonen/skills
 
 | 路徑 | 內容 |
 |---|---|
-| `skills/` | 每個 skill 一個資料夾，`SKILL.md` 的 `name` 與資料夾同名 |
+| `skills/<分類>/` | 每個 skill 一個資料夾，`SKILL.md` 的 `name` 與資料夾同名。分類（`follow-pstack`、`follow-matt`、`compat-omp`、`own`）只在 repo 裡，安裝後扁平，見 [`docs/layout.md`](docs/layout.md) |
+| `docs/layout.md` | 分類規則與上游路徑對應 |
 | `pins/` | 上游版本與機制映射 |
 | `docs/adr/` | 權衡決策（刪、降級、暫不支持），一決策一檔 |
-| `scripts/follow-*.ts` | 對上游算漂移（zx） |
+| `scripts/follow-*.ts` | 對上游算漂移，`--port` 輸出本地路徑的補丁（zx） |
+| `scripts/check-links.ts` | 以扁平安裝檢查 skill 內相對連結（zx） |
 | `.github/workflows/follow-upstream.yml` | 每日 09:00（台北）檢查漂移，有差異開 issue，不改檔 |
 
 維護規則見 [`AGENTS.md`](AGENTS.md)。

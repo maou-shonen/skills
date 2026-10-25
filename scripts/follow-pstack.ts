@@ -19,11 +19,12 @@ function die(msg) {
 
 function usage() {
   echo(`follow-pstack.ts apply <版本>
-follow-pstack.ts diff [版本]
+follow-pstack.ts diff [版本] [--port]
 
 版本是 plugin 版本（0.15.21）或 latest。pin 只存版本號，sha 每次用版本現算，不跟 main HEAD。
 diff 省略版本等於 latest，也就是 origin/main 上的 pstack/。
-apply 只更新 pins/pstack.pin。不改 skills/。`)
+apply 只更新 pins/pstack.pin。不改 skills/。
+--port 把補丁路徑改成本地分類（pstack/skills/X → skills/follow-pstack/X），用 git apply --reject 套。`)
   process.exit(1)
 }
 
@@ -85,6 +86,13 @@ async function apply(spec) {
   if (previous && previous !== resolved.version) echo(`was ${previous}`)
 }
 
+// --port：把補丁路徑改成本 repo 的分類佈局，可直接 git apply --reject。
+function port(patch) {
+  return patch.replace(/^((?:diff --git|---|\+\+\+|rename from|rename to|similarity).*)$/gm, (line) =>
+    line.replace(/(^|[ \/])pstack\/skills\//g, '$1skills/follow-pstack/'),
+  )
+}
+
 async function diff(spec = 'latest') {
   const pin = await readPin()
   const target = await resolve(spec)
@@ -101,7 +109,7 @@ async function diff(spec = 'latest') {
   }
   process.stdout.write(stat.stdout)
   const patch = await $`git -C ${cache} diff ${pin.sha} ${target.sha} -- pstack/`.quiet()
-  process.stdout.write(patch.stdout)
+  process.stdout.write(argv.port ? port(patch.stdout) : patch.stdout)
 }
 
 

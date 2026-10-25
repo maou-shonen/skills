@@ -20,11 +20,12 @@ function die(msg) {
 
 function usage() {
   echo(`follow-matt.ts apply <版本>
-follow-matt.ts diff [版本]
+follow-matt.ts diff [版本] [--port]
 
 版本是 package.json 版本（1.3.1）或 latest。pin 只存版本號，對應 tag v<版本>。
 diff 省略版本等於 latest，也就是最新 v* tag（發版）。main 上同版號的 sha 漂移不算。
-apply 只更新 pins/matt.pin。不改 skills/。`)
+apply 只更新 pins/matt.pin。不改 skills/。
+--port 把補丁路徑改成本地分類（skills/<分類>/X → skills/follow-matt/X），用 git apply --reject 套。`)
   process.exit(1)
 }
 
@@ -78,6 +79,13 @@ async function apply(spec) {
   if (previous && previous !== resolved.version) echo(`was ${previous}`)
 }
 
+// --port：把補丁路徑改成本 repo 的分類佈局，可直接 git apply --reject。
+function port(patch) {
+  return patch.replace(/^((?:diff --git|---|\+\+\+|rename from|rename to).*)$/gm, (line) =>
+    line.replace(/(^|[ \/])skills\/[^/\s]+\/([^/\s]+\/)/g, '$1skills/follow-matt/$2'),
+  )
+}
+
 async function diff(spec = 'latest') {
   const pin = await readPin()
   const target = await resolve(spec)
@@ -94,7 +102,7 @@ async function diff(spec = 'latest') {
   }
   process.stdout.write(stat.stdout)
   const patch = await $`git -C ${cache} diff ${pin.sha} ${target.sha} -- skills/`.quiet()
-  process.stdout.write(patch.stdout)
+  process.stdout.write(argv.port ? port(patch.stdout) : patch.stdout)
 }
 
 const [command, spec, extra] = argv._.map(String)
