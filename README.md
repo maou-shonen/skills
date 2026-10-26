@@ -13,7 +13,7 @@
 npx skills add maou-shonen/skills
 ```
 
-分組名 `maou-shonen-skills`，清單在 `.claude-plugin/plugin.json`。入口從 `/poteto-help` 開始。
+`npx skills add` 依 `.claude-plugin/marketplace.json` 分成四組：`follow-pstack`、`follow-matt`、`inspired-yui540`、`own`（一個分類資料夾一組）。入口從 `/poteto-help` 開始。
 
 ## 結構
 

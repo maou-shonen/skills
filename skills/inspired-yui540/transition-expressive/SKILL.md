@@ -1,6 +1,6 @@
 ---
 name: transition-expressive
-description: Use when writing UI transitions for personal, playful, portfolio, event, or first-run pages that should have stage presence (演出感): squash and stretch, big overshoot, intro sequences, particles. Install with transition-core; do not install alongside transition-refined.
+description: "Use when writing UI transitions for personal, playful, portfolio, event, or first-run pages that should have stage presence (演出感): squash and stretch, big overshoot, intro sequences, particles. Install with transition-core; do not install alongside transition-refined."
 ---
 
 # Transition: expressive

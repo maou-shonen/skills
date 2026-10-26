@@ -24,4 +24,4 @@ repo 裡的 skill 依來源分類放。分類只存在於 repo，安裝後是扁
 ## 檢查
 
 - `zx scripts/check-links.ts`：以扁平安裝解析 skills 內的相對連結，跳出 skill 根的連結只能指向另一個 skill。
-- `.claude-plugin/plugin.json` 的 `skills` 寫完整 repo 路徑 `./skills/<分類>/<skill>`。
+- `.claude-plugin/marketplace.json` 一個分類資料夾一個 plugin，`skills` 寫完整 repo 路徑 `./skills/<分類>/<skill>`；每個 skill 恰屬一組，`scripts/check-links.ts` 會檢查。

@@ -17,7 +17,7 @@ skill 依來源分類放，見 `docs/layout.md`。安裝後是扁平的：skill 
 跟上游步驟：
 1. `zx scripts/follow-<上游>.ts diff latest --port > upstream.diff`，路徑已從上游 `skills/X` 對到本地 `skills/follow-<上游>/X`。
 2. `git apply --reject upstream.diff`，逐件定層級（對等替換更新 `pins/*.changes.md`，權衡先寫 ADR）。
-3. 新增 skill 加進 `.claude-plugin/plugin.json`，`zx scripts/follow-<上游>.ts apply <版本>` 更新 pin。
+3. 新增 skill 加進 `.claude-plugin/marketplace.json` 對應分類的 plugin（`zx scripts/check-links.ts` 會檢查），`zx scripts/follow-<上游>.ts apply <版本>` 更新 pin。
 4. `zx scripts/check-links.ts` 與 `cd skills/follow-pstack/poteto-mode/scripts && bun test` 都過才提交。
 
 - 上游漂移由 `.github/workflows/follow-upstream.yml` 每日檢查，有差異開 issue 通知，不自動改檔。
