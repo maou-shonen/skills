@@ -32,5 +32,5 @@ amplitudes. Install with `transition-core`, and not with `transition-expressive`
 - **Empty state**: icon scale 0.4 rotate −30° → 1.06 rotate 6° → rest, 0.6s `--ease-pop`;
   text lines rise 10px at 0.12s and 0.18s. Reserve the list area's min-height so the card never jumps,
   and show the empty state while the last row is still leaving.
-- **Filter**: FLIP survivors (core) with 4px overshoot, 0.48s, 0.04s stagger.
+- **Filter**: FLIP survivors as in core.
 - **Button press**: `:active` scale 0.94.

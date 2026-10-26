@@ -42,4 +42,4 @@ as core requires; only choreography and show get louder.
   and fade, 0.34s `--ease-in`; row collapse 0.32s starting at 0.16s.
 - **Empty state**: icon blooms from 30px below, scale 0.2 rotate −180° → −10px `scale(1.25,.85)`
   rotate 15° → `scale(.92,1.08)` → rest, 0.9s; then sways ±8° for 2.4s × 2.
-- **Filter**: FLIP survivors (core), same timing as refined; the louder part is the enter recipe for new rows.
+- **Filter**: FLIP survivors as in core; new rows use the enter recipe above.

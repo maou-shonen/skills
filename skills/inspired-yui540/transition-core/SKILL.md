@@ -58,8 +58,8 @@ nested elements with `--ease-in` on one axis and `--ease-out` on the other.
 ## FLIP re-layout
 
 When a filter, sort, or removal moves surviving rows: record each row's `top` (First),
-re-render (Last), animate `translateY(old - new)` to 0 (Invert, Play) with `--ease-out`,
-staggered by index; rows that are new use the enter recipe. Skip when reduced motion is on.
+re-render (Last), animate `translateY(old - new)` → 4px past 0 at 70% → 0 (Invert, Play),
+0.48s `--ease-out`, 0.04s stagger by index; rows that are new use the enter recipe. Skip when reduced motion is on.
 
 ## Hard rules
 
