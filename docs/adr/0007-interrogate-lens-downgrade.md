@@ -1,6 +1,6 @@
 # ADR-0007：interrogate 雙 lens 是降級替代，承認
 
-- Status: Accepted
+- Status: Superseded by ADR-0012
 - Date: 2026-10-13
 
 ## Context

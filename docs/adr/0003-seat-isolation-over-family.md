@@ -14,5 +14,5 @@
 ## Consequences
 
 - 刪：arena runner 表、cross-judge pool、interrogate reviewer 表、architect runner 行、`different model family` 判準（eval、orchestrate、show-me-your-work）。
-- 替代：interrogate 的 Reviewer A/B 改按 lens 分工（見 ADR-0007，承認降級）。
+- 替代：interrogate 的 Reviewer A/B 改按 lens 分工（見 ADR-0007，承認降級）。ADR-0012 起改為跑出來才算的對抗審查，不再分 lens。
 - 將來有多錢包時，席位可綁不同配置，skill 文字不用改。

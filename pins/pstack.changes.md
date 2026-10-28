@@ -1,6 +1,6 @@
 # pstack → omp 替換
 
-基底：`pins/pstack.pin`（0.15.32）
+基底：`pins/pstack.pin`（0.15.36）
 
 流程留下。Cursor 機制改成這台 omp 18.10.3 實際有的介面。種類不同的差異寫在本表與該 skill 內的 omp 註記，派工以這台 omp 現場工具面為準。
 
@@ -19,3 +19,5 @@
 | `make-bot-ui` 的 webhook / `api2.cursor.sh` | skill 留下。頁面、本機 server、tailnet 照跑。webhook 那半 omp 沒有（無 routine store、inbound webhook、secret card），skill 內已加一段註明只跑頁面與 server，不要現編。 |
 | Graphite `gt` | 不要求。單 PR 走 `gh`。`command -v origin` 成功才用 Origin。 |
 | `poteto-help` 連到 pstack repo 的 `../../README.md`、`../../docs/guide/*` | 改成 `https://github.com/cursor/plugins/blob/main/pstack/` 下的絕對網址（本 repo 沒有那些文件，安裝後是扁平的） |
+| Orchestrate 的 `Task` / cloud worker / PR 事件訂閱 | `task` 加 `isolated: true`、`hub` watcher 或 systemd user timer；狀態記在 store 的 `notes.md`（0.15.36 起上游拿掉 `orch` CLI） |
+| interrogate 的 `generalPurpose` 對抗者、`interrogate reviewers` 模型行 | 每人一次 `task`（`agent: task`、`isolated: true`），預設兩人；見 ADR-0012 |
