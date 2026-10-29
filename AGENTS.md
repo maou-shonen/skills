@@ -22,3 +22,7 @@ skill 依來源分類放，見 `docs/layout.md`。安裝後是扁平的：skill 
 
 - 上游漂移由 `.github/workflows/follow-upstream.yml` 每日檢查，有差異開 issue 通知，不自動改檔。
 
+## 安裝
+
+ - 自家包刷新一律整包重裝（`skills add maou-shonen/skills -g -y`），NEVER 單 skill 更新：後者是 subpath 重裝，看不到 root 的 `.claude-plugin/plugin.json`，`~/.agents/.skill-lock.json` 的 `pluginName` 被洗掉，`ls -g` 掉進 General。掉了就對 lock 補回該欄位。
+
