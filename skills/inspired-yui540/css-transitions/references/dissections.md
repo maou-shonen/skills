@@ -1,6 +1,6 @@
 # Dissections (source: github.com/yui540/css-animations, MIT; pixiv inside 2020-01-21)
 
-Numbers quoted verbatim from source; the "why" is our reading. Borrow the method, never the artwork.
+Numbers quoted from source; the "why" is our reading. Principles only: no artwork, no non-MIT code. Source repo `github.com/yui540/css-animations` is MIT, © yui540.
 
 ## A. Two-layer wipe (2025-02-25/index.html)
 Two pseudo-elements, colors #ccc then #666, both `slideIn 1s cubic-bezier(0.87,0.05,0.02,0.97)`.

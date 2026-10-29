@@ -19,7 +19,9 @@ const ignore = new Set([
 
 const flat = new Map() // skill 名 → repo 內實際資料夾
 for (const cat of await fs.readdir(skillsDir)) {
-  for (const name of await fs.readdir(path.join(skillsDir, cat))) {
+  for (const e of await fs.readdir(path.join(skillsDir, cat), { withFileTypes: true })) {
+    if (!e.isDirectory()) continue // 分類資料夾可放 README.md 等文件
+    const name = e.name
     if (flat.has(name)) throw new Error(`skill 名重複：${name}`)
     flat.set(name, path.join(skillsDir, cat, name))
   }

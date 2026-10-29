@@ -90,11 +90,9 @@
       "name": "inspired-yui540",
       "source": "./",
       "strict": false,
-      "description": "UI transition skills distilled from yui540: transition-core plus one entry, refined or expressive.",
+      "description": "CSS transition and animation technique catalogue, distilled from yui540's public material.",
       "skills": [
-        "./skills/inspired-yui540/transition-core",
-        "./skills/inspired-yui540/transition-expressive",
-        "./skills/inspired-yui540/transition-refined"
+        "./skills/inspired-yui540/css-transitions"
       ]
     },
     {
