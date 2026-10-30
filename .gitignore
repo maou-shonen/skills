@@ -1,3 +1,4 @@
 .delete/
 .follow/
 node_modules/
+.worktree/
