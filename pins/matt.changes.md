@@ -1,6 +1,6 @@
 # matt → omp 替換
 
-基底：`pins/matt.pin`（1.3.1，`mattpocock/skills` tag `v1.3.1`）。
+基底：`pins/matt.pin`（1.3.2，`mattpocock/skills` tag `v1.3.2`）。
 
 只引 `domain-modeling` 相關鏈。grill 三件（`grilling` / `grill-me` / `grill-with-docs`）不引，用自家 `draft-a-task` / `draft-a-adr` 代（見 ADR-0009）。
 
