@@ -99,11 +99,17 @@ Read the leaf skill in full for any principle you apply. Each entry names when i
 
 **One task call per spawn.** Full tools per spawn, file pointers not inlined context. Fire independent spawns together so they run concurrently. Never batch dependent steps into one call: a step that needs the prior step's result waits for it, then carries that result in its own brief. Repeat shared background per brief. Clean context beats saved words.
 
-**Code delegates tier by difficulty.** The hardest changes (cross-cutting design, gnarly concurrency, subtle algorithms) deserve your best model, whether the task needs judgment on vague intent or is a precisely specified sequence of steps to execute to the letter. Trivial mechanical edits deserve the cheapest seat that can do them. Which model that is lives in your configuration, not in this skill.
+**Spawn by tier, not by model.** Pick the tier from the job, then set `agent` to that tier's omp agent. Which model each agent runs on lives in its agent file and `task.agentModelOverrides`, never in this skill. Don't deliberate past this table:
 
-**Match the seat to the job.** Before each spawn, start from the role's line or default and pick the seat the job needs. The `/setup-pstack` role map sets each role's starting seat. Step up for the hardest or subtlest work. Step down for routine work. Verification stays on the `swarm workers` seat. Keep the role the brief names, so a diverse panel stays diverse. A role on `auto` or `inherit-parent` runs on the parent model, so omit `agent` for it.
+| Tier | Job | `agent` |
+|---|---|---|
+| mechanical | strictly mechanical edits, renames, data collection, transcript slicing | `sonic` (`@smol`) |
+| code | features, bug-fixes, perf, refactors, explorers, investigators, verification workers | `task` (`@task`, defaults to the parent model) |
+| judgment | cross-cutting design, gnarly concurrency, subtle algorithms, synthesis, judges | `deep` (`@deep`, user-created) |
 
-You own every subagent's work. Review the diff and write your own summary, don't pass through what it said. A second opinion is the same brief run fresh in a clean seat. Agreement is high-signal.
+If no `deep` agent exists, run judgment work on `task` and say once per session that `deep` is missing (`/setup-pstack` creates it). Don't stop. A playbook step that says `poteto-agent`, or a routed skill (`how`, `why`, `interrogate`, `reflect`, `swarm`) that names its own agent, keeps that agent; the tier only decides when the step leaves `agent` open. Keep the role the brief names, so a diverse panel stays diverse.
+
+You own every subagent's work. Review the diff and write your own summary, don't pass through what it said. A second opinion is the same brief run fresh in a clean subagent. Agreement is high-signal.
 
 **Fresh subagents by default.** Give new work to a fresh subagent with consolidated scope, meaning the original brief, every later directive, and the prior agent's report and branch. This holds for a fix round, a follow-up, a retry, and the next queue item. Resume, message, or queue a follow-up on an existing subagent only when the new work strictly needs state that lives in that agent and is costly to move: its local checkout, its uncommitted changes, or a process it still runs, such as a dev server, a simulator, or a babysit watcher. A stop or hold order to a running agent is not reuse. A role such as a PR owner outlives its agent. Once that agent returns, a fresh agent takes the role's next round. Interrupt-chained resumes silently drop directives, so fire a fresh subagent with consolidated scope rather than trusting a "done" summary.
 

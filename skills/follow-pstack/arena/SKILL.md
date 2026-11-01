@@ -14,7 +14,7 @@ Every candidate gets the same prompt, so the prompt is the contract.
 
 1. State the artifact each candidate is producing.
 2. Derive the rubric, 3-6 concrete gradeable criteria for what success looks like on *this* task. It is the picker's tool in Phase D. Candidates only see the task.
-3. Set N from the design directions. Default 2-3. Spawn more runners when the arena covers multiple design directions. Use the same configuration N times when the work is generation-bound rather than judgment-sensitive. Model per seat is omp's business: seats run on whatever the user's configuration assigns, and unconfigured seats run on the parent model.
+3. Set N from the design directions. Default 2-3. Spawn more runners when the arena covers multiple design directions. Use the same configuration N times when the work is generation-bound rather than judgment-sensitive. Model per tier is omp's business: each tier runs on whatever its agent config assigns.
 4. Give each candidate its own output location (a git worktree where possible, otherwise `/tmp/arena-<slug>/candidate-<n>/`), per the **separate-before-serializing-shared-state** principle skill.
 
 ## Phase B: Fan out
@@ -25,7 +25,7 @@ If a candidate produces no output, proceed with N-1 and note the dropout.
 
 ## Phase C: Cross-judge
 
-After all Phase B candidates complete, spawn one judge in an isolated seat that saw none of the candidates being written. It sees the rubric and the candidates by path label, scores each criterion, and recommends a base with rationale. It runs in parallel with your reading in Phase D. Don't spawn it while candidates are still writing.
+After all Phase B candidates complete, spawn one judge in an isolated subagent that saw none of the candidates being written. It sees the rubric and the candidates by path label, scores each criterion, and recommends a base with rationale. It runs in parallel with your reading in Phase D. Don't spawn it while candidates are still writing.
 
 ## Phase D: Pick a base
 
