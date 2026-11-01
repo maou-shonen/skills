@@ -105,7 +105,7 @@ Read the leaf skill in full for any principle you apply. Each entry names when i
 |---|---|---|
 | mechanical | strictly mechanical edits, renames, data collection, transcript slicing | `sonic` (`@smol`) |
 | code | features, bug-fixes, perf, refactors, explorers, investigators, verification workers | `task` (`@task`, defaults to the parent model) |
-| judgment | cross-cutting design, gnarly concurrency, subtle algorithms, synthesis, explainers, judges | `deep` (`@deep`, user-created) |
+| judgment | cross-cutting design, gnarly concurrency, subtle algorithms, synthesis, judges | `deep` (`@deep`, user-created) |
 
 If no `deep` agent exists, run judgment work on `task` and say once per session that `deep` is missing (`/setup-pstack` creates it). Don't stop. A playbook step that says `poteto-agent`, or a routed skill (`how`, `why`, `interrogate`, `reflect`, `swarm`) that names its own agent, keeps that agent; the tier only decides when the step leaves `agent` open. Keep the role the brief names, so a diverse panel stays diverse.
 
