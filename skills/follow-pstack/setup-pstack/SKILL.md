@@ -32,7 +32,7 @@ Every value written is an alias in `modelRoles` (`@name`). Never write a slug. I
 
 ### 4. Write
 
-- Missing `deep`: copy [templates/deep.md](templates/deep.md) to `~/.omp/agent/agents/deep.md`. If `modelRoles.deep` is unset, have the operator map it in `/model`'s Roles view; this skill writes no slug.
+- Missing `deep`: copy [templates/deep.md](templates/deep.md) to `~/.omp/agent/agents/deep.md`. Its body is omp's bundled `task.md` prompt copied verbatim (source commit in its frontmatter comments); only the model differs from `task`. Resync it when omp updates `task.md`. If `modelRoles.deep` is unset, have the operator map it in `/model`'s Roles view; this skill writes no slug.
 - Retargeting `sonic` or `task`: set `task.agentModelOverrides.sonic` / `.task` to an alias in `~/.omp/agent/config.yml`, or delete the line to fall back to the bundled default. Retarget `deep` by editing its file's `model`. Re-runs overwrite the same keys, so they stay idempotent. Drop any old per-role lines (`feature, refactoring`, `how explorer`, ...) left by earlier versions of this skill.
 
 ### 5. Confirm

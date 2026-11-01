@@ -9,7 +9,7 @@ poteto-mode 的「Match the seat to the job」要 agent 每次 spawn 前自己�
 
 ## Decision
 
-固定三層：機械 → `sonic`，一般程式 → `task`，判斷／最難 → `deep`（使用者自建，`model: "@deep"`）。沒有 `deep` 時退回 `task`，提醒一次，不中止。`setup-pstack` 只檢查這三個 agent 解析到的模型，缺 `deep` 時用 `templates/deep.md` 建。
+固定三層：機械 → `sonic`，一般程式 → `task`，判斷／最難 → `deep`（使用者自建，`model: "@deep"`）。沒有 `deep` 時退回 `task`，提醒一次，不中止。`setup-pstack` 只檢查這三個 agent 解析到的模型，缺 `deep` 時用 `templates/deep.md` 建；模板內文原文複製 omp 內建 `task.md`（omp 的 agent 檔不能繼承內建 prompt），只換模型，omp 更新 `task.md` 時要重新同步。
 
 ## 與 ADR-0001 的關係
 
