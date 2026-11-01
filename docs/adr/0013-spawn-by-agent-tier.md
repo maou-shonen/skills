@@ -20,3 +20,6 @@ poteto-mode 的「Match the seat to the job」要 agent 每次 spawn 前自己�
 - 刪掉 poteto-mode 的逐次升降 seat 指示，改成一張表。
 - 路由型 skill（how、why、interrogate、reflect、swarm）自帶的 agent 不變；層級只在步驟沒指定 agent 時生效。
 - 舊的「每角色一行 `agentModelOverrides`」不再寫；`agentModelOverrides` 只用來重定向 `sonic` / `task`。
+- 全部 skill 的「seat」用詞改成 tier（sonic / task / deep），agent 一看就懂。
+- swarm 拿掉「model race 每 arm 一條 `agentModelOverrides`」：使用者不跑模型比賽，swarm 只依層級 spawn。
+- `how` 維持上游：所有 spawn 都是 `task`，explainer 不升 `deep`。

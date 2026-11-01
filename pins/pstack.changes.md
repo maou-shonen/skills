@@ -22,3 +22,5 @@
 | Orchestrate 的 `Task` / cloud worker / PR 事件訂閱 | `task` 加 `isolated: true`、`hub` watcher 或 systemd user timer；狀態記在 store 的 `notes.md`（0.15.36 起上游拿掉 `orch` CLI） |
 | interrogate 的 `generalPurpose` 對抗者、`interrogate reviewers` 模型行 | 每人一次 `task`（`agent: task`、`isolated: true`），預設兩人；見 ADR-0012 |
 | poteto-mode「Code delegates tier by difficulty」「Match the seat to the job」逐次升降 seat | 固定三層 agent：`sonic` / `task` / `deep`（使用者自建），缺 `deep` 退回 `task` 並提醒一次；`setup-pstack` 改成檢查三個 agent，缺 `deep` 時用 `templates/deep.md` 建；見 ADR-0013 |
+| 各 skill / playbook「Pick each subagent's seat for the job」與 `seat` 用詞 | 統一改為「Pick each subagent's tier (sonic / task / deep) per the Subagents section」；「fresh/clean/isolated seat」改為同義的 subagent；見 ADR-0013 |
+| swarm「model race：每個 arm 一個 agent 檔 + 一條 `task.agentModelOverrides`」 | 移除；swarm 只依層級 spawn，race 仍指相同 brief 的多個 worker；見 ADR-0013 |

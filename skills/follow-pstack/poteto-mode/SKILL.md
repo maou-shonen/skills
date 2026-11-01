@@ -109,7 +109,7 @@ Read the leaf skill in full for any principle you apply. Each entry names when i
 
 If no `deep` agent exists, run judgment work on `task` and say once per session that `deep` is missing (`/setup-pstack` creates it). Don't stop. A playbook step that says `poteto-agent`, or a routed skill (`how`, `why`, `interrogate`, `reflect`, `swarm`) that names its own agent, keeps that agent; the tier only decides when the step leaves `agent` open. Keep the role the brief names, so a diverse panel stays diverse.
 
-You own every subagent's work. Review the diff and write your own summary, don't pass through what it said. A second opinion is the same brief run fresh in a clean seat. Agreement is high-signal.
+You own every subagent's work. Review the diff and write your own summary, don't pass through what it said. A second opinion is the same brief run fresh in a clean subagent. Agreement is high-signal.
 
 **Fresh subagents by default.** Give new work to a fresh subagent with consolidated scope, meaning the original brief, every later directive, and the prior agent's report and branch. This holds for a fix round, a follow-up, a retry, and the next queue item. Resume, message, or queue a follow-up on an existing subagent only when the new work strictly needs state that lives in that agent and is costly to move: its local checkout, its uncommitted changes, or a process it still runs, such as a dev server, a simulator, or a babysit watcher. A stop or hold order to a running agent is not reuse. A role such as a PR owner outlives its agent. Once that agent returns, a fresh agent takes the role's next round. Interrupt-chained resumes silently drop directives, so fire a fresh subagent with consolidated scope rather than trusting a "done" summary.
 
