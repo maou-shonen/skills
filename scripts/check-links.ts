@@ -4,6 +4,7 @@
 // repo 裡 skills/<分類>/<skill>/，安裝後是 <skill>/。跳出 skill 根的 ../X/ 只能指向另一個 skill。
 // 另查 SKILL.md frontmatter（嚴格 YAML、name/description、name = 資料夾名）與
 // .claude-plugin/marketplace.json（每個 skill 恰屬一個 plugin、列出的路徑存在）。
+// 另查 layer（必填）與 manual（只能 true），plugin 名必須等於 layer，none 不列。
 // 不改檔。有任何問題就 exit 1。
 
 const root = path.dirname(globalThis.__dirname)
@@ -40,6 +41,10 @@ async function walk(dir) {
 
 let bad = 0
 
+// layer 依角色分，見 docs/adr/0014。none 不進任何 plugin，其餘的 plugin 名等於 layer。
+const LAYERS = ['assistant', 'coordinator', 'worker', 'shared', 'none']
+const layerOf = new Map()
+
 // frontmatter：嚴格 YAML（zx 的 YAML 即 yaml 套件），必有 name/description，name 等於資料夾名。
 for (const [name, real] of flat) {
   const file = path.join(real, 'SKILL.md')
@@ -54,6 +59,9 @@ for (const [name, real] of flat) {
     if (typeof fm?.[k] !== 'string' || !fm[k].trim()) { echo(`frontmatter 缺 ${k} ${name}`); bad++ }
   }
   if (fm?.name !== name) { echo(`name 與資料夾不符 ${name}: ${fm?.name}`); bad++ }
+  if (!LAYERS.includes(fm?.layer)) { echo(`frontmatter layer 不合法 ${name}: ${fm?.layer}`); bad++ }
+  if (fm?.manual !== undefined && fm.manual !== true) { echo(`manual 只能是 true ${name}`); bad++ }
+  layerOf.set(path.resolve(real), fm?.layer)
 }
 
 // marketplace：npx skills 以 plugins[].skills 分組，所以清單必須存在；這裡保證它和資料夾一致。
@@ -66,10 +74,13 @@ for (const pl of market.plugins ?? []) {
     if (!(await fs.pathExists(path.join(dir, 'SKILL.md')))) { echo(`列出的路徑不存在 ${pl.name}: ${s}`); bad++; continue }
     if (owner.has(dir)) { echo(`重複分組 ${s}: ${owner.get(dir)}, ${pl.name}`); bad++; continue }
     owner.set(dir, pl.name)
+    if (layerOf.get(dir) !== pl.name) { echo(`plugin 與 layer 不符 ${s}: ${pl.name} ≠ ${layerOf.get(dir)}`); bad++ }
   }
 }
 for (const [name, real] of flat) {
-  if (!owner.has(path.resolve(real))) { echo(`未列入任何 plugin ${name}`); bad++ }
+  const listed = owner.has(path.resolve(real))
+  if (layerOf.get(path.resolve(real)) === 'none') { if (listed) { echo(`layer none 不該列入 plugin ${name}`); bad++ } }
+  else if (!listed) { echo(`未列入任何 plugin ${name}`); bad++ }
 }
 for (const [name, real] of flat) {
   for (const file of await walk(real)) {

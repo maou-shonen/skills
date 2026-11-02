@@ -24,3 +24,9 @@
 | poteto-mode「Code delegates tier by difficulty」「Match the seat to the job」逐次升降 seat | 固定三層 agent：`sonic` / `task` / `deep`（使用者自建），缺 `deep` 退回 `task` 並提醒一次；`setup-pstack` 改成檢查三個 agent，缺 `deep` 時用 `templates/deep.md` 建；見 ADR-0013 |
 | 各 skill / playbook「Pick each subagent's seat for the job」與 `seat` 用詞 | 統一改為「Pick each subagent's tier (sonic / task / deep) per the Subagents section」；「fresh/clean/isolated seat」改為同義的 subagent；見 ADR-0013 |
 | swarm「model race：每個 arm 一個 agent 檔 + 一條 `task.agentModelOverrides`」 | 移除；swarm 只依層級 spawn，race 仍指相同 brief 的多個 worker；見 ADR-0013 |
+| frontmatter（全部 skill） | 加 `layer`（assistant / coordinator / shared / worker / none）與 `manual: true`；見 ADR-0014 |
+| swarm / arena / reflect / show-me-your-work / automate-me 的 omp 寫死（`task.maxConcurrency`、`agent: task`、`history://`、`~/.omp/...`） | 改成角色／層級措辭，omp 寫法改括註「on omp, …」；見 ADR-0014 |
+| reflect「複製到 `.cursor/skills/` 改副本、不開 PR」 | 不改安裝副本；核准後派 worker 在來源 repo 改並開 PR，不推預設分支、不 merge |
+| make-bot-ui「On omp there is no routine store…」 | 改為「On a coding worker…」 |
+| poteto-mode / babysit「not Cursor's built-in babysit skill」 | 改為「any other babysit skill」 |
+| multi-phase-plan 的 `control-ui` / `control-cli`（`cursor-team-kit`）與「own cloud VM」 | 改為 worker 的 browser／CLI control（on omp：`browser` prelude、`hub` 加 bash），lane 跑在各自隔離 worktree |

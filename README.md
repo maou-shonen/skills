@@ -13,7 +13,7 @@
 npx skills add maou-shonen/skills
 ```
 
-`npx skills add` 依 `.claude-plugin/marketplace.json` 分成四組：`follow-pstack`、`follow-matt`、`inspired-yui540`、`own`（一個分類資料夾一組）。入口從 `/poteto-help` 開始。
+`npx skills add` 依 `.claude-plugin/marketplace.json` 依 layer 分成四組：`assistant`（只裝 Grok Bot）、`coordinator`（Grok Bot 與 omp）、`shared`（全部）、`worker`（只裝 coding agent），見 ADR-0014。入口從 `/poteto-mode` 開始。
 
 ## 結構
 

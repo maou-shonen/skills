@@ -1,6 +1,7 @@
 ---
 name: css-transitions
 description: Catalogue of CSS transition and animation techniques for UI work - curve and duration tokens, staggered reveals, clip-path mask and block wipes, stroke-dashoffset line draw, overshoot and weight, FLIP list updates, loading and skeleton handoff, button busy states, reduced motion, and performance rules. Use when adding or fixing enter/exit, state-change, list, or loading motion in a web UI.
+layer: worker
 ---
 
 # CSS transitions

@@ -5,12 +5,14 @@ description: >-
   Grok Bot over a webhook, when the user must provide a webhook sender key, or
   when exposing that UI on Tailscale.
 disable-model-invocation: true
+layer: shared
+manual: true
 ---
 # How to make a bot UI
 
 Build a page the user clicks. A server on this computer POSTs JSON to a webhook routine. The bot wakes with that JSON. Keep the sender key on the server. Do not put the sender key in the browser, in chat, or in this skill.
 
-On omp there is no routine store, inbound webhook, or secret card. Serve the page and the key-holding server only; do not invent `update_state` or a webhook wake. Keep the rest of this skill for the half that does run here.
+On a coding worker there is no routine store, inbound webhook, or secret card. Serve the page and the key-holding server only; do not invent `update_state` or a webhook wake. Keep the rest of this skill for the half that does run there.
 
 ## Create the webhook routine
 
