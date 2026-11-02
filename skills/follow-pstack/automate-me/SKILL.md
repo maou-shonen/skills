@@ -2,6 +2,8 @@
 name: automate-me
 description: "Use for \"automate me\", \"create/update/refresh my -mode skill\", \"turn/capture my preferences or working style into a skill\", or wanting agents to follow how the user works. Drafts or revises a personal -mode skill via the authoring-a-skill playbook + unslop, optionally pulling fresh evidence from recent transcripts."
 disable-model-invocation: true
+layer: shared
+manual: true
 ---
 
 # Automate me
@@ -14,7 +16,7 @@ This skill orchestrates three others: an inline mining pass (see step 1), the `a
 
 ### 0. Check for an existing skill
 
-Look recursively for `.omp/skills/**/*-mode/SKILL.md` and `~/.omp/agent/skills/*-mode/SKILL.md` matching the user's handle. Mode skills can live in a personal category directory (`.omp/skills/<handle>/`), not only at the top level. If one exists, confirm intent with `ask` (unless they already said "update my skill" or similar):
+Look recursively in the project and user skill directories of your harness (on omp, `.omp/skills/**/*-mode/SKILL.md` and `~/.omp/agent/skills/*-mode/SKILL.md`) for a `*-mode/SKILL.md` matching the user's handle. Mode skills can live in a personal category directory (`.omp/skills/<handle>/`), not only at the top level. If one exists, confirm intent with `ask` (unless they already said "update my skill" or similar):
 
 - Update the existing skill (default for repeat runs)
 - Start fresh (rare, ask why before doing it)
@@ -26,7 +28,7 @@ Update mode changes the rest of the flow:
 
 ### 1. Mine their history
 
-Locate the active workspace's transcripts before fanning out. The system prompt names the session transcript tree `~/.omp/agent/sessions/<encoded-cwd>/*.jsonl`, with subagent sidecars at `<session-stem>/<AgentId>.jsonl`. Use only that path. Don't glob across sibling `~/.omp/agent/sessions/<other-cwd>/` buckets. That crosses workspace boundaries and reads private chats from unrelated projects.
+Locate the active workspace's transcripts before fanning out. Use your harness's transcript store (on omp, the system prompt names `~/.omp/agent/sessions/<encoded-cwd>/*.jsonl`, with subagent sidecars at `<session-stem>/<AgentId>.jsonl`). Use only that path. Don't glob across sibling `~/.omp/agent/sessions/<other-cwd>/` buckets. That crosses workspace boundaries and reads private chats from unrelated projects.
 
 Survey recent agent conversations within that scope for recurring patterns. Run multiple parallel subagents across slices of history (e.g. last 2-4 weeks, split into 3 slices so each has enough material). Pick each subagent's tier (sonic / task / deep) per the Subagents section of the **poteto-mode** skill. Each slice mining subagent reads transcripts from the workspace-scoped path the parent provides, looks for the signals below, and returns a short structured list of patterns it saw with evidence pointers. Default signals worth hunting:
 

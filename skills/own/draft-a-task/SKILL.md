@@ -2,6 +2,7 @@
 name: draft-a-task
 description: Draft a task
 disable-model-invocation: false
+layer: coordinator
 ---
 
 Discuss first to build consensus. Auto-decide high-confidence conventions and best practices; report each as 「Problem → Decision → Explained in One Sentence」 for veto (silence = accept). Ask only load-bearing questions that change outcome, scope, risk, or user-visible behavior. Never implement until the user explicitly confirms to proceed.

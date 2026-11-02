@@ -2,6 +2,8 @@
 name: reflect
 description: Spawn three parallel review subagents over the active transcript, surface learnings, and route each to a concrete edit on an existing skill. Use when the user says reflect.
 disable-model-invocation: true
+layer: shared
+manual: true
 ---
 
 # Reflect
@@ -12,13 +14,13 @@ Invoke when the user says "reflect" or "/reflect". Skip when the conversation is
 
 ## 1. Locate the active transcript
 
-Find this conversation's transcript via `history://` (bare lists agents, `history://<id>` pages one). Do not read other sessions.
+Find this conversation's transcript with your harness's history tool (on omp, `history://`: bare lists agents, `history://<id>` pages one). Do not read other sessions.
 
 ## 2. Spawn three reviewers in parallel
 
-One `task` call per reviewer, each `agent`: `task` (omp's general-purpose bundled agent), full tools per spawn. Reviewers need MCP access to look up the tickets, chat threads, and observability traces the transcript references. There is no `readonly` field, so nothing strips MCP. The brief still forbids writes.
+One `task` call per reviewer, each on the code tier's worker (on omp, `agent`: `task`), full tools per spawn. Reviewers need MCP access to look up the tickets, chat threads, and observability traces the transcript references. There is no `readonly` field, so nothing strips MCP. The brief still forbids writes.
 
-Model per tier is omp's business: each tier runs on whatever its agent config assigns. Pick each subagent's tier (sonic / task / deep) per the Subagents section of the **poteto-mode** skill.
+Model per tier is the harness's business: each tier runs on whatever the worker config assigns. Pick each subagent's tier (sonic / task / deep) per the Subagents section of the **poteto-mode** skill.
 
 | Lens | Prompt template |
 |---|---|
@@ -30,7 +32,7 @@ Pass each template verbatim, substituting the transcript path or digest where ma
 
 ## 3. Synthesize
 
-One `task` call, `agent`: `task` (omp's general-purpose bundled agent), full tools per spawn. It spot-verifies citations through MCP. Pass `references/synthesizer.md` verbatim, with each reviewer's full output inlined where marked. It returns an Accepted / Rejected / Backlog list.
+One `task` call, on the code tier's worker (on omp, `agent`: `task`), full tools per spawn. It spot-verifies citations through MCP. Pass `references/synthesizer.md` verbatim, with each reviewer's full output inlined where marked. It returns an Accepted / Rejected / Backlog list.
 
 ## 4. Structural enforcement check
 
@@ -42,7 +44,7 @@ Present the synthesizer's full Accepted / Rejected / Backlog output and wait for
 
 File each Backlog item to your team's devex or backlog tracker without waiting. Only the Accepted list waits for approval.
 
-Never edit a skill under `plugins/cache/`. Before approval, show its destination, `.cursor/skills/<skill>/` or `~/.cursor/skills/<skill>/`. After approval, copy the skill folder there and edit the copy. Never open a PR or push.
+Never edit an installed copy of a skill. Skills come from their source repo. Before approval, show the source path of each skill to edit. After approval, dispatch a worker to edit it there and open a PR. Never push to the default branch or merge.
 
 Follow each approved row's Routing exactly:
 

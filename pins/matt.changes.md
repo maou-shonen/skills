@@ -12,3 +12,5 @@
 | `glab` / GitLab tracker 模板 | 刪，只留 `gh` + local（見 ADR-0010） |
 | `triage` 未引 | Section B 自動跳過（上游本來就這麼設計），`triage-labels.md` 照收 |
 | `implement` / `implement-spec`（`tdd` + `code-review` 引用） | 不引：`implement` 被 poteto Feature 覆蓋，`implement-spec` 等真有多 ticket 併發再說；`tdd` 維持 pstack 版一字不動 |
+| frontmatter | 加 `layer` 與 `manual`；見 ADR-0014 |
+| to-spec / to-tickets「Explore the codebase」 | 改為「dispatch a worker to explore and report back」：協調者不自己讀碼；見 ADR-0014 |

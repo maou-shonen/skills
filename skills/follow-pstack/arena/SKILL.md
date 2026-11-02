@@ -2,6 +2,7 @@
 name: arena
 description: "Spawn N parallel candidates at the same task, pick a base, graft the strongest parts of the losers into it. Use for /arena, 'arena this', 'throw it in the arena', or when one attempt at a non-trivial artifact would lock in the wrong shape."
 disable-model-invocation: true
+layer: coordinator
 ---
 
 # Arena
@@ -14,7 +15,7 @@ Every candidate gets the same prompt, so the prompt is the contract.
 
 1. State the artifact each candidate is producing.
 2. Derive the rubric, 3-6 concrete gradeable criteria for what success looks like on *this* task. It is the picker's tool in Phase D. Candidates only see the task.
-3. Set N from the design directions. Default 2-3. Spawn more runners when the arena covers multiple design directions. Use the same configuration N times when the work is generation-bound rather than judgment-sensitive. Model per tier is omp's business: each tier runs on whatever its agent config assigns.
+3. Set N from the design directions. Default 2-3. Spawn more runners when the arena covers multiple design directions. Use the same configuration N times when the work is generation-bound rather than judgment-sensitive. Model per tier is the harness's business: each tier runs on whatever the worker config assigns.
 4. Give each candidate its own output location (a git worktree where possible, otherwise `/tmp/arena-<slug>/candidate-<n>/`), per the **separate-before-serializing-shared-state** principle skill.
 
 ## Phase B: Fan out
