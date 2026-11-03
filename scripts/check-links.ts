@@ -42,7 +42,7 @@ async function walk(dir) {
 let bad = 0
 
 // layer 依角色分，見 docs/adr/0014。none 不進任何 plugin，其餘的 plugin 名等於 layer。
-const LAYERS = ['assistant', 'dev-assistant', 'coordinator', 'worker', 'shared', 'none']
+const LAYERS = ['assistant', 'coordinator', 'worker', 'shared', 'none']
 const layerOf = new Map()
 
 // frontmatter：嚴格 YAML（zx 的 YAML 即 yaml 套件），必有 name/description，name 等於資料夾名。

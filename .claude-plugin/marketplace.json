@@ -10,22 +10,14 @@
       "name": "assistant",
       "source": "./",
       "strict": false,
-      "description": "Personal-assistant conversation skills. Every Grok Bot (box install).",
+      "description": "Personal-assistant skills for every Grok Bot (box install), incl. how to run the coding agent for delegated dev work.",
       "skills": [
         "./skills/follow-matt/to-questionnaire",
         "./skills/follow-pstack/bro",
         "./skills/follow-pstack/in-your-own-words",
         "./skills/follow-pstack/ketchup",
         "./skills/follow-pstack/ketchup-video",
-        "./skills/follow-pstack/sharpen"
-      ]
-    },
-    {
-      "name": "dev-assistant",
-      "source": "./",
-      "strict": false,
-      "description": "How a Grok Bot runs the coding agent (omp via Herdr) for delegated dev work. Box install; triggers only on delegated coding.",
-      "skills": [
+        "./skills/follow-pstack/sharpen",
         "./skills/own/use-dev-environment"
       ]
     },

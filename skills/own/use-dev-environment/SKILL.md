@@ -5,7 +5,7 @@ description: >-
   bug, open a PR, touch a git repo). Covers how to run the coding agent (omp
   via Herdr on the user's dev host) from request to report, not how to
   develop. Not for answering questions about code.
-layer: dev-assistant
+layer: assistant
 ---
 # Delegate development to the coding agent
 

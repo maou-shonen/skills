@@ -16,14 +16,13 @@ npx skills add maou-shonen/skills -g -y      # 全域重裝全部（plugin 改�
 
 `.claude-plugin/marketplace.json` 每個 layer 一個 plugin，plugin 名等於 layer，互動安裝時依此分組挑選，見 ADR-0014。要單裝某幾個用 `-s <skill>`。協調層（omp）的入口是 `/poteto-mode`。
 
-誰裝什麼：一般 Grok Bot 與代管開發 Grok Bot 共用 box，裝 `assistant` + `dev-assistant` + `shared`；omp 裝 `coordinator` + `worker` + `shared`；omp subagent 只用 `worker`。
+誰裝什麼：一般 Grok Bot 與代管開發 Grok Bot 共用 box，裝 `assistant` + `shared`；omp 裝 `coordinator` + `worker` + `shared`；omp subagent 只用 `worker`。
 
 ## 分層
 
 | layer | 裝在哪 | 數量 | 成員 |
 |---|---|---|---|
-| `assistant` | Grok Bot（box） | 6 | bro、in-your-own-words、ketchup、ketchup-video、sharpen、to-questionnaire |
-| `dev-assistant` | Grok Bot（box） | 1 | use-dev-environment（只教怎麼用 omp，不教怎麼開發） |
+| `assistant` | Grok Bot（box） | 7 | bro、in-your-own-words、ketchup、ketchup-video、sharpen、to-questionnaire、use-dev-environment（代管開發時怎麼用 omp，不教怎麼開發） |
 | `coordinator` | omp | 28 | poteto-mode、draft-a-task、draft-a-adr、to-spec、to-tickets、retro、wizard、swarm、arena、figure-it-out、principle-guard-the-context-window、teach、interrogate、recall、blast-radius、correct、create-verification-skill、maintain-verification-skill、create-formal-verification-skill、maintain-formal-verification-skill、setup-pstack、setup-matt-pocock-skills、how、why、statechart、architect、benchmark-checklist、domain-modeling |
 | `shared` | 全部 | 13 | research、automate-me、make-bot-ui、reflect、show-me-your-work、technical-writing、unslop、`principle-*`（attack-the-premise、experience-first、explain-the-number、never-block-on-the-human、prove-it-works、sequence-verifiable-units） |
 | `worker` | omp 與其 subagent | 23 | 見 [`marketplace.json`](.claude-plugin/marketplace.json) |
