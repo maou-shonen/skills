@@ -41,3 +41,4 @@ dev-orchestrator 與 shared 的內文只講角色與層級（「派一個 worker
 - omp 這側 `skills add` 仍會裝全部，assistant 要另外排除（待辦）。
 - 新 coding agent 加入時，只當執行者就裝 `dev-worker` + `shared`；也會被使用者直接使用就再加 `dev-orchestrator`。
 - `pluginName` 從 coordinator／worker 變成 dev-orchestrator／dev-worker，已安裝的要整包重裝。
+- （2026-11-04 補）omp 不讀 marketplace 的 `skills` 清單，只掃 plugin 根下的 `skills/<name>/SKILL.md` 一層，`source: ./` 的寫法在 omp 一個 skill 都載不到。omp 的 marketplace 來源也不能指定分支（GitHub 簡寫或 git URL 都只 clone 預設分支），但能吃 `.json` 結尾的 URL，plugin 來源也能用 `git-subdir` 加 `ref`。所以 main 只放 skill 原檔與 `scripts/gen-omp-plugins.ts`；`.github/workflows/omp-dist.yml` 在 push main 時產生 `plugins/<layer>/skills/<name>`（整個複製，不用 symlink）與 `.omp-plugin/marketplace.json`（plugin 來源為 `git-subdir` 指向本 repo 的 `omp-dist` 分支），提交到 `omp-dist`。某 layer 內容與現有 dist 不同時才升該 plugin 的 patch version，omp 靠它判斷要不要升級。安裝用 raw URL：`https://raw.githubusercontent.com/maou-shonen/skills/omp-dist/.omp-plugin/marketplace.json`。`.claude-plugin/marketplace.json` 照舊給 `npx skills`。

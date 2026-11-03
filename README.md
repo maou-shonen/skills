@@ -14,6 +14,14 @@ npx skills add maou-shonen/skills            # 互動選擇，依 layer 分組
 npx skills add maou-shonen/skills -g -y      # 全域重裝全部（plugin 改名後用這個）
 ```
 
+omp 從 CI 產生的 `omp-dist` 分支安裝，只裝要的 layer（main 不放產物，見 ADR-0014）：
+
+```bash
+omp plugin marketplace add https://raw.githubusercontent.com/maou-shonen/skills/omp-dist/.omp-plugin/marketplace.json
+omp plugin install dev-orchestrator@maou-shonen-skills dev-worker@maou-shonen-skills shared@maou-shonen-skills
+omp plugin marketplace update maou-shonen-skills && omp plugin upgrade   # 之後更新
+```
+
 `.claude-plugin/marketplace.json` 每個 layer 一個 plugin，plugin 名等於 layer，互動安裝時依此分組挑選，見 ADR-0014。要單裝某幾個用 `-s <skill>`。協調層（omp）的入口是 `/poteto-mode`。
 
 誰裝什麼：一般 Grok Bot 與代管開發 Grok Bot 共用 box，裝 `assistant` + `shared`；omp 裝 `dev-orchestrator` + `dev-worker` + `shared`；omp subagent 只用 `dev-worker`。
