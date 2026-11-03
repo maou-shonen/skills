@@ -12,6 +12,7 @@
       "strict": false,
       "description": "Personal-assistant conversation skills for the router chat (Grok Bot only).",
       "skills": [
+        "./skills/follow-matt/to-questionnaire",
         "./skills/follow-pstack/bro",
         "./skills/follow-pstack/in-your-own-words",
         "./skills/follow-pstack/ketchup",
@@ -28,6 +29,7 @@
         "./skills/follow-matt/retro",
         "./skills/follow-matt/to-spec",
         "./skills/follow-matt/to-tickets",
+        "./skills/follow-matt/wizard",
         "./skills/follow-pstack/arena",
         "./skills/follow-pstack/figure-it-out",
         "./skills/follow-pstack/poteto-mode",

@@ -14,5 +14,7 @@
 | `implement` / `implement-spec`（`tdd` + `code-review` 引用） | 不引：`implement` 被 poteto Feature 覆蓋，`implement-spec` 等真有多 ticket 併發再說；`tdd` 維持 pstack 版一字不動 |
 | frontmatter | 加 `layer` 與 `manual`；見 ADR-0014 |
 | to-spec / to-tickets「Explore the codebase」 | 改為「dispatch a worker to explore and report back」：協調者不自己讀碼；見 ADR-0014 |
+| `wizard`（`skills/engineering/wizard`） | 引為 coordinator（非 manual），`template.sh` 一字不動帶入。角色中立：範圍界定（步驟 1–2）由面對人的 agent 自己問，讀 repo 與撰寫／驗證腳本可自己做或派 worker；交付前自己讀過腳本；`agents/openai.yaml` 丟掉 |
+| `to-questionnaire`（`skills/productivity/to-questionnaire`） | 引為 assistant、manual。輸出改寫到自己的 workspace，不寫進 repo；`agents/openai.yaml` 丟掉 |
 | `retro`（`skills/engineering/retro`，pin 1.3.2 已含） | 引為 coordinator、manual。`writing-for-agents` 換 `unslop`；session logs 改 harness 歷史（on omp `history://`）；`CLAUDE.md` 改 `AGENTS.md`；reviewer agent + `CODING_STANDARDS.md` 對應到協調者審 worker diff（poteto-mode），判斷題規則提議寫進 review 會讀的 repo docs；選定後派 worker 實作；與 `reflect` 分工（reflect 改 skill、retro 改環境）；`agents/openai.yaml` 丟掉 |
 | `research`（`skills/engineering/research`，pin 1.3.2） | 引為 shared，保留模型自動調用。「background agent」改「background worker」，括註 on omp 用 `task`；沒有 repo 時存自己的 workspace；加一句回報後先自己讀檔再轉述；`agents/openai.yaml` 丟掉 |

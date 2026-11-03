@@ -20,8 +20,8 @@ npx skills add maou-shonen/skills -g -y      # 全域重裝全部（plugin 改�
 
 | layer | 裝在哪 | 數量 | 成員 |
 |---|---|---|---|
-| `assistant` | 只有 Grok Bot | 5 | bro、in-your-own-words、ketchup、ketchup-video、sharpen |
-| `coordinator` | Grok Bot 與 omp | 9 | poteto-mode、draft-a-task、to-spec、to-tickets、retro、swarm、arena、figure-it-out、principle-guard-the-context-window |
+| `assistant` | 只有 Grok Bot | 6 | bro、in-your-own-words、ketchup、ketchup-video、sharpen、to-questionnaire |
+| `coordinator` | Grok Bot 與 omp | 10 | poteto-mode、draft-a-task、to-spec、to-tickets、retro、wizard、swarm、arena、figure-it-out、principle-guard-the-context-window |
 | `shared` | 全部 | 15 | domain-modeling、draft-a-adr、research、automate-me、make-bot-ui、reflect、show-me-your-work、technical-writing、unslop、`principle-*`（attack-the-premise、experience-first、explain-the-number、never-block-on-the-human、prove-it-works、sequence-verifiable-units） |
 | `worker` | 只有 coding agent | 39 | 見 [`marketplace.json`](.claude-plugin/marketplace.json) |
 | `none` | 不安裝 | 1 | poteto-help |
