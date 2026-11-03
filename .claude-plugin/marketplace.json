@@ -43,6 +43,7 @@
       "description": "Judgment and writing principles every agent uses.",
       "skills": [
         "./skills/follow-matt/domain-modeling",
+        "./skills/follow-matt/research",
         "./skills/follow-pstack/automate-me",
         "./skills/follow-pstack/make-bot-ui",
         "./skills/follow-pstack/principle-attack-the-premise",
