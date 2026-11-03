@@ -10,6 +10,8 @@ manual: true
 
 Mine the current conversation for durable learnings, then route them into skill edits.
 
+Division of labor: `reflect` improves skills. To improve the repo environment (checks, AGENTS.md, standards), use the **retro** skill.
+
 Invoke when the user says "reflect" or "/reflect". Skip when the conversation is trivial, off-topic, or already covered by an existing skill the parent followed correctly. One-offs are not learnings.
 
 ## 1. Locate the active transcript

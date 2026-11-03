@@ -25,6 +25,7 @@
       "strict": false,
       "description": "Dispatch, brief, track, verify, report. For any agent that coordinates workers (Grok Bot and omp).",
       "skills": [
+        "./skills/follow-matt/retro",
         "./skills/follow-matt/to-spec",
         "./skills/follow-matt/to-tickets",
         "./skills/follow-pstack/arena",
