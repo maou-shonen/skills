@@ -48,6 +48,16 @@ jobs:
           fi
 
 
+      - name: Audit latest
+        id: audit
+        run: |
+          if zx "${{ matrix.script }}" audit latest > audit.txt 2>&1; then
+            echo "missing=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "missing=true" >> "$GITHUB_OUTPUT"
+          fi
+          cat audit.txt
+
       - name: Upload full diff
         if: steps.diff.outputs.drift == 'true'
         uses: actions/upload-artifact@v4
@@ -83,3 +93,26 @@ jobs:
           gh issue create --label "upstream,$label" \
             --title "上游漂移：${{ matrix.upstream }}（$(date +%F)）" \
             --body-file body.txt
+
+      - name: Open audit issue
+        if: steps.audit.outputs.missing == 'true'
+        run: |
+          label="upstream-${{ matrix.upstream }}"
+          gh label create upstream --color 0E8A16 --description "上游追蹤" --force
+          gh label create "$label" --color 1D76DB --description "上游追蹤：${{ matrix.upstream }}" --force
+          title="上游缺紀錄：${{ matrix.upstream }}"
+          open="$(gh issue list --state open --label "$label" --search "in:title $title" --json number --jq length)"
+          if [ "$open" -gt 0 ]; then
+            echo "已有未結 issue，跳過不重開"
+            exit 0
+          fi
+          {
+            echo "上游最新版有項目沒有本地資料夾，也沒有 changes.md「上游項目紀錄」表的一列，或紀錄已過期。"
+            echo
+            echo '```'
+            grep -v '^fetch \|^clone ' audit.txt
+            echo '```'
+            echo
+            echo "本地重跑：\`zx ${{ matrix.script }} audit latest\`。逐項決定 adopted / skipped / deferred 後補表。"
+          } > body.txt
+          gh issue create --label "upstream,$label" --title "$title（$(date +%F)）" --body-file body.txt

@@ -8,6 +8,10 @@ $.verbose = false
 const repo = 'https://github.com/cursor/plugins.git'
 const root = path.dirname(globalThis.__dirname)
 const pinFile = path.join(root, 'pins/pstack.pin')
+const changesFile = path.join(root, 'pins/pstack.changes.md')
+const localDir = path.join(root, 'skills/follow-pstack')
+const upstreamName = 'pstack'
+const auditRoots = ['pstack/skills', 'pstack/agents', 'pstack/automations']
 const cache = path.join(root, '.follow/cursor-plugins')
 
 const specPattern = /^(?:latest|\d+\.\d+\.\d+)$/i
@@ -20,10 +24,12 @@ function die(msg) {
 function usage() {
   echo(`follow-pstack.ts apply <版本>
 follow-pstack.ts diff [版本] [--port]
+follow-pstack.ts audit [版本]
 
 版本是 plugin 版本（0.15.21）或 latest。pin 只存版本號，sha 每次用版本現算，不跟 main HEAD。
 diff 省略版本等於 latest，也就是 origin/main 上的 pstack/。
 apply 只更新 pins/pstack.pin。不改 skills/。
+audit 檢查該版（省略＝pin）上游每一項都有本地資料夾或 changes.md「上游項目紀錄」表的一列，並報過期紀錄；有缺就 exit 1。
 --port 把補丁路徑改成本地分類（pstack/skills/X → skills/follow-pstack/X），用 git apply --reject 套。`)
   process.exit(1)
 }
@@ -113,8 +119,63 @@ async function diff(spec = 'latest') {
 }
 
 
+// audit：pin（或指定版本）上游的每一項都要有本地 follow-* 資料夾，或在 changes.md「上游項目紀錄」表有一列。
+// 表格式：| `上游路徑` | adopted / skipped / deferred | 原因 |。deferred 允許通過，只是提醒待決定。
+// 也報反向問題：紀錄指向上游已不存在的路徑、本地 follow-* skill 在上游已不存在。
+async function readRecords() {
+  const text = await fs.readFile(changesFile, 'utf8')
+  const start = text.indexOf('## 上游項目紀錄')
+  if (start < 0) die(`${path.relative(root, changesFile)} 缺「## 上游項目紀錄」表`)
+  const records = new Map()
+  for (const line of text.slice(start).split('\n')) {
+    const m = line.match(/^\|\s*`([^`]+)`\s*\|\s*(adopted|skipped|deferred)\s*\|/)
+    if (m) records.set(m[1], m[2])
+  }
+  return records
+}
+
+async function audit(spec) {
+  const target = spec ? await resolve(spec) : await readPin()
+  const files = (await $`git -C ${cache} ls-tree -r --name-only ${target.sha} -- ${auditRoots}`.quiet()).stdout
+  const items = new Map() // 上游路徑 → 本地 skill 名（非 skill 為 null）
+  for (const file of files.split('\n').filter(Boolean)) {
+    const item = upstreamItem(file)
+    if (item) items.set(item.path, item.skill)
+  }
+  const local = new Set(await fs.readdir(localDir))
+  const records = await readRecords()
+  const missing = []
+  const deferred = []
+  for (const [item, skill] of items) {
+    if (skill && local.has(skill)) continue
+    const status = records.get(item)
+    if (!status) missing.push(item)
+    else if (status === 'deferred') deferred.push(item)
+  }
+  const staleRecords = [...records.keys()].filter((item) => !items.has(item))
+  const upstreamSkills = new Set([...items.values()].filter(Boolean))
+  const orphans = [...local].filter((skill) => !upstreamSkills.has(skill))
+  echo(`${upstreamName} ${target.version} ${target.sha}：上游 ${items.size} 項`)
+  for (const item of deferred) echo(`待決定 ${item}`)
+  for (const item of missing) echo(`缺紀錄 ${item}`)
+  for (const item of staleRecords) echo(`過期紀錄 ${item}`)
+  for (const skill of orphans) echo(`本地多出 ${skill}（上游已無同名）`)
+  if (missing.length || staleRecords.length || orphans.length) process.exit(1)
+  echo('audit 通過')
+}
+
+function upstreamItem(file) {
+  let m = file.match(/^pstack\/skills\/([^/]+)\/SKILL\.md$/)
+  if (m) return { path: `pstack/skills/${m[1]}`, skill: m[1] }
+  m = file.match(/^pstack\/agents\/([^/]+\.md)$/)
+  if (m) return { path: `pstack/agents/${m[1]}`, skill: null }
+  m = file.match(/^pstack\/automations\/([^/]+)\//)
+  return m ? { path: `pstack/automations/${m[1]}`, skill: null } : null
+}
+
 const [command, spec, extra] = argv._.map(String)
 if (extra) usage()
 if (command === 'apply') await apply(spec)
 else if (command === 'diff') await diff(spec)
+else if (command === 'audit') await audit(spec)
 else usage()

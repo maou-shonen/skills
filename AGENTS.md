@@ -21,6 +21,7 @@ skill 依來源分類放，見 `docs/layout.md`。安裝後是扁平的：skill 
 4. `zx scripts/check-links.ts` 與 `cd skills/follow-pstack/poteto-mode/scripts && bun test` 都過才提交。
 
 - 上游漂移由 `.github/workflows/follow-upstream.yml` 每日檢查，有差異開 issue 通知，不自動改檔。
+- 上游每一項都要有決定：本地 `follow-*` 有同名資料夾，或在 `pins/<上游>.changes.md`「上游項目紀錄」表有一列（adopted / skipped / deferred）。`zx scripts/follow-<上游>.ts audit` 檢查，validate CI 跑 pin、每日 workflow 跑 latest。
 
 ## 安裝
 
