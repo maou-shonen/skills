@@ -61,6 +61,8 @@ for (const [name, real] of flat) {
   if (fm?.name !== name) { echo(`name 與資料夾不符 ${name}: ${fm?.name}`); bad++ }
   if (!LAYERS.includes(fm?.layer)) { echo(`frontmatter layer 不合法 ${name}: ${fm?.layer}`); bad++ }
   if (fm?.manual !== undefined && fm.manual !== true) { echo(`manual 只能是 true ${name}`); bad++ }
+  // 使用者不直接跟 worker 對話，manual skill 不能放 worker，見 docs/adr/0014。
+  if (fm?.layer === 'worker' && fm?.manual === true) { echo(`manual skill 不能是 worker ${name}`); bad++ }
   layerOf.set(path.resolve(real), fm?.layer)
 }
 
