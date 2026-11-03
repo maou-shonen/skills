@@ -30,3 +30,4 @@
 | make-bot-ui「On omp there is no routine store…」 | 改為「On a coding worker…」 |
 | poteto-mode / babysit「not Cursor's built-in babysit skill」 | 改為「any other babysit skill」 |
 | multi-phase-plan 的 `control-ui` / `control-cli`（`cursor-team-kit`）與「own cloud VM」 | 改為 worker 的 browser／CLI control（on omp：`browser` prelude、`hub` 加 bash），lane 跑在各自隔離 worktree |
+| `pstack/agents/poteto-agent.md`、`pstack/agents/comment-sicko.md`（Cursor plugin agents） | 改成 omp agent 檔，放 `setup-pstack/templates/`，由 `setup-pstack` 檢查並複製到 `~/.omp/agent/agents/`（同 `deep.md` 模式）。frontmatter 改 omp 格式（`model: "@task"`、`thinking-level`；poteto-agent 加 `spawns: "*"`），丟 `is_background`；poteto-agent 找 skill 的 `~/.cursor/plugins/` 搜尋改 `skill://poteto-mode` |
