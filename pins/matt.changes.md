@@ -14,3 +14,4 @@
 | `implement` / `implement-spec`（`tdd` + `code-review` 引用） | 不引：`implement` 被 poteto Feature 覆蓋，`implement-spec` 等真有多 ticket 併發再說；`tdd` 維持 pstack 版一字不動 |
 | frontmatter | 加 `layer` 與 `manual`；見 ADR-0014 |
 | to-spec / to-tickets「Explore the codebase」 | 改為「dispatch a worker to explore and report back」：協調者不自己讀碼；見 ADR-0014 |
+| `retro`（`skills/engineering/retro`，pin 1.3.2 已含） | 引為 coordinator、manual。`writing-for-agents` 換 `unslop`；session logs 改 harness 歷史（on omp `history://`）；`CLAUDE.md` 改 `AGENTS.md`；reviewer agent + `CODING_STANDARDS.md` 對應到協調者審 worker diff（poteto-mode），判斷題規則提議寫進 review 會讀的 repo docs；選定後派 worker 實作；與 `reflect` 分工（reflect 改 skill、retro 改環境）；`agents/openai.yaml` 丟掉 |
