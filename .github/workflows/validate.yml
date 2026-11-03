@@ -26,6 +26,9 @@ jobs:
       - name: Check links
         run: zx scripts/check-links.ts
 
+      - name: Check omp plugins in sync with layers
+        run: zx scripts/gen-omp-plugins.ts --check
+
       - name: Audit upstream records
         run: |
           zx scripts/follow-matt.ts audit
