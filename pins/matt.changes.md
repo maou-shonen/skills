@@ -15,3 +15,4 @@
 | frontmatter | 加 `layer` 與 `manual`；見 ADR-0014 |
 | to-spec / to-tickets「Explore the codebase」 | 改為「dispatch a worker to explore and report back」：協調者不自己讀碼；見 ADR-0014 |
 | `retro`（`skills/engineering/retro`，pin 1.3.2 已含） | 引為 coordinator、manual。`writing-for-agents` 換 `unslop`；session logs 改 harness 歷史（on omp `history://`）；`CLAUDE.md` 改 `AGENTS.md`；reviewer agent + `CODING_STANDARDS.md` 對應到協調者審 worker diff（poteto-mode），判斷題規則提議寫進 review 會讀的 repo docs；選定後派 worker 實作；與 `reflect` 分工（reflect 改 skill、retro 改環境）；`agents/openai.yaml` 丟掉 |
+| `research`（`skills/engineering/research`，pin 1.3.2） | 引為 shared，保留模型自動調用。「background agent」改「background worker」，括註 on omp 用 `task`；沒有 repo 時存自己的 workspace；加一句回報後先自己讀檔再轉述；`agents/openai.yaml` 丟掉 |
