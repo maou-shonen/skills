@@ -22,7 +22,7 @@
       ]
     },
     {
-      "name": "coordinator",
+      "name": "dev-orchestrator",
       "source": "./",
       "strict": false,
       "description": "Dispatch, design, brief, verify, report. Coding agents the user talks to directly (omp), not the box.",
@@ -79,7 +79,7 @@
       ]
     },
     {
-      "name": "worker",
+      "name": "dev-worker",
       "source": "./",
       "strict": false,
       "description": "Skills only useful while writing code. Coding agents and their subagents.",

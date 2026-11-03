@@ -2,7 +2,7 @@
 name: principle-model-the-domain
 description: "Apply when writing stateful logic, or when code branches a lot or repeats a shape assumption across files."
 disable-model-invocation: true
-layer: worker
+layer: dev-worker
 ---
 
 # Model the Domain

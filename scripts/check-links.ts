@@ -42,7 +42,7 @@ async function walk(dir) {
 let bad = 0
 
 // layer 依角色分，見 docs/adr/0014。none 不進任何 plugin，其餘的 plugin 名等於 layer。
-const LAYERS = ['assistant', 'coordinator', 'worker', 'shared', 'none']
+const LAYERS = ['assistant', 'dev-orchestrator', 'dev-worker', 'shared', 'none']
 const layerOf = new Map()
 
 // frontmatter：嚴格 YAML（zx 的 YAML 即 yaml 套件），必有 name/description，name 等於資料夾名。
@@ -61,8 +61,8 @@ for (const [name, real] of flat) {
   if (fm?.name !== name) { echo(`name 與資料夾不符 ${name}: ${fm?.name}`); bad++ }
   if (!LAYERS.includes(fm?.layer)) { echo(`frontmatter layer 不合法 ${name}: ${fm?.layer}`); bad++ }
   if (fm?.manual !== undefined && fm.manual !== true) { echo(`manual 只能是 true ${name}`); bad++ }
-  // 使用者不直接跟 worker 對話，manual skill 不能放 worker，見 docs/adr/0014。
-  if (fm?.layer === 'worker' && fm?.manual === true) { echo(`manual skill 不能是 worker ${name}`); bad++ }
+  // 使用者不直接跟 dev-worker 對話，manual skill 不能放 dev-worker，見 docs/adr/0014。
+  if (fm?.layer === 'dev-worker' && fm?.manual === true) { echo(`manual skill 不能是 dev-worker ${name}`); bad++ }
   layerOf.set(path.resolve(real), fm?.layer)
 }
 

@@ -2,7 +2,7 @@
 name: principle-guard-the-context-window
 description: "Apply when context is filling up: large outputs, long files, repeated reads, fan-out planning. Route bulk to subagents; keep summaries in the main thread, not raw payloads."
 disable-model-invocation: true
-layer: coordinator
+layer: dev-orchestrator
 ---
 
 # Guard the Context Window

@@ -13,6 +13,8 @@ You don't write the code, and you don't decide how it gets written. You own four
 
 ## Lifecycle
 
+0. **Load the environment.** Run the `dev-environment-info` skill for the dev host, how to reach it, the bot's git identity, and where repos and worktrees live. If it doesn't exist, ask the user for those facts and save them as a local `dev-environment-info` skill (on the bot's own machine, not in a shared skills repo).
+
 Example: the user asks for a small todos website.
 
 1. **Clarify.** Restate what you think the user wants: what it does, who uses it, where it lives, and what "done" looks like. Ask only the questions that change the outcome. Wait for the user's approval before starting.
@@ -24,9 +26,9 @@ Example: the user asks for a small todos website.
 
 ## Dev host
 
-- All coding work runs on **the user's dev host**, which you know from memory or the environment, not on the machine you chat from. Don't fall back to a local coding agent.
+- All coding work runs on **the user's dev host**, as given in `dev-environment-info`, not on the machine you chat from. Don't fall back to a local coding agent.
 - If you can run commands on the dev host directly (for example it's a registered machine), do that. Use Herdr's remote mode only when you can't.
-- Use the bot's own git identity configured on that host for commits, pushes, issues, and PRs, never the user's personal account. If access is denied, ask the user to grant it. Don't switch accounts.
+- Use the bot's own git identity from `dev-environment-info` for commits, pushes, issues, and PRs, never the user's personal account. If access is denied, ask the user to grant it. Don't switch accounts.
 - Never print secret files or credentials.
 - Local `main` may hold the user's unpushed commits, so branch from `origin/main` and never reset or push local main. Don't `git stash`. If the checkout is dirty with someone else's changes, stop and ask.
 - Worktrees always go at `<repo>/.worktree/<name>`. Remove them and prune when done.

@@ -2,7 +2,7 @@
 name: draft-a-adr
 description: Draft a ADR
 disable-model-invocation: true
-layer: coordinator
+layer: dev-orchestrator
 manual: true
 ---
 
