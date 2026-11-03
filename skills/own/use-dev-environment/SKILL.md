@@ -3,8 +3,8 @@ name: use-dev-environment
 description: >-
   Use when the user delegates coding or repo work to you (build a site, fix a
   bug, open a PR, touch a git repo). Covers how to run the coding agent (omp
-  via Herdr on the dev host shonen-lab, GitHub as shonen-bot) from request to
-  report, not how to develop. Not for answering questions about code.
+  via Herdr on the user's dev host) from request to report, not how to
+  develop. Not for answering questions about code.
 layer: dev-assistant
 ---
 # Delegate development to the coding agent
@@ -24,20 +24,20 @@ Example: the user asks for a small todos website.
 
 ## Dev host
 
-- All coding work runs on **`shonen-lab`**, never on the box. The box's own omp has no working subscription, so don't use it as a fallback.
-- From the box: `ssh -o BatchMode=yes shonen-lab '…'` (Tailscale). If it fails, run the `cf-one-client-restore` skill first. Never print secret files.
-- Non-interactive ssh doesn't load mise. Start every remote command with `export PATH=$HOME/.local/share/mise/shims:$HOME/.local/bin:$PATH;`.
-- GitHub identity is **`shonen-bot`**. `gh` is logged in as it, and git signs and pushes as it. Issues, PRs, and pushes must never come from `maou-shonen`. If access is denied, ask the user to add `shonen-bot` as a collaborator. Don't switch accounts.
-- Repos live in `~/projects/<repo>`. Local `main` may hold the user's unpushed commits, so branch from `origin/main` and never reset or push local main. Don't `git stash`. If the checkout is dirty with someone else's changes, stop and ask.
-- Worktrees always go at `<repo>/.worktree/<name>` (`wt-new <name> [base]`, `wt-rm <name>`).
+- All coding work runs on **the user's dev host**, which you know from memory or the environment, not on the machine you chat from. Don't fall back to a local coding agent.
+- If you can run commands on the dev host directly (for example it's a registered machine), do that. Use Herdr's remote mode only when you can't.
+- Use the bot's own git identity configured on that host for commits, pushes, issues, and PRs, never the user's personal account. If access is denied, ask the user to grant it. Don't switch accounts.
+- Never print secret files or credentials.
+- Local `main` may hold the user's unpushed commits, so branch from `origin/main` and never reset or push local main. Don't `git stash`. If the checkout is dirty with someone else's changes, stop and ask.
+- Worktrees always go at `<repo>/.worktree/<name>`. Remove them and prune when done.
 
 ## Driving omp through Herdr
 
-Herdr's own skill is the reference for commands: read `~/.agents/skills/herdr/SKILL.md` on shonen-lab. The house rules:
+Herdr's own skill is the reference for commands, remote mode included. The house rules:
 
-- The Herdr server is the user's live session. Check `herdr status`, and don't start, stop, or reload it unless it's down. Don't script `herdr --remote`.
+- The Herdr server is the user's live session. Check its status, and don't start, stop, or reload it unless it's down.
 - List workspaces and agents first. Reuse this repo's workspace when its omp is idle or done. Never prompt or close workspaces that belong to other projects or bots. Create new ones with a unique label and close them when finished.
-- Launch omp with `--thinking xhigh` and no `--model`. Never read `~/.omp/agent/.env` or change omp config.
-- Write the prompt to a file, copy it over, and pass it with `"$(cat …)"`. Use absolute paths in prompts.
+- Don't pick a model for omp; it uses the user's configured default. Never read omp's secrets or change its config.
+- Use absolute paths in prompts.
 - Prompt only when the agent is idle or done. If it's blocked, read the pane, answer it (or ask the user), and only then prompt again.
-- Browser automation in the omp pane reuses one fixed session name and closes it on exit. Don't launch Chrome straight from ssh, and never add `--no-sandbox`.
+- Browser automation in the omp pane reuses one fixed session name and closes it on exit. Never add `--no-sandbox`.
