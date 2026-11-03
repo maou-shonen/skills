@@ -1,7 +1,7 @@
 ---
 name: setup-pstack
 description: Show the operator what models pstack roles resolve to and record per-role choices. Use for /setup-pstack, "configure pstack models", or changing pstack's model choices.
-layer: worker
+layer: coordinator
 manual: true
 ---
 

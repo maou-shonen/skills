@@ -33,6 +33,8 @@
 | `pstack/agents/poteto-agent.md`、`pstack/agents/comment-sicko.md`（Cursor plugin agents） | 改成 omp agent 檔，放 `setup-pstack/templates/`，由 `setup-pstack` 檢查並複製到 `~/.omp/agent/agents/`（同 `deep.md` 模式）。frontmatter 改 omp 格式（`model: "@task"`、`thinking-level`；poteto-agent 加 `spawns: "*"`），丟 `is_background`；poteto-agent 找 skill 的 `~/.cursor/plugins/` 搜尋改 `skill://poteto-mode` |
 | `create-verification-skill` / `maintain-verification-skill` 的專案路徑 `.cursor/skills/verify-*/` | `.omp/skills/verify-*/`（omp 專案層 skill 目錄） |
 | `typescript-best-practices` frontmatter `paths:` | `globs:`（02f2ffe「對等替換層」刻意改的，對應 omp 規則的檔案比對欄位；當時漏記） |
+| `tdd` description「Use only when the user explicitly asks for TDD」 | 改「when the brief or coordinator explicitly asks」：worker 不直接面對使用者；見 ADR-0014 |
+| layer 重分（2026-11-03） | how、why、statechart、architect、benchmark-checklist → shared；teach、interrogate、recall、blast-radius、correct、四個 verification skill、setup-pstack → coordinator；見 ADR-0014 |
 
 ## 上游項目紀錄
 
