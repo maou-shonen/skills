@@ -1,6 +1,6 @@
 name: validate
 
-# 以扁平安裝檢查 skills 內相對連結。
+# 以扁平安裝檢查 skills 內相對連結；audit 檢查 pin 上游每一項都有引入或不引紀錄。
 
 on:
   push:
@@ -25,3 +25,8 @@ jobs:
 
       - name: Check links
         run: zx scripts/check-links.ts
+
+      - name: Audit upstream records
+        run: |
+          zx scripts/follow-matt.ts audit
+          zx scripts/follow-pstack.ts audit

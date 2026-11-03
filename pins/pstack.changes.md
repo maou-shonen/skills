@@ -31,3 +31,15 @@
 | poteto-mode / babysit「not Cursor's built-in babysit skill」 | 改為「any other babysit skill」 |
 | multi-phase-plan 的 `control-ui` / `control-cli`（`cursor-team-kit`）與「own cloud VM」 | 改為 worker 的 browser／CLI control（on omp：`browser` prelude、`hub` 加 bash），lane 跑在各自隔離 worktree |
 | `pstack/agents/poteto-agent.md`、`pstack/agents/comment-sicko.md`（Cursor plugin agents） | 改成 omp agent 檔，放 `setup-pstack/templates/`，由 `setup-pstack` 檢查並複製到 `~/.omp/agent/agents/`（同 `deep.md` 模式）。frontmatter 改 omp 格式（`model: "@task"`、`thinking-level`；poteto-agent 加 `spawns: "*"`），丟 `is_background`；poteto-agent 找 skill 的 `~/.cursor/plugins/` 搜尋改 `skill://poteto-mode` |
+| `create-verification-skill` / `maintain-verification-skill` 的專案路徑 `.cursor/skills/verify-*/` | `.omp/skills/verify-*/`（omp 專案層 skill 目錄） |
+| `typescript-best-practices` frontmatter `paths:` | `globs:`（02f2ffe「對等替換層」刻意改的，對應 omp 規則的檔案比對欄位；當時漏記） |
+
+## 上游項目紀錄
+
+`zx scripts/follow-pstack.ts audit` 讀這張表：pin 上游每個 `pstack/skills/<skill>` 要在 `skills/follow-pstack/` 有同名資料夾，`pstack/agents/*`、`pstack/automations/*` 要在這裡有一列。狀態只能是 `adopted`、`skipped`、`deferred`（audit 放行）。`pstack/docs/`、`assets/`、`README.md` 不跟、不列（`poteto-help` 改連網址；`docs/harness` 見 ADR-0011）。
+
+| 上游 | 狀態 | 原因 |
+|---|---|---|
+| `pstack/agents/poteto-agent.md` | deferred | 移植中，見 PR #11（合併後改 adopted：`setup-pstack/templates/`） |
+| `pstack/agents/comment-sicko.md` | deferred | 移植中，見 PR #11（合併後改 adopted：`setup-pstack/templates/`） |
+| `pstack/automations/benny` | skipped | Cursor automation（Slack 回報分類與修復），omp 沒有對應機制 |
