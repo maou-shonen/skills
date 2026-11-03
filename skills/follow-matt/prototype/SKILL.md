@@ -1,7 +1,7 @@
 ---
 name: prototype
 description: Build a throwaway prototype to answer a design question. Use when the brief or coordinator asks to sanity-check whether a state model or logic feels right, or explore what a UI should look like.
-layer: worker
+layer: dev-worker
 ---
 
 # Prototype

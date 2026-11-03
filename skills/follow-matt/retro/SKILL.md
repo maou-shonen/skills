@@ -2,7 +2,7 @@
 name: retro
 description: "Conduct a retrospective on a coding session."
 disable-model-invocation: true
-layer: coordinator
+layer: dev-orchestrator
 manual: true
 ---
 
