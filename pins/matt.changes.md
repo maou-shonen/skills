@@ -20,6 +20,7 @@
 | `research`（`skills/engineering/research`，pin 1.3.2） | 引為 shared，保留模型自動調用。「background agent」改「background worker」，括註 on omp 用 `task`；沒有 repo 時存自己的 workspace；加一句回報後先自己讀檔再轉述；`agents/openai.yaml` 丟掉 |
 | `prototype` / `codebase-design` description「Use when the user wants…」 | 改「Use when the brief or coordinator asks…」：worker 不直接面對使用者；見 ADR-0014 |
 | `setup-matt-pocock-skills` layer | coordinator（manual，to-spec / to-tickets 叫使用者先跑）；見 ADR-0014 |
+| `domain-modeling` layer（2026-11-04） | shared → coordinator：box 上的 Grok Bot 不再碰開發；見 ADR-0014 |
 
 ## 上游項目紀錄
 
