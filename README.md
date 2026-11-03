@@ -14,10 +14,10 @@ npx skills add maou-shonen/skills            # 互動選擇，依 layer 分組
 npx skills add maou-shonen/skills -g -y      # 全域重裝全部（plugin 改名後用這個）
 ```
 
-omp 用自己的 marketplace（`.omp-plugin/marketplace.json`），只裝要的 layer：
+omp 從 CI 產生的 `omp-dist` 分支安裝，只裝要的 layer（main 不放產物，見 ADR-0014）：
 
 ```bash
-omp plugin marketplace add maou-shonen/skills
+omp plugin marketplace add https://raw.githubusercontent.com/maou-shonen/skills/omp-dist/.omp-plugin/marketplace.json
 omp plugin install dev-orchestrator@maou-shonen-skills dev-worker@maou-shonen-skills shared@maou-shonen-skills
 omp plugin marketplace update maou-shonen-skills && omp plugin upgrade   # 之後更新
 ```
