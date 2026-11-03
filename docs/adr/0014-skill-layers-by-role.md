@@ -41,4 +41,4 @@ dev-orchestrator 與 shared 的內文只講角色與層級（「派一個 worker
 - omp 這側 `skills add` 仍會裝全部，assistant 要另外排除（待辦）。
 - 新 coding agent 加入時，只當執行者就裝 `dev-worker` + `shared`；也會被使用者直接使用就再加 `dev-orchestrator`。
 - `pluginName` 從 coordinator／worker 變成 dev-orchestrator／dev-worker，已安裝的要整包重裝。
-- （2026-11-04 補）omp 不讀 marketplace 的 `skills` 清單，只掃 plugin 根下的 `skills/<name>/SKILL.md` 一層，`source: ./` 的寫法在 omp 一個 skill 都載不到。omp 改用 `.omp-plugin/marketplace.json`（omp 先讀它，再讀 `.claude-plugin/`），每個 layer 一個 `plugins/<layer>/`，裡面 `skills/<name>` 是指回 `skills/<分類>/<name>` 的相對 symlink，由 `scripts/gen-omp-plugins.ts` 依 layer 產生；skill 增減時自動升該 plugin 的 patch version，omp 才會重抓。`.claude-plugin/marketplace.json` 照舊給 `npx skills`。
+- （2026-11-04 補）omp 不讀 marketplace 的 `skills` 清單，只掃 plugin 根下的 `skills/<name>/SKILL.md` 一層，`source: ./` 的寫法在 omp 一個 skill 都載不到。omp 改用 `.omp-plugin/marketplace.json`（omp 先讀它，再讀 `.claude-plugin/`），每個 layer 一個 `plugins/<layer>/`，裡面 `skills/<name>` 是從 `skills/<分類>/<name>` 整個複製的產物（不用 symlink，omp 裝完不依賴 repo 或 npx skills），由 `scripts/gen-omp-plugins.ts` 依 layer 產生；內容有變時自動升該 plugin 的 patch version，omp 才會重抓。`.claude-plugin/marketplace.json` 照舊給 `npx skills`。

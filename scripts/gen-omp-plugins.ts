@@ -1,48 +1,75 @@
 #!/usr/bin/env zx
 
 // zx CLI 注入 fs、path、echo、YAML、argv。依 SKILL.md 的 layer 產生 omp plugin：
-// plugins/<layer>/skills/<skill> 是指回 skills/<分類>/<skill> 的相對 symlink，
+// 把 skills/<分類>/<skill> 整個資料夾（含輔助檔）複製成 plugins/<layer>/skills/<skill>，
 // .omp-plugin/marketplace.json 每個 layer 一個 plugin，source 指向 plugins/<layer>。
 // omp 只掃 <plugin 根>/skills/<name>/SKILL.md 一層，不認 marketplace 的 skills 清單，所以需要這層。
+// plugins/ 是產物，別手改。某 layer 內容有變就升該 plugin 的 patch version，omp 才會重抓。
 // --check 只比對，不一致就 exit 1（CI 用）。layer none 不產生。
 
 const root = path.dirname(globalThis.__dirname)
 const skillsDir = path.join(root, 'skills')
 const pluginsDir = path.join(root, 'plugins')
+const marketPath = path.join(root, '.omp-plugin/marketplace.json')
 const check = Boolean(argv.check)
 const claude = await fs.readJson(path.join(root, '.claude-plugin/marketplace.json'))
 
-const want = new Map() // layer → Map(skill → 相對 symlink 目標)
+async function files(dir, base = dir, out = new Map()) {
+  if (!(await fs.pathExists(dir))) return out
+  for (const e of (await fs.readdir(dir, { withFileTypes: true })).sort((a, b) => a.name < b.name ? -1 : 1)) {
+    if (e.name === 'node_modules' || e.name === '.DS_Store') continue
+    const p = path.join(dir, e.name)
+    if (e.isSymbolicLink()) out.set(path.relative(base, p), `symlink:${await fs.readlink(p)}`)
+    else if (e.isDirectory()) await files(p, base, out)
+    else out.set(path.relative(base, p), await fs.readFile(p, 'utf8'))
+  }
+  return out
+}
+const same = (a, b) => a.size === b.size && [...a].every(([k, v]) => b.get(k) === v)
+
+const want = new Map() // layer → Map(skill → 來源資料夾)
 for (const cat of (await fs.readdir(skillsDir)).sort()) {
   for (const e of await fs.readdir(path.join(skillsDir, cat), { withFileTypes: true })) {
     if (!e.isDirectory()) continue
-    const text = await fs.readFile(path.join(skillsDir, cat, e.name, 'SKILL.md'), 'utf8')
+    const src = path.join(skillsDir, cat, e.name)
+    const text = await fs.readFile(path.join(src, 'SKILL.md'), 'utf8')
     const layer = YAML.parse(text.match(/^---\r?\n([\s\S]*?)\r?\n---/)[1]).layer
     if (!layer || layer === 'none') continue
     if (!want.has(layer)) want.set(layer, new Map())
-    want.get(layer).set(e.name, path.posix.join('../../../skills', cat, e.name))
+    want.get(layer).set(e.name, src)
   }
 }
 
-const desc = new Map((claude.plugins ?? []).map(p => [p.name, p.description]))
-const marketPath = path.join(root, '.omp-plugin/marketplace.json')
 const old = (await fs.pathExists(marketPath)) ? await fs.readJson(marketPath) : { plugins: [] }
 const oldVer = new Map(old.plugins.map(p => [p.name, p.version]))
-
-// 快取裡的 symlink 指向 marketplace clone，內容隨 marketplace 更新；但 omp 以 version 判斷要不要重抓
-// plugin，所以 skill 增減時要升 patch。這裡比對 plugins/<layer>/skills/ 現況決定。
-async function changed(layer, skills) {
-  const dir = path.join(pluginsDir, layer, 'skills')
-  const cur = (await fs.pathExists(dir)) ? (await fs.readdir(dir)).sort() : []
-  return cur.join() !== [...skills.keys()].sort().join()
-}
 const bump = v => { const [a, b, c] = (v ?? '1.0.-1').split('.').map(Number); return `${a}.${b}.${c + 1}` }
+
+let diff = 0
+const note = msg => { echo(msg); diff++ }
 const version = new Map()
-for (const [layer, skills] of want) {
-  const v = oldVer.get(layer)
-  version.set(layer, !check && (!v || (await changed(layer, skills))) ? bump(v) : v)
+for (const [layer, skills] of [...want].sort()) {
+  const expect = new Map()
+  for (const [name, src] of skills) for (const [k, v] of await files(src)) expect.set(path.join(name, k), v)
+  const dir = path.join(pluginsDir, layer, 'skills')
+  const changed = !same(expect, await files(dir))
+  let v = oldVer.get(layer)
+  if (changed) {
+    note(`plugins/${layer} 與 skills/ 不一致`)
+    if (!check) {
+      await fs.remove(dir)
+      for (const [name, src] of skills) await fs.copy(src, path.join(dir, name), { dereference: true })
+      v = bump(v)
+    }
+  }
+  version.set(layer, v ?? (check ? undefined : bump(v)))
+}
+const have = (await fs.pathExists(pluginsDir)) ? await fs.readdir(pluginsDir) : []
+for (const layer of have) if (layer !== 'README.md' && !want.has(layer)) {
+  note(`多餘的 plugin ${layer}`)
+  if (!check) await fs.remove(path.join(pluginsDir, layer))
 }
 
+const desc = new Map((claude.plugins ?? []).map(p => [p.name, p.description]))
 const market = {
   name: claude.name,
   owner: claude.owner,
@@ -55,33 +82,16 @@ const market = {
   })),
 }
 const marketText = JSON.stringify(market, null, 2) + '\n'
-
-let diff = 0
-const note = msg => { echo(msg); diff++ }
 if (((await fs.pathExists(marketPath)) ? await fs.readFile(marketPath, 'utf8') : '') !== marketText) {
   note('.omp-plugin/marketplace.json 與 layer 不一致')
   if (!check) await fs.outputFile(marketPath, marketText)
 }
-const have = (await fs.pathExists(pluginsDir)) ? await fs.readdir(pluginsDir) : []
-for (const layer of have) if (!want.has(layer)) {
-  note(`多餘的 plugin ${layer}`)
-  if (!check) await fs.remove(path.join(pluginsDir, layer))
+
+const readme = '# plugins/（產物，別手改）\n\n由 `zx scripts/gen-omp-plugins.ts` 從 `skills/` 依 `layer` 複製產生，給 omp marketplace（`.omp-plugin/marketplace.json`）用。要改 skill 請改 `skills/<分類>/<name>/`，再重跑腳本；CI 以 `--check` 檢查同步。\n'
+const readmePath = path.join(pluginsDir, 'README.md')
+if (((await fs.pathExists(readmePath)) ? await fs.readFile(readmePath, 'utf8') : '') !== readme) {
+  note('plugins/README.md 不一致')
+  if (!check) await fs.outputFile(readmePath, readme)
 }
-for (const [layer, skills] of want) {
-  const dir = path.join(pluginsDir, layer, 'skills')
-  const cur = (await fs.pathExists(dir)) ? await fs.readdir(dir) : []
-  for (const name of cur) if (!skills.has(name)) {
-    note(`多餘的連結 ${layer}/${name}`)
-    if (!check) await fs.remove(path.join(dir, name))
-  }
-  for (const [name, target] of skills) {
-    const link = path.join(dir, name)
-    let now = null
-    try { now = await fs.readlink(link) } catch {}
-    if (now === target) continue
-    note(`連結不一致 ${layer}/${name}`)
-    if (!check) { await fs.remove(link); await fs.ensureDir(dir); await fs.symlink(target, link) }
-  }
-}
-echo(diff ? (check ? `${diff} 處不一致，跑 zx scripts/gen-omp-plugins.ts` : `已更新 ${diff} 處`) : 'omp plugins 與 layer 一致')
+echo(diff ? (check ? `${diff} 處不一致，跑 zx scripts/gen-omp-plugins.ts` : `已更新 ${diff} 處`) : 'omp plugins 與 skills/ 一致')
 process.exit(check && diff ? 1 : 0)
