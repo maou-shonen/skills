@@ -24,18 +24,18 @@
 | 上游 | 狀態 | 原因 |
 |---|---|---|
 | `skills/engineering/ask-matt` | skipped | matt 全套 skill 的導引；我們只引一部分，導引會指向不存在的 skill |
-| `skills/engineering/code-review` | deferred | 能讓 retro 的 standards 有讀者；待使用者決定 |
+| `skills/engineering/code-review` | skipped | 使用者認同 poteto 近來看法：agent review 多半浪費 token，且此 skill 偏重瑣碎挑剔（2026-11-03 決定） |
 | `skills/engineering/diagnosing-bugs` | skipped | 與 pstack `principle-fix-root-causes` 和 poteto-mode 的除錯流程重疊 |
 | `skills/engineering/grill-with-docs` | skipped | 用 `draft-a-adr` 代；見 ADR-0009 |
 | `skills/engineering/implement` | skipped | 被 poteto Feature 覆蓋 |
 | `skills/engineering/implement-spec` | skipped | 等真有多 ticket 併發再說 |
-| `skills/engineering/improve-codebase-architecture` | deferred | 依賴 grill 鏈；待使用者決定 |
+| `skills/engineering/improve-codebase-architecture` | deferred | 依賴 grill 鏈，且需先與 `architect` 比對分工；待使用者決定 |
 | `skills/engineering/pr` | skipped | `technical-writing` 已涵蓋 PR 描述 |
-| `skills/engineering/research` | deferred | 改寫中，見 PR #12（合併後本地有資料夾，這列可刪） |
+| `skills/engineering/research` | adopted | `follow-matt/research`（PR #12） |
 | `skills/engineering/tdd` | skipped | 與 pstack `tdd` 同名，留 pstack 版 |
 | `skills/engineering/triage` | skipped | 不引；`setup-matt-pocock-skills` Section B 自動跳過 |
 | `skills/engineering/wayfinder` | skipped | 與 `figure-it-out`、`to-tickets` 重疊 |
-| `skills/engineering/wizard` | deferred | 待使用者決定 |
+| `skills/engineering/wizard` | adopted | `follow-matt/wizard`（PR #14） |
 | `skills/in-progress/chief-of-staff` | skipped | 上游實驗區 |
 | `skills/in-progress/claude-handoff` | skipped | 上游實驗區，綁 Claude Code |
 | `skills/in-progress/loop-me` | skipped | 上游實驗區 |
@@ -51,6 +51,6 @@
 | `skills/productivity/grilling` | skipped | 見 ADR-0009 |
 | `skills/productivity/handoff` | skipped | 各 harness 有自己的交接與 history 機制 |
 | `skills/productivity/teach` | skipped | 與 pstack `teach` 同名，留 pstack 版 |
-| `skills/productivity/to-questionnaire` | deferred | 待使用者決定 |
+| `skills/productivity/to-questionnaire` | adopted | `follow-matt/to-questionnaire`（PR #14） |
 | `skills/productivity/wait-what` | skipped | 與 `bro` 重疊 |
 | `skills/productivity/writing-for-agents` | skipped | 用 `unslop` 與 `technical-writing` 代（retro 已換） |

@@ -40,6 +40,6 @@
 
 | 上游 | 狀態 | 原因 |
 |---|---|---|
-| `pstack/agents/poteto-agent.md` | deferred | 移植中，見 PR #11（合併後改 adopted：`setup-pstack/templates/`） |
-| `pstack/agents/comment-sicko.md` | deferred | 移植中，見 PR #11（合併後改 adopted：`setup-pstack/templates/`） |
+| `pstack/agents/poteto-agent.md` | adopted | `setup-pstack/templates/poteto-agent.md`（PR #11） |
+| `pstack/agents/comment-sicko.md` | adopted | `setup-pstack/templates/comment-sicko.md`（PR #11） |
 | `pstack/automations/benny` | skipped | Cursor automation（Slack 回報分類與修復），omp 沒有對應機制 |
