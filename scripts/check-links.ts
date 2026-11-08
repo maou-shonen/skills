@@ -58,7 +58,7 @@ for (const [name, real] of flat) {
   if (fm?.manual !== undefined) { echo(`frontmatter 不該有 manual ${name}`); bad++ }
 }
 
-// marketplace：單一 dev plugin 全收；這裡保證清單和資料夾一致（每 skill 恰列一次）。
+// marketplace：單一 maou-dev plugin 全收；這裡保證清單和資料夾一致（每 skill 恰列一次）。
 const market = await fs.readJson(path.join(root, '.claude-plugin/marketplace.json'))
 const owner = new Map()
 for (const pl of market.plugins ?? []) {

@@ -7,7 +7,8 @@
   "description": "Personal dev skills for omp: pstack orchestration, Matt Pocock flows, and self-authored skills. Upstream content is omp-adapted, not the originals.",
   "plugins": [
     {
-      "name": "dev",
+      "name": "maou-dev",
+      "version": "2026.1108.1",
       "source": "./",
       "strict": false,
       "description": "All 71 dev skills: pstack + matt (both omp-adapted) + self-authored.",
