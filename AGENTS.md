@@ -1,29 +1,3 @@
 ## Target
 
-基於流行 skills 做個人化最適配：pstack 管 orchestration（見 `pins/pstack.changes.md`），matt 取 `domain-modeling` 相關鏈（見 `pins/matt.changes.md`）。
-
-## 追蹤
-
-三層分工：`pins/` 釘版本對機制，`docs/adr/` 記為什麼，skill 內不記。
-
-- 對等替換只更新映射表，不寫 ADR。
-- ADR 只記 skill 內提示詞的權衡：刪、降級、暫不支持。一決策一檔。repo 本身（目錄、腳本、CI、文件）不寫 ADR。
-- 跟進上游先看差，再逐件定層級。權衡無 ADR 不動手。
-
-## 佈局
-
-skill 依來源分類放，見 `docs/layout.md`。安裝後是扁平的：skill 名全 repo 唯一，skill 間連結照上游寫 `../X/`，不加分類層。
-
-跟上游步驟：
-1. `zx scripts/follow-<上游>.ts diff latest --port > upstream.diff`，路徑已從上游 `skills/X` 對到本地 `skills/follow-<上游>/X`。
-2. `git apply --reject upstream.diff`，逐件定層級（對等替換更新 `pins/*.changes.md`，權衡先寫 ADR）。
-3. 新增 skill frontmatter 填 `layer`（見 ADR-0014），加進 `.claude-plugin/marketplace.json` 同名 layer 的 plugin（`none` 不列）（`zx scripts/check-links.ts` 會檢查）（`npx skills` 與 omp 共用這份 catalog），`zx scripts/follow-<上游>.ts apply <版本>` 更新 pin。
-4. `zx scripts/check-links.ts` 與 `cd skills/follow-pstack/poteto-mode/scripts && bun test` 都過才提交。
-
-- 上游漂移由 `.github/workflows/follow-upstream.yml` 每日檢查，有差異開 issue 通知，不自動改檔。
-- 上游每一項都要有決定：本地 `follow-*` 有同名資料夾，或在 `pins/<上游>.changes.md`「上游項目紀錄」表有一列（adopted / skipped / deferred）。`zx scripts/follow-<上游>.ts audit` 檢查，validate CI 跑 pin、每日 workflow 跑 latest。
-
-## 安裝
-
- - 自家包刷新一律整包重裝（`skills add maou-shonen/skills -g -y`），NEVER 單 skill 更新：後者是 subpath 重裝，看不到 root 的 `.claude-plugin/plugin.json`，`~/.agents/.skill-lock.json` 的 `pluginName` 被洗掉，`ls -g` 掉進 General。掉了就對 lock 補回該欄位。
-
+目的是維護 `maou-shonen` 個人用 agent skills, 基於 pstack 與 matt skills, 並添加了 oh-my-pi 相容及個人偏好
