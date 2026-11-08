@@ -27,9 +27,6 @@
 - verification skill 專案路徑 `.cursor/skills/verify-*/` → `.omp/skills/verify-*/`（omp 專案層 skill 目錄）。
 - frontmatter `paths:` → `globs:`（omp 規則的檔案比對欄位）。
 - frontmatter 與措辭：加 `layer` 與 `manual`；內文只講角色與層級，harness 寫法用「on omp, …」括註；worker 不直接面對使用者；Cursor 專屬措辭改中性（`any other X`、`On a coding worker…`）。
-
-### 取捨
-
 - 引：上游 `pstack/skills/` 全引（本地 `skills/follow-pstack/` 即全部）；另收 `pstack/agents/poteto-agent.md`、`pstack/agents/comment-sicko.md`（→ `setup-pstack/templates/`）。
 - 不引：`pstack/automations/benny`（Cursor automation，Slack 回報分類與修復，omp 無對應機制）。`pstack/docs/`、`assets/`、`README.md` 不跟、不列（`poteto-help` 改連網址）。
 
