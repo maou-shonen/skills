@@ -29,7 +29,7 @@ follow-pstack.ts audit [版本]
 版本是 plugin 版本（0.15.21）或 latest。pin 只存版本號，sha 每次用版本現算，不跟 main HEAD。
 diff 省略版本等於 latest，也就是 origin/main 上的 pstack/。
 apply 只更新 pins/pstack.pin。不改 skills/。
-audit 檢查該版（省略＝pin）上游每一項都有本地資料夾或 changes.md「上游項目紀錄」表的一列，並報過期紀錄；有缺就 exit 1。
+audit 檢查該版（省略＝pin）上游每一項都有本地資料夾或 changes.md 最新版本節取捨行的一名，並報過期紀錄；有缺就 exit 1。
 --port 把補丁路徑改成本地分類（pstack/skills/X → skills/follow-pstack/X），用 git apply --reject 套。`)
   process.exit(1)
 }
@@ -119,17 +119,26 @@ async function diff(spec = 'latest') {
 }
 
 
-// audit：pin（或指定版本）上游的每一項都要有本地 follow-* 資料夾，或在 changes.md「上游項目紀錄」表有一列。
-// 表格式：| `上游路徑` | adopted / skipped / deferred | 原因 |。deferred 允許通過，只是提醒待決定。
+// audit：pin（或指定版本）上游的每一項都要有本地 follow-pstack 資料夾，或在 changes.md 最新版本節的取捨行有名。
+// 取捨行格式：- 引：…`pstack/agents/x.md`…。- 不引：…。- 待定：…。待定放行但提醒。只讀第一個 ## 節。
 // 也報反向問題：紀錄指向上游已不存在的路徑、本地 follow-* skill 在上游已不存在。
 async function readRecords() {
   const text = await fs.readFile(changesFile, 'utf8')
-  const start = text.indexOf('## 上游項目紀錄')
-  if (start < 0) die(`${path.relative(root, changesFile)} 缺「## 上游項目紀錄」表`)
+  const head = text.match(/^## (?!#)\S[^\n]*$/m)
+  if (!head) die(`${path.relative(root, changesFile)} 缺版本節`)
+  const body = text.slice(head.index + head[0].length)
+  const next = body.search(/^## (?!#)/m)
+  const section = next < 0 ? body : body.slice(0, next)
   const records = new Map()
-  for (const line of text.slice(start).split('\n')) {
-    const m = line.match(/^\|\s*`([^`]+)`\s*\|\s*(adopted|skipped|deferred)\s*\|/)
-    if (m) records.set(m[1], m[2])
+  for (const line of section.split('\n')) {
+    const m = line.match(/^-\s*(引|不引|待定)：(.*)$/)
+    if (!m) continue
+    const status = m[1] === '引' ? 'adopted' : m[1] === '待定' ? 'deferred' : 'skipped'
+    for (const quoted of m[2].match(/`pstack\/[^`]+`/g) ?? []) {
+      const item = quoted.slice(1, -1)
+      if (!item.startsWith('pstack/agents/') && !item.startsWith('pstack/automations/')) continue
+      records.set(item.match(/^pstack\/automations\/[^/]+/)?.[0] ?? item, status)
+    }
   }
   return records
 }

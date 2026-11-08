@@ -107,12 +107,12 @@ jobs:
             exit 0
           fi
           {
-            echo "上游最新版有項目沒有本地資料夾，也沒有 changes.md「上游項目紀錄」表的一列，或紀錄已過期。"
+            echo "上游最新版有項目沒有本地資料夾，也沒有 changes.md 最新版本節取捨行的一名，或紀錄已過期。"
             echo
             echo '```'
             grep -v '^fetch \|^clone ' audit.txt
             echo '```'
             echo
-            echo "本地重跑：\`zx ${{ matrix.script }} audit latest\`。逐項決定 adopted / skipped / deferred 後補表。"
+            echo "本地重跑：\`zx ${{ matrix.script }} audit latest\`。新開一節版本，逐項決定引 / 不引 / 待定。"
           } > body.txt
           gh issue create --label "upstream,$label" --title "$title（$(date +%F)）" --body-file body.txt

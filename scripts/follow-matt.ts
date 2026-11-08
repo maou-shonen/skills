@@ -12,7 +12,7 @@ const pinFile = path.join(root, 'pins/matt.pin')
 const changesFile = path.join(root, 'pins/matt.changes.md')
 const localDir = path.join(root, 'skills/follow-matt')
 const upstreamName = 'matt'
-const auditRoots = ['skills']
+const auditRoots = ['skills/engineering']
 const cache = path.join(root, '.follow/matt-skills')
 
 const specPattern = /^(?:latest|\d+\.\d+\.\d+)$/i
@@ -30,7 +30,7 @@ follow-matt.ts audit [版本]
 版本是 package.json 版本（1.3.1）或 latest。pin 只存版本號，對應 tag v<版本>。
 diff 省略版本等於 latest，也就是最新 v* tag（發版）。main 上同版號的 sha 漂移不算。
 apply 只更新 pins/matt.pin。不改 skills/。
-audit 檢查該版（省略＝pin）上游每一項都有本地資料夾或 changes.md「上游項目紀錄」表的一列，並報過期紀錄；有缺就 exit 1。
+audit 檢查該版（省略＝pin）上游 engineering 每一項都有本地資料夾或 changes.md 最新版本節取捨行的一名，並報過期紀錄；有缺就 exit 1。
 --port 把補丁路徑改成本地分類（skills/<分類>/X → skills/follow-matt/X），用 git apply --reject 套。`)
   process.exit(1)
 }
@@ -97,31 +97,39 @@ async function diff(spec = 'latest') {
   const target = await resolve(spec)
   const where = spec === 'latest' ? ' latest-tag' : ''
   echo(`matt ${pin.version} ${pin.sha} → ${target.version} ${target.sha}${where}`)
-  const stat = await $`git -C ${cache} diff --stat ${pin.sha} ${target.sha} -- skills/`.quiet()
+  const stat = await $`git -C ${cache} diff --stat ${pin.sha} ${target.sha} -- skills/engineering`.quiet()
   if (!stat.stdout.trim()) {
     echo('無變化')
     return
   }
-  const commits = await $`git -C ${cache} log --oneline ${pin.sha}..${target.sha} -- skills/`.quiet()
+  const commits = await $`git -C ${cache} log --oneline ${pin.sha}..${target.sha} -- skills/engineering`.quiet()
   if (commits.stdout.trim()) {
     echo(commits.stdout.trimEnd())
   }
   process.stdout.write(stat.stdout)
-  const patch = await $`git -C ${cache} diff ${pin.sha} ${target.sha} -- skills/`.quiet()
+  const patch = await $`git -C ${cache} diff ${pin.sha} ${target.sha} -- skills/engineering`.quiet()
   process.stdout.write(argv.port ? port(patch.stdout) : patch.stdout)
 }
 
-// audit：pin（或指定版本）上游的每一項都要有本地 follow-* 資料夾，或在 changes.md「上游項目紀錄」表有一列。
-// 表格式：| `上游路徑` | adopted / skipped / deferred | 原因 |。deferred 允許通過，只是提醒待決定。
+// audit：pin（或指定版本）上游 engineering 的每個 skill 要嘛在 skills/follow-matt/ 有同名資料夾，要嘛在 changes.md 最新版本節的取捨行有名。
+// 取捨行格式：- 不引：a、b（原因…）、c。- 待定：…。待定放行但提醒。只讀第一個 ## 節。
 // 也報反向問題：紀錄指向上游已不存在的路徑、本地 follow-* skill 在上游已不存在。
 async function readRecords() {
   const text = await fs.readFile(changesFile, 'utf8')
-  const start = text.indexOf('## 上游項目紀錄')
-  if (start < 0) die(`${path.relative(root, changesFile)} 缺「## 上游項目紀錄」表`)
+  const head = text.match(/^## (?!#)\S[^\n]*$/m)
+  if (!head) die(`${path.relative(root, changesFile)} 缺版本節`)
+  const body = text.slice(head.index + head[0].length)
+  const next = body.search(/^## (?!#)/m)
+  const section = next < 0 ? body : body.slice(0, next)
   const records = new Map()
-  for (const line of text.slice(start).split('\n')) {
-    const m = line.match(/^\|\s*`([^`]+)`\s*\|\s*(adopted|skipped|deferred)\s*\|/)
-    if (m) records.set(m[1], m[2])
+  for (const line of section.split('\n')) {
+    const m = line.match(/^-\s*(引|不引|待定)：(.+)$/)
+    if (!m) continue
+    const status = m[1] === '待定' ? 'deferred' : m[1] === '引' ? 'adopted' : 'skipped'
+    for (const name of m[2].replace(/（[^）]*）/g, '').split('、')) {
+      const skill = name.trim().replace(/。$/, '').replace(/^`|`$/g, '')
+      if (skill) records.set(skill.includes('/') ? skill : `skills/engineering/${skill}`, status)
+    }
   }
   return records
 }
@@ -144,8 +152,11 @@ async function audit(spec) {
     if (!status) missing.push(item)
     else if (status === 'deferred') deferred.push(item)
   }
-  const staleRecords = [...records.keys()].filter((item) => !items.has(item))
+  const staleRecords = [...records.keys()].filter((item) => !items.has(item) && records.get(item) !== 'adopted')
   const upstreamSkills = new Set([...items.values()].filter(Boolean))
+  for (const [item, status] of records) {
+    if (status === 'adopted' && !items.has(item)) upstreamSkills.add(item.split('/').pop())
+  }
   const orphans = [...local].filter((skill) => !upstreamSkills.has(skill))
   echo(`${upstreamName} ${target.version} ${target.sha}：上游 ${items.size} 項`)
   for (const item of deferred) echo(`待決定 ${item}`)
