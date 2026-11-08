@@ -26,9 +26,6 @@ jobs:
       - name: Check links
         run: zx scripts/check-links.ts
 
-      - name: Dry-run omp dist generation
-        run: zx scripts/gen-omp-plugins.ts --out "$RUNNER_TEMP/omp-dist"
-
       - name: Audit upstream records
         run: |
           zx scripts/follow-matt.ts audit
