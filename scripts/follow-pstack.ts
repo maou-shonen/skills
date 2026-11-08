@@ -29,7 +29,7 @@ follow-pstack.ts audit [版本]
 版本是 plugin 版本（0.15.21）或 latest。pin 只存版本號，sha 每次用版本現算，不跟 main HEAD。
 diff 省略版本等於 latest，也就是 origin/main 上的 pstack/。
 apply 只更新 pins/pstack.pin。不改 skills/。
-audit 檢查該版（省略＝pin）上游每一項都有本地資料夾或 changes.md 最新版本節取捨行的一名，並報過期紀錄；有缺就 exit 1。
+audit 檢查該版（省略＝pin）上游每一項都有本地資料夾或 changes.md 最新版本節的引／不引／待定一名，並報過期紀錄；有缺就 exit 1。
 --port 把補丁路徑改成本地分類（pstack/skills/X → skills/follow-pstack/X），用 git apply --reject 套。`)
   process.exit(1)
 }
@@ -119,8 +119,8 @@ async function diff(spec = 'latest') {
 }
 
 
-// audit：pin（或指定版本）上游的每一項都要有本地 follow-pstack 資料夾，或在 changes.md 最新版本節的取捨行有名。
-// 取捨行格式：- 引：…`pstack/agents/x.md`…。- 不引：…。- 待定：…。待定放行但提醒。只讀第一個 ## 節。
+// audit：pin（或指定版本）上游的每一項都要有本地 follow-pstack 資料夾，或在 changes.md 最新版本節的引／不引／待定有名。
+// 格式：引：／不引：／待定：段落下條列，`` `pstack/…` `` 路徑。只讀第一個 ## 節。
 // 也報反向問題：紀錄指向上游已不存在的路徑、本地 follow-* skill 在上游已不存在。
 async function readRecords() {
   const text = await fs.readFile(changesFile, 'utf8')
@@ -130,12 +130,17 @@ async function readRecords() {
   const next = body.search(/^## (?!#)/m)
   const section = next < 0 ? body : body.slice(0, next)
   const records = new Map()
+  let status = null
   for (const line of section.split('\n')) {
-    const m = line.match(/^-\s*(引|不引|待定)：(.*)$/)
-    if (!m) continue
-    const status = m[1] === '引' ? 'adopted' : m[1] === '待定' ? 'deferred' : 'skipped'
-    for (const quoted of m[2].match(/`pstack\/[^`]+`/g) ?? []) {
+    const head = line.match(/^(引|不引|待定)：/)
+    if (head) {
+      status = head[1] === '引' ? 'adopted' : head[1] === '待定' ? 'deferred' : 'skipped'
+      continue
+    }
+    if (!status || !line.startsWith('- ')) continue
+    for (const quoted of line.match(/`pstack\/[^`]+`/g) ?? []) {
       const item = quoted.slice(1, -1)
+      if (item.includes('*') || item.includes(' ')) continue
       if (!item.startsWith('pstack/agents/') && !item.startsWith('pstack/automations/')) continue
       records.set(item.match(/^pstack\/automations\/[^/]+/)?.[0] ?? item, status)
     }

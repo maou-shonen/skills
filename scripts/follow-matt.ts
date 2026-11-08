@@ -30,7 +30,7 @@ follow-matt.ts audit [版本]
 版本是 package.json 版本（1.3.1）或 latest。pin 只存版本號，對應 tag v<版本>。
 diff 省略版本等於 latest，也就是最新 v* tag（發版）。main 上同版號的 sha 漂移不算。
 apply 只更新 pins/matt.pin。不改 skills/。
-audit 檢查該版（省略＝pin）上游 engineering 每一項都有本地資料夾或 changes.md 最新版本節取捨行的一名，並報過期紀錄；有缺就 exit 1。
+audit 檢查該版（省略＝pin）上游 engineering 每一項都有本地資料夾或 changes.md 最新版本節的不引／待定一名，並報過期紀錄；有缺就 exit 1。
 --port 把補丁路徑改成本地分類（skills/<分類>/X → skills/follow-matt/X），用 git apply --reject 套。`)
   process.exit(1)
 }
@@ -111,8 +111,8 @@ async function diff(spec = 'latest') {
   process.stdout.write(argv.port ? port(patch.stdout) : patch.stdout)
 }
 
-// audit：pin（或指定版本）上游 engineering 的每個 skill 要嘛在 skills/follow-matt/ 有同名資料夾，要嘛在 changes.md 最新版本節的取捨行有名。
-// 取捨行格式：- 不引：a、b（原因…）、c。- 待定：…。待定放行但提醒。只讀第一個 ## 節。
+// audit：pin（或指定版本）上游 engineering 的每個 skill 要嘛在 skills/follow-matt/ 有同名資料夾，要嘛在 changes.md 最新版本節的不引／待定有名。
+// 格式：引：／不引：／待定：段落下條列，每項 `` `名` `` 開頭（一行多名用頓號併列也行）。只讀第一個 ## 節。
 // 也報反向問題：紀錄指向上游已不存在的路徑、本地 follow-* skill 在上游已不存在。
 async function readRecords() {
   const text = await fs.readFile(changesFile, 'utf8')
@@ -122,13 +122,20 @@ async function readRecords() {
   const next = body.search(/^## (?!#)/m)
   const section = next < 0 ? body : body.slice(0, next)
   const records = new Map()
+  let status = null
   for (const line of section.split('\n')) {
-    const m = line.match(/^-\s*(引|不引|待定)：(.+)$/)
-    if (!m) continue
-    const status = m[1] === '待定' ? 'deferred' : m[1] === '引' ? 'adopted' : 'skipped'
-    for (const name of m[2].replace(/（[^）]*）/g, '').split('、')) {
-      const skill = name.trim().replace(/。$/, '').replace(/^`|`$/g, '')
-      if (skill) records.set(skill.includes('/') ? skill : `skills/engineering/${skill}`, status)
+    const head = line.match(/^(引|不引|待定)：/)
+    if (head) {
+      status = head[1] === '待定' ? 'deferred' : head[1] === '引' ? 'adopted' : 'skipped'
+      continue
+    }
+    if (!status || !line.startsWith('- `')) continue
+    const names = line.match(/`[^`]+`/g) ?? []
+    const list = /^-\s*`[^`]+`：/.test(line) ? names.slice(0, 1) : names
+    for (const quoted of list) {
+      const skill = quoted.slice(1, -1)
+      if (/[\s（）]/.test(skill)) continue
+      records.set(skill.includes('/') ? skill : `skills/engineering/${skill}`, status)
     }
   }
   return records

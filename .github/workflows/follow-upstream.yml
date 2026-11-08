@@ -107,7 +107,7 @@ jobs:
             exit 0
           fi
           {
-            echo "上游最新版有項目沒有本地資料夾，也沒有 changes.md 最新版本節取捨行的一名，或紀錄已過期。"
+            echo "上游最新版有項目沒有本地資料夾，也沒有 changes.md 最新版本節的一名，或紀錄已過期。"
             echo
             echo '```'
             grep -v '^fetch \|^clone ' audit.txt
