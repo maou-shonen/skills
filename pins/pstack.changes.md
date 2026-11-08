@@ -25,14 +25,14 @@
 - Graphite `gt` → 不要求；單 PR 走 `gh`，`command -v origin` 成功才用 Origin。
 - `poteto-help` 連 pstack repo 的相對路徑 → 絕對網址（本 repo 沒有那些文件，安裝後是扁平的）。
 - `poteto-help` 的 Claude Code 安裝段（+`docs/harness/claude-code.md`）→ 不引（不用 Claude Code；要用時從上游 0.15.28 原樣補回該段）。
-- `pstack/agents/*.md`（Cursor plugin agents）→ `setup-pstack/templates/*.md`，由 `setup-pstack` 裝到 `~/.omp/agent/agents/`（omp agent 格式，跑 `@task`）。
+- `pstack/agents/*.md`（Cursor plugin agents）→ `agents/*.md`（plugin root 下；omp agent 格式，跑 `@task`）。自加 `deep`（bundled `task.md` 本文、跑 `@deep`；omp 更新 `task.md` 時重同步）。
 - verification skill 專案路徑 `.cursor/skills/verify-*/` → `.omp/skills/verify-*/`（omp 專案層 skill 目錄）。
 - frontmatter `paths:` → `globs:`（omp 規則的檔案比對欄位）。
 - frontmatter 與措辭：內文只講角色與層級，harness 寫法用「on omp, …」括註；worker 不直接面對使用者；Cursor 專屬措辭改中性（`any other X`、`On a coding worker…`）。
 
 引：上游 `pstack/skills/` 全引（本地 `skills/pstack/` 即全部）。
 
-- `pstack/agents/poteto-agent.md`、`pstack/agents/comment-sicko.md` → `setup-pstack/templates/`。
+- `pstack/agents/poteto-agent.md`、`pstack/agents/comment-sicko.md` → `agents/`。
 
 不引：
 

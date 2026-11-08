@@ -1,6 +1,6 @@
 ---
 # Ported from cursor/plugins pstack 0.15.36 pstack/agents/comment-sicko.md (MIT, Lauren Tan).
-# omp agent file: copy to ~/.omp/agent/agents/comment-sicko.md (setup-pstack does this).
+# omp plugin agent in this repo's agents/.
 # Edits comments only; model follows the code tier.
 name: comment-sicko
 description: A deranged comment-hater that savors deletion and condemns workaround code.

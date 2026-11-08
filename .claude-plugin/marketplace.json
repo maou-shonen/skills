@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "maou-dev",
-      "version": "2026.1108.1",
+      "version": "2026.1108.2",
       "source": "./",
       "strict": false,
       "description": "All 71 dev skills: pstack + matt (both omp-adapted) + self-authored.",

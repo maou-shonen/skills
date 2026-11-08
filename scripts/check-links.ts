@@ -58,6 +58,28 @@ for (const [name, real] of flat) {
   if (fm?.manual !== undefined) { echo(`frontmatter 不該有 manual ${name}`); bad++ }
 }
 
+// agents/：plugin agents，omp 掃 <plugin-root>/agents/*.md。frontmatter 嚴格 YAML，
+// 必有 name/description，name 等於檔名（去 .md），禁用保留名 main/sub。
+for (const f of await fs.readdir(path.join(root, 'agents'))) {
+  if (!f.endsWith('.md')) continue
+  const name = f.slice(0, -3)
+  const file = path.join(root, 'agents', f)
+  const m = (await fs.readFile(file, 'utf8')).match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n/)
+  if (!m) { echo(`agent 缺 frontmatter ${f}`); bad++; continue }
+  let fm
+  try { fm = YAML.parse(m[1], { strict: true, uniqueKeys: true }) } catch (e) {
+    echo(`agent frontmatter YAML 錯 ${f}: ${String(e.message).split('\n')[0]}`); bad++; continue
+  }
+  for (const k of ['name', 'description']) {
+    if (typeof fm?.[k] !== 'string' || !fm[k].trim()) { echo(`agent frontmatter 缺 ${k} ${f}`); bad++ }
+  }
+  if (fm?.name !== name) { echo(`agent name 與檔名不符 ${f}: ${fm?.name}`); bad++ }
+  if (['main', 'sub'].includes(String(fm?.name ?? '').trim().toLowerCase())) { echo(`agent 名保留字 ${f}`); bad++ }
+}
+
+// .claude-plugin/plugin.json 會讓 omp 把 agents/ 的 model: 當 Claude 別名丟掉，禁加。
+if (await fs.pathExists(path.join(root, '.claude-plugin/plugin.json'))) { echo('禁加 .claude-plugin/plugin.json：會丟掉 agents/ 的 model'); bad++ }
+
 // marketplace：單一 maou-dev plugin 全收；這裡保證清單和資料夾一致（每 skill 恰列一次）。
 const market = await fs.readJson(path.join(root, '.claude-plugin/marketplace.json'))
 const owner = new Map()
