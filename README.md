@@ -9,20 +9,20 @@
 ## 安裝
 
 ```sh
-npx skills add maou-shonen/skills            # 互動選擇，依來源分組
+npx skills add maou-shonen/skills            # 唯一 plugin，一次裝全部
 npx skills add maou-shonen/skills -g -y      # 全域重裝全部
 ```
 
-omp（只裝要的來源）：
+omp：
 
 ```bash
 omp plugin marketplace add maou-shonen/skills
-omp plugin install pstack-adapted@maou-shonen-skills matt-adapted@maou-shonen-skills own@maou-shonen-skills
+omp plugin install dev@maou-shonen-skills
 omp plugin marketplace update maou-shonen-skills && omp plugin upgrade   # 之後更新
 ```
 
-誰裝什麼：Grok Bot 與 omp 都裝全部；`disable-model-invocation` 擋掉不該自動觸發的 skill（`manualSkills` 可再擋，見 `skills.md`）。
+誰裝什麼：Grok Bot 與 omp 都裝 `dev`（全部 71 個）；`disable-model-invocation` 擋掉不該自動觸發的 skill（`manualSkills` 可再擋，見 `skills.md`）。
 
 ## 佈局
 
-`skills/<來源>/`，一個上游一個資料夾（`pstack-adapted`、`matt-adapted`，自撰放 `own/`），marketplace 一個資料夾一個 plugin。`-adapted` 是 omp 適配版，不是上游原樣。安裝後扁平：skill 名全 repo 唯一，skill 間連結照上游寫 `../X/`。上游事實只在 `pins/<上游>.changes.md`（版本、機制映射、每項取捨）。
+`skills/<來源>/`，一個上游一個資料夾（`pstack`、`matt`，自撰放 `own/`），只管上游追蹤。marketplace 只有一個 `dev` plugin，全收 71 個。上游內容是 omp 適配版，不是原樣。安裝後扁平：skill 名全 repo 唯一，skill 間連結照上游寫 `../X/`。上游事實只在 `pins/<上游>.changes.md`（版本、機制映射、每項取捨）。

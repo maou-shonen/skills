@@ -58,7 +58,7 @@ for (const [name, real] of flat) {
   if (fm?.manual !== undefined) { echo(`frontmatter 不該有 manual ${name}`); bad++ }
 }
 
-// marketplace：npx skills 以 plugins[].skills 分組，一個分類資料夾一個 plugin；這裡保證清單和資料夾一致。
+// marketplace：單一 dev plugin 全收；這裡保證清單和資料夾一致（每 skill 恰列一次）。
 const market = await fs.readJson(path.join(root, '.claude-plugin/marketplace.json'))
 const owner = new Map()
 for (const pl of market.plugins ?? []) {
@@ -66,10 +66,8 @@ for (const pl of market.plugins ?? []) {
   for (const s of pl.skills ?? []) {
     const dir = path.resolve(base, s)
     if (!(await fs.pathExists(path.join(dir, 'SKILL.md')))) { echo(`列出的路徑不存在 ${pl.name}: ${s}`); bad++; continue }
-    if (owner.has(dir)) { echo(`重複分組 ${s}: ${owner.get(dir)}, ${pl.name}`); bad++; continue }
+    if (owner.has(dir)) { echo(`重複列出 ${s}: ${owner.get(dir)}, ${pl.name}`); bad++; continue }
     owner.set(dir, pl.name)
-    const cat = path.basename(path.dirname(dir))
-    if (cat !== pl.name) { echo(`plugin 與資料夾不符 ${s}: ${pl.name} ≠ ${cat}`); bad++ }
   }
 }
 for (const [name, real] of flat) {
