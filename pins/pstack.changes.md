@@ -1,8 +1,8 @@
 # pstack
 
-路徑：上游 `pstack/skills/X` 對本地 `skills/pstack/X`（`diff --port` 已轉好，可直接 `git apply --reject`）。
+路徑：上游 `pstack/skills/X` 對本地 `skills/pstack-adapted/X`（`diff --port` 已轉好，可直接 `git apply --reject`）。
 
-`audit` 讀最新版本節：pin 上游每個 `pstack/skills/<skill>` 要在 `skills/pstack/` 有同名資料夾，`pstack/agents/*`、`pstack/automations/*` 要在引／不引／待定有名。待定放行但提醒。
+`audit` 讀最新版本節：pin 上游每個 `pstack/skills/<skill>` 要在 `skills/pstack-adapted/` 有同名資料夾，`pstack/agents/*`、`pstack/automations/*` 要在引／不引／待定有名。待定放行但提醒。
 
 ## 0.15.36
 
@@ -30,7 +30,7 @@
 - frontmatter `paths:` → `globs:`（omp 規則的檔案比對欄位）。
 - frontmatter 與措辭：內文只講角色與層級，harness 寫法用「on omp, …」括註；worker 不直接面對使用者；Cursor 專屬措辭改中性（`any other X`、`On a coding worker…`）。
 
-引：上游 `pstack/skills/` 全引（本地 `skills/pstack/` 即全部）。
+引：上游 `pstack/skills/` 全引（本地 `skills/pstack-adapted/` 即全部）。
 
 - `pstack/agents/poteto-agent.md`、`pstack/agents/comment-sicko.md` → `setup-pstack/templates/`。
 

@@ -9,7 +9,7 @@ const repo = 'https://github.com/cursor/plugins.git'
 const root = path.dirname(globalThis.__dirname)
 const pinFile = path.join(root, 'pins/pstack.pin')
 const changesFile = path.join(root, 'pins/pstack.changes.md')
-const localDir = path.join(root, 'skills/pstack')
+const localDir = path.join(root, 'skills/pstack-adapted')
 const upstreamName = 'pstack'
 const auditRoots = ['pstack/skills', 'pstack/agents', 'pstack/automations']
 const cache = path.join(root, '.follow/cursor-plugins')
@@ -30,7 +30,7 @@ pstack.ts audit [版本]
 diff 省略版本等於 latest，也就是 origin/main 上的 pstack/。
 apply 只更新 pins/pstack.pin。不改 skills/。
 audit 檢查該版（省略＝pin）上游每一項都有本地資料夾或 changes.md 最新版本節的引／不引／待定一名，並報過期紀錄；有缺就 exit 1。
---port 把補丁路徑改成本地分類（pstack/skills/X → skills/pstack/X），用 git apply --reject 套。`)
+--port 把補丁路徑改成本地分類（pstack/skills/X → skills/pstack-adapted/X），用 git apply --reject 套。`)
   process.exit(1)
 }
 
@@ -95,7 +95,7 @@ async function apply(spec) {
 // --port：把補丁路徑改成本 repo 的分類佈局，可直接 git apply --reject。
 function port(patch) {
   return patch.replace(/^((?:diff --git|---|\+\+\+|rename from|rename to|similarity).*)$/gm, (line) =>
-    line.replace(/(^|[ \/])pstack\/skills\//g, '$1skills/pstack/'),
+    line.replace(/(^|[ \/])pstack\/skills\//g, '$1skills/pstack-adapted/'),
   )
 }
 

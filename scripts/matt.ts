@@ -10,7 +10,7 @@ const repo = 'https://github.com/mattpocock/skills.git'
 const root = path.dirname(globalThis.__dirname)
 const pinFile = path.join(root, 'pins/matt.pin')
 const changesFile = path.join(root, 'pins/matt.changes.md')
-const localDir = path.join(root, 'skills/matt')
+const localDir = path.join(root, 'skills/matt-adapted')
 const upstreamName = 'matt'
 const auditRoots = ['skills/engineering']
 const cache = path.join(root, '.follow/matt-skills')
@@ -31,7 +31,7 @@ matt.ts audit [版本]
 diff 省略版本等於 latest，也就是最新 v* tag（發版）。main 上同版號的 sha 漂移不算。
 apply 只更新 pins/matt.pin。不改 skills/。
 audit 檢查該版（省略＝pin）上游 engineering 每一項都有本地資料夾或 changes.md 最新版本節的不引／待定一名，並報過期紀錄；有缺就 exit 1。
---port 把補丁路徑改成本地分類（skills/<分類>/X → skills/matt/X），用 git apply --reject 套。`)
+--port 把補丁路徑改成本地分類（skills/<分類>/X → skills/matt-adapted/X），用 git apply --reject 套。`)
   process.exit(1)
 }
 
@@ -88,7 +88,7 @@ async function apply(spec) {
 // --port：把補丁路徑改成本 repo 的分類佈局，可直接 git apply --reject。
 function port(patch) {
   return patch.replace(/^((?:diff --git|---|\+\+\+|rename from|rename to).*)$/gm, (line) =>
-    line.replace(/(^|[ \/])skills\/[^/\s]+\/([^/\s]+\/)/g, '$1skills/matt/$2'),
+    line.replace(/(^|[ \/])skills\/[^/\s]+\/([^/\s]+\/)/g, '$1skills/matt-adapted/$2'),
   )
 }
 
@@ -111,7 +111,7 @@ async function diff(spec = 'latest') {
   process.stdout.write(argv.port ? port(patch.stdout) : patch.stdout)
 }
 
-// audit：pin（或指定版本）上游 engineering 的每個 skill 要嘛在 skills/matt/ 有同名資料夾，要嘛在 changes.md 最新版本節的不引／待定有名。
+// audit：pin（或指定版本）上游 engineering 的每個 skill 要嘛在 skills/matt-adapted/ 有同名資料夾，要嘛在 changes.md 最新版本節的不引／待定有名。
 // 格式：引：／不引：／待定：段落下條列，每項 `` `名` `` 開頭（一行多名用頓號併列也行）。只讀第一個 ## 節。
 // 也報反向問題：紀錄指向上游已不存在的路徑、本地 matt skill 在上游已不存在。
 async function readRecords() {
