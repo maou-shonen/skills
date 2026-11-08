@@ -5,7 +5,7 @@
 
 ## Context
 
-Grok Bot 是個人助理兼協調者，不寫程式；omp 既協調也寫程式；之後 worker 可能換成別的 coding agent（例如 Claude Code 跑複雜、omp 跑簡單）。原本 marketplace 一個分類資料夾一個 plugin，誰裝什麼看來源，Grok Bot 因此裝到一堆只在寫程式時有用的 skill。
+使用者有三條路：一般任務找一般 Grok Bot；代管開發找代管開發用的 Grok Bot，它透過 Herdr 操作 omp；直接開發就直接找 omp，omp 再派 subagent。真正協調開發的是 omp，Grok Bot 只需要懂「coding agent 怎麼用」，不需要懂「開發怎麼做」。原本 marketplace 一個分類資料夾一個 plugin，誰裝什麼看來源，Grok Bot 因此裝到一堆只在寫程式時有用的 skill。
 
 ## Decision
 
@@ -23,22 +23,9 @@ Grok Bot 是個人助理兼協調者，不寫程式；omp 既協調也寫程式�
 
 dev-orchestrator 與 shared 的內文只講角色與層級（「派一個 worker 回報」），harness 專屬寫法用「on omp, …」括註，worker 換人時只改括註。poteto-mode 整份放 dev-orchestrator，只拿掉明確的 Cursor 綁定，不拆。
 
-### 2026-11-04 修訂：Grok Bot 不再是協調層；layer 改名
-
-使用者有三條路：一般任務找一般 Grok Bot；代管開發找代管開發用的 Grok Bot，它透過 Herdr 操作 omp；直接開發就直接找 omp。omp 再派 subagent。真正協調開發的是 omp，Grok Bot 只需要懂「coding agent 怎麼用」，不需要懂「開發怎麼做」。
-
-- box 上的 skill 所有 Grok Bot 共用，無法按 bot 分裝，所以 box 裝 `assistant` + `shared`；`use-dev-environment` 放 `assistant`，description 收窄到「使用者委託寫程式／動 repo」才觸發，一般 bot 不會用到。
-- layer 改名：`coordinator` → `dev-orchestrator`、`worker` → `dev-worker`，名字直接說明是開發用的；marketplace plugin 名跟著改。
-- `dev-orchestrator` 不再裝到 box，只裝 omp；omp 裝 `dev-orchestrator` + `dev-worker` + `shared`；omp subagent 只要 `dev-worker`。
-- `use-dev-environment` 放 `assistant`，主機、連線方式、git 身分、repo／worktree 位置放使用者本地的 `dev-environment-info` skill（不進本 repo）；沒有時由 bot 問使用者後建立。
-- `shared` 只留 box 與 omp 都用得到的；how、why、statechart、architect、benchmark-checklist、domain-modeling、draft-a-adr 移到 `dev-orchestrator`。
-- `manual: true` 不能是 `dev-worker` 的規則不變（manual skill 可放 assistant、dev-orchestrator、shared）。
+box 上的 skill 所有 Grok Bot 共用，無法按 bot 分裝，所以 box 裝 `assistant` + `shared`；`use-dev-environment` 放 `assistant`，description 收窄到「使用者委託寫程式／動 repo」才觸發，一般 bot 不會用到。主機、連線方式、git 身分、repo／worktree 位置放使用者本地的 `dev-environment-info` skill（不進本 repo）；沒有時由 bot 問使用者後建立。omp 裝 `dev-orchestrator` + `dev-worker` + `shared`，直接 `marketplace add maou-shonen/skills` 裝本 repo，與 `npx skills` 共用 `.claude-plugin/marketplace.json`；omp subagent 只用 `dev-worker`。
 
 ## Consequences
 
-- `~/.agents/.skill-lock.json` 的 `pluginName` 會從分類名變成 layer 名，合併後整包重裝一次。
-- Grok Bot 的 box sync 只同步 assistant、shared（2026-11-04 起；之前含 coordinator，即現在的 dev-orchestrator）。box 上已同步過的 dev-orchestrator skill 要移除。
-- omp 這側 `skills add` 仍會裝全部，assistant 要另外排除（待辦）。
+- Grok Bot 的 box sync 只同步 assistant、shared。
 - 新 coding agent 加入時，只當執行者就裝 `dev-worker` + `shared`；也會被使用者直接使用就再加 `dev-orchestrator`。
-- `pluginName` 從 coordinator／worker 變成 dev-orchestrator／dev-worker，已安裝的要整包重裝。
-- （2026-11-04 補，2026-11-08 糾正）11-04 誤判「omp 不讀 marketplace 的 `skills` 清單，`source: ./` 一個 skill 都載不到」，為此建了 `omp-dist` 分支 + `scripts/gen-omp-plugins.ts` + `omp-dist.yml`（CI 複製 `plugins/<layer>/skills/<name>`，catalog 用 raw URL 掛 `git-subdir` 自指）。11-08 實測推翻：`source: ./` + catalog `skills` 清單載入正常（最小對照實驗：單層、雙層嵌套路徑皆通），`reflect` 可直接調用。當初是看到 skill 名不列出而誤判——repo 的 SKILL.md 幾乎全開 `disable-model-invocation: true`，omp 不向模型廣播，只接受明確調用。所以 omp 直接 `marketplace add maou-shonen/skills` 裝本 repo，與 `npx skills` 共用 `.claude-plugin/marketplace.json`（omp 當 fallback 讀）；`omp-dist` 分支、workflow、script 全刪。catalog 沒寫 `version`（裝出來 `0.0.0`），bulk upgrade 時版本判斷無感，自用手動 upgrade 即可。
