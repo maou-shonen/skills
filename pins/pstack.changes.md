@@ -1,4 +1,4 @@
-# pstack → omp 替換
+# pstack
 
 路徑：上游 `pstack/skills/X` 對本地 `skills/follow-pstack/X`（`diff --port` 已轉好，可直接 `git apply --reject`）。
 

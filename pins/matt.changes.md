@@ -1,4 +1,4 @@
-# matt → omp 替換
+# matt
 
 只跟 `skills/engineering/`。`to-questionnaire` 是唯一的例外（在 `productivity/`，已引入）。其他分類與目錄一律不跟、不列。
 
