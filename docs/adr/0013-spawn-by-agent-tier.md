@@ -5,11 +5,11 @@
 
 ## Context
 
-poteto-mode 的「Match the seat to the job」要 agent 每次 spawn 前自己判斷升降 seat，實際上讓 agent 在 spawn 前反覆猶豫。omp 的模型是綁在 agent 上的：bundled `sonic` 用 `@smol`、`task` 用 `@task`（未設即父模型），使用者 agent 放 `~/.omp/agent/agents/*.md`，`model: "@<role>"` 經 `modelRoles` 解析；`task.agentModelOverrides.<agent>` 可蓋掉（oh-my-pi `docs/task-agent-discovery.md`、`packages/coding-agent/src/task/agents.ts`）。缺的是判斷層。
+poteto-mode 的「Match the seat to the job」要 agent 每次 spawn 前自己判斷升降 seat，實際上讓 agent 在 spawn 前反覆猶豫。omp 的模型綁在 agent 上，缺的是判斷層。
 
 ## Decision
 
-固定三層：機械 → `sonic`，一般程式 → `task`，判斷／最難 → `deep`（使用者自建，`model: "@deep"`）。沒有 `deep` 時退回 `task`，提醒一次，不中止。`setup-pstack` 只檢查這三個 agent 解析到的模型，缺 `deep` 時用 `templates/deep.md` 建；模板內文原文複製 omp 內建 `task.md`（omp 的 agent 檔不能繼承內建 prompt），只換模型，omp 更新 `task.md` 時要重新同步。
+固定三層：機械 → `sonic`，一般程式 → `task`，判斷／最難 → `deep`（使用者自建）。沒有 `deep` 時退回 `task`，提醒一次，不中止。`setup-pstack` 只檢查這三個 agent 解析到的模型，缺 `deep` 時用 `templates/deep.md` 建。
 
 ## 與 ADR-0001 的關係
 
@@ -19,7 +19,7 @@ poteto-mode 的「Match the seat to the job」要 agent 每次 spawn 前自己�
 
 - 刪掉 poteto-mode 的逐次升降 seat 指示，改成一張表。
 - 路由型 skill（how、why、interrogate、reflect、swarm）自帶的 agent 不變；層級只在步驟沒指定 agent 時生效。
-- 舊的「每角色一行 `agentModelOverrides`」不再寫；`agentModelOverrides` 只用來重定向 `sonic` / `task`。
+- `setup-pstack` 不再寫每角色一行。
 - 全部 skill 的「seat」用詞改成 tier（sonic / task / deep），agent 一看就懂。
-- swarm 拿掉「model race 每 arm 一條 `agentModelOverrides`」：使用者不跑模型比賽，swarm 只依層級 spawn。
+- swarm 拿掉 model race：使用者不跑模型比賽，swarm 只依層級 spawn。
 - `how` 維持上游：所有 spawn 都是 `task`，explainer 不升 `deep`。

@@ -10,7 +10,7 @@ pstack 0.15.36 重寫 interrogate：審查者變成對抗者，每個 finding �
 
 ## Decision
 
-照上游收。對抗者用 arena Phase A 3–4 與 Phase B 派出，每人一次 `task`、`isolated: true`、自己的 worktree，預設兩人，範圍跨多區再加。lead 依 arena Phase F 重跑每個 finding，只留輸出真的顯示失敗且違反意圖的；同根因合併。lens 分工、席位計分與 `references/` 全刪。
+照上游收。對抗審查用 arena 機制派出，lead 重跑每個 finding，只留輸出真的顯示失敗且違反意圖的；同根因合併。lens 分工、席位計分與 `references/` 全刪。
 
 ## Consequences
 

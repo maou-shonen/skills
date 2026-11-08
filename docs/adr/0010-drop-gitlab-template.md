@@ -9,7 +9,7 @@
 
 ## Decision
 
-`issue-tracker-gitlab.md` 整檔不引。`SKILL.md` 內 GitLab 選項、`glab` 引用、`CLAUDE.md` 優先（改 `AGENTS.md` 定稿）同步清掉。
+`issue-tracker-gitlab.md` 整檔不引。`SKILL.md` 內 GitLab 選項與 `glab` 引用同步清掉。
 
 ## Consequences
 

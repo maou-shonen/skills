@@ -5,7 +5,7 @@
 
 ## Context
 
-使用者有三條路：一般任務找一般 Grok Bot；代管開發找代管開發用的 Grok Bot，它透過 Herdr 操作 omp；直接開發就直接找 omp，omp 再派 subagent。真正協調開發的是 omp，Grok Bot 只需要懂「coding agent 怎麼用」，不需要懂「開發怎麼做」。原本 marketplace 一個分類資料夾一個 plugin，誰裝什麼看來源，Grok Bot 因此裝到一堆只在寫程式時有用的 skill。
+使用者有三條路：一般任務找一般 Grok Bot；代管開發找代管開發用的 Grok Bot，它透過 Herdr 操作 omp；直接開發就直接找 omp，omp 再派 subagent。真正協調開發的是 omp，Grok Bot 只需要懂「coding agent 怎麼用」，不需要懂「開發怎麼做」。原本按來源分裝，Grok Bot 因此裝到一堆只在寫程式時有用的 skill。
 
 ## Decision
 
@@ -19,13 +19,12 @@
 | `dev-worker` | coding agent 與其 subagent | 只在寫程式時有用 |
 | `none` | 不裝 | poteto-help |
 
-另有 `manual: true` 標只由使用者叫起的 skill（`disable-model-invocation` 幾乎全開，不能兼用）。使用者不直接跟 worker 對話，所以 `manual: true` 的 skill 不能是 `dev-worker`，只能放 `dev-orchestrator`、`assistant`，或兩端都用時放 `shared`（check-links 擋 `layer: dev-worker` + `manual: true`）；反過來，只在執行程式時有用（實作、測試、語言慣例、驗證內部）、不會由使用者叫起也不用於派工驗收的 skill，不放 `dev-orchestrator` / `assistant`。（2026-11-03 補）marketplace 一個 layer 一個 plugin，plugin 名等於 layer，`none` 不列；`scripts/check-links.ts` 檢查。
+另有 `manual: true` 標只由使用者叫起的 skill（`disable-model-invocation` 幾乎全開，不能兼用）。`manual: true` 的 skill 不能是 `dev-worker`；反過來，只在執行程式時有用、不會由使用者叫起也不用於派工驗收的 skill，不放 `dev-orchestrator` / `assistant`。
 
-dev-orchestrator 與 shared 的內文只講角色與層級（「派一個 worker 回報」），harness 專屬寫法用「on omp, …」括註，worker 換人時只改括註。poteto-mode 整份放 dev-orchestrator，只拿掉明確的 Cursor 綁定，不拆。
+dev-orchestrator 與 shared 的內文只講角色與層級（「派一個 worker 回報」），harness 專屬寫法用「on omp, …」括註。poteto-mode 整份放 dev-orchestrator，只拿掉明確的 Cursor 綁定，不拆。
 
-box 上的 skill 所有 Grok Bot 共用，無法按 bot 分裝，所以 box 裝 `assistant` + `shared`；`use-dev-environment` 放 `assistant`，description 收窄到「使用者委託寫程式／動 repo」才觸發，一般 bot 不會用到。主機、連線方式、git 身分、repo／worktree 位置放使用者本地的 `dev-environment-info` skill（不進本 repo）；沒有時由 bot 問使用者後建立。omp 裝 `dev-orchestrator` + `dev-worker` + `shared`，直接 `marketplace add maou-shonen/skills` 裝本 repo，與 `npx skills` 共用 `.claude-plugin/marketplace.json`；omp subagent 只用 `dev-worker`。
+box 上的 skill 所有 Grok Bot 共用，無法按 bot 分裝，所以 box 裝 `assistant` + `shared`；`use-dev-environment` 的 description 收窄到「使用者委託寫程式／動 repo」才觸發，一般 bot 不會用到。
 
 ## Consequences
 
-- Grok Bot 的 box sync 只同步 assistant、shared。
 - 新 coding agent 加入時，只當執行者就裝 `dev-worker` + `shared`；也會被使用者直接使用就再加 `dev-orchestrator`。

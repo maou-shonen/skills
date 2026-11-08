@@ -9,10 +9,9 @@
 
 ## Decision
 
-預算暫不支持。`setup-pstack` 改成鏡子：三個命令（`omp models`、`modelRoles`、`agentModelOverrides`）攤開現況，逐 role 問用戶綁哪個別名，只寫別名不寫 slug。錢包分組（訂閱/按量/免費）靠人眼，不假裝機器能分。
+預算暫不支持。`setup-pstack` 改成鏡子：攤開現況，逐 role 問用戶綁哪個別名，只寫別名不寫 slug。錢包分組（訂閱/按量/免費）靠人眼，不假裝機器能分。
 
 ## Consequences
 
 - 刪：四檔問卷、effort ladder、panel 席位數行、按量改寫、verification skill 推銷。
-- 錢包感知設計是未來課題， delivering 前預算控制歸操作員的 pane 和 `modelRoles`。
 - `poteto-help` 成本段只指回本 skill，不重複描述（單一事實來源）。
