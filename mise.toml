@@ -2,3 +2,6 @@
 node = "lts"
 "npm:zx" = "latest"
 lefthook = "latest"
+
+[hooks]
+postinstall = "lefthook install"
