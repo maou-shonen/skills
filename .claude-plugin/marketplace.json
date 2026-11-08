@@ -105,8 +105,7 @@
         "./skills/follow-pstack/principle-test-behavior-not-implementation",
         "./skills/follow-pstack/principle-type-system-discipline",
         "./skills/follow-pstack/tdd",
-        "./skills/follow-pstack/typescript-best-practices",
-        "./skills/inspired-yui540/css-transitions"
+        "./skills/follow-pstack/typescript-best-practices"
       ]
     }
   ]

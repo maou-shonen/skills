@@ -5,7 +5,6 @@
 - **pstack**（`cursor/plugins` 的 `pstack/`）：orchestration、poteto 風格、驗證 playbook、`principle-*` 原則卡。版本見 `pins/pstack.pin`，機制映射見 `pins/pstack.changes.md`。
 - **matt**（`mattpocock/skills`）：只取 `domain-modeling` 相關鏈（`domain-modeling`、`codebase-design`、`prototype`、`to-spec`、`to-tickets`、`setup-matt-pocock-skills`）。版本見 `pins/matt.pin`，映射見 `pins/matt.changes.md`。
 - **自撰**：`draft-a-task`、`draft-a-adr`（取代 matt 的 grill 系列，見 ADR-0009）、`use-dev-environment`（Grok Bot 代管開發時怎麼操作 omp）。
-- **提煉自 yui540**：`css-transitions`，CSS 轉場技巧收錄。美學筆記在 `skills/inspired-yui540/README.md`，暫不給 agent 用。
 
 ## 安裝
 
@@ -33,7 +32,7 @@ omp plugin marketplace update maou-shonen-skills && omp plugin upgrade   # 之�
 | `assistant` | Grok Bot（box） | 7 | bro、in-your-own-words、ketchup、ketchup-video、sharpen、to-questionnaire、use-dev-environment（代管開發時怎麼用 omp，不教怎麼開發） |
 | `dev-orchestrator` | omp | 28 | poteto-mode、draft-a-task、draft-a-adr、to-spec、to-tickets、retro、wizard、swarm、arena、figure-it-out、principle-guard-the-context-window、teach、interrogate、recall、blast-radius、correct、create-verification-skill、maintain-verification-skill、create-formal-verification-skill、maintain-formal-verification-skill、setup-pstack、setup-matt-pocock-skills、how、why、statechart、architect、benchmark-checklist、domain-modeling |
 | `shared` | 全部 | 13 | research、automate-me、make-bot-ui、reflect、show-me-your-work、technical-writing、unslop、`principle-*`（attack-the-premise、experience-first、explain-the-number、never-block-on-the-human、prove-it-works、sequence-verifiable-units） |
-| `dev-worker` | omp 與其 subagent | 23 | 見 [`marketplace.json`](.claude-plugin/marketplace.json) |
+| `dev-worker` | omp 與其 subagent | 22 | 見 [`marketplace.json`](.claude-plugin/marketplace.json) |
 | `none` | 不安裝 | 1 | poteto-help |
 
 `manual: true` 的 skill 只由使用者以 `/名稱` 叫用，agent 不自動觸發。
