@@ -25,4 +25,4 @@ omp plugin marketplace update maou-shonen-skills && omp plugin upgrade   # 之�
 
 ## 佈局
 
-`skills/<分類>/`，分類只在 repo 裡，安裝後扁平：skill 名全 repo 唯一，skill 間連結照上游寫 `../X/`。新 skill：上游有同名→`follow-pstack/`/`follow-matt/`，否則 omp 專用→`compat-omp/`、提煉自具名創作者→`inspired-<來源>/`、自撰→`own/`。上游事實只在 `pins/<上游>.changes.md`（版本、機制映射、每項取捨）；跨 skill 權衡見 `docs/adr/`。
+`skills/<分類>/`，分類只在 repo 裡，安裝後扁平：skill 名全 repo 唯一，skill 間連結照上游寫 `../X/`。新 skill：上游有同名→`follow-pstack/`/`follow-matt/`，否則 omp 專用→`compat-omp/`、提煉自具名創作者→`inspired-<來源>/`、自撰→`own/`。上游事實只在 `pins/<上游>.changes.md`（版本、機制映射、每項取捨）。

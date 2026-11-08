@@ -12,7 +12,7 @@
 | 每 skill 下的 `agents/openai.yaml`（純展示名） | 丟掉，本地 skill 無此目錄 |
 | `setup-matt-pocock-skills` 寫 `CLAUDE.md` 優先 | 寫 `AGENTS.md`（本 repo 只有它） |
 | `glab` / GitLab tracker 模板 | 刪，只留 `gh` + local（沒裝 glab 也沒需求；真要時從上游原樣拿回） |
-| frontmatter 與措辭 | 加 `layer` 與 `manual`；內文只講角色與層級（「派一個 worker 回報」），harness 寫法用「on omp, …」括註；worker 不直接面對使用者；見 ADR-0014 |
+| frontmatter 與措辭 | 加 `layer` 與 `manual`；內文只講角色與層級（「派一個 worker 回報」），harness 寫法用「on omp, …」括註；worker 不直接面對使用者 |
 
 ## 上游項目紀錄
 

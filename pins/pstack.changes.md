@@ -6,8 +6,11 @@
 
 | Cursor | omp |
 |---|---|
-| `Task`（`model` / `subagent_type` / `readonly` / `run_in_background`、`tasks[]` 批量） | 一任務一調用（見 ADR-0002）；不選模型（見 ADR-0001），`agent` 選角色；唯讀寫在 brief，不是欄位 |
-| `~/.cursor/rules/pstack-models.mdc` | `~/.omp/agent/config.yml` 的 `task.agentModelOverrides` / `modelRoles`；`setup-pstack` 是只寫別名的鏡子（見 ADR-0001、ADR-0004） |
+| `Task` 的 `model` 欄位、`~/.cursor/rules/pstack-models.mdc` | 不選模型：omp task 無此欄位。每席跑配置給的模型（未配跑父模型），角色用 agent 名隔離；slug 只在 `~/.omp/agent/config.yml` 的 `modelRoles` / `task.agentModelOverrides`，skill 側永不出現；`setup-pstack` 是只寫別名的鏡子 |
+| `Task` 的 `tasks[]` 批量 | 一任務一調用：omp 批量把 `context` 渲染進每席 system prompt，寫一次各付一次；各席自帶 brief 同時發，有依賴拆步，共享背景走 `local://` 自讀 |
+| `subagent_type` / `readonly` / `run_in_background` | `agent` 選角色；唯讀寫在 brief，不是欄位 |
+| panel 獨立性靠不同模型家族 | 席位隔離：單一錢包配不出雙家族；看不到彼此、同題盲做、各自回報 |
+| poteto-mode「Match the seat to the job」逐次升降 seat | 固定三層（機械 `sonic` / 程式 `task` / 判斷 `deep`，見該 skill 表）：逐次判斷讓 agent 反覆猶豫；缺 `deep` 退回 `task` |
 | `setup-pstack` 第 8 步「推薦生成 formal verification skill」 | 不引（本地是 omp 配置鏡子，沒有上游第 6/7 步流程；要推薦時連第 7 步一起補） |
 | cloud agent、`environment`、`cloud_base_branch` | 本機 `isolated: true` |
 | `~/.cursor/projects/.../agent-transcripts` | 程序內用 `history://`、`agent://`；落盤 `~/.omp/agent/sessions/<encoded-cwd>/`（`worktree-audit.sh` 掃這個桶） |
@@ -22,7 +25,7 @@
 | `pstack/agents/*.md`（Cursor plugin agents） | `setup-pstack/templates/*.md`，由 `setup-pstack` 裝到 `~/.omp/agent/agents/`（omp agent 格式，跑 `@task`） |
 | verification skill 專案路徑 `.cursor/skills/verify-*/` | `.omp/skills/verify-*/`（omp 專案層 skill 目錄） |
 | frontmatter `paths:` | `globs:`（omp 規則的檔案比對欄位） |
-| frontmatter 與措辭 | 加 `layer` 與 `manual`；內文只講角色與層級，harness 寫法用「on omp, …」括註；worker 不直接面對使用者；Cursor 專屬措辭改中性（`any other X`、`On a coding worker…`）；見 ADR-0014 |
+| frontmatter 與措辭 | 加 `layer` 與 `manual`；內文只講角色與層級，harness 寫法用「on omp, …」括註；worker 不直接面對使用者；Cursor 專屬措辭改中性（`any other X`、`On a coding worker…`） |
 
 ## 上游項目紀錄
 

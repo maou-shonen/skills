@@ -4,7 +4,7 @@
     "name": "maou-shonen",
     "url": "https://github.com/maou-shonen"
   },
-  "description": "Personal omp-adapted skills, one plugin per layer (see docs/adr/0014).",
+  "description": "Personal omp-adapted skills, one plugin per layer.",
   "plugins": [
     {
       "name": "assistant",
