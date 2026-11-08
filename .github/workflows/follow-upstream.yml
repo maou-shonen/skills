@@ -88,7 +88,7 @@ jobs:
             echo
             echo "---"
             echo "完整 patch 見 workflow artifact \`upstream-diff-${{ matrix.upstream }}\`。"
-            echo "本地看差：\`zx ${{ matrix.script }} diff latest\`；跟進前先看差再逐件定層級（見 AGENTS.md 追蹤段）。"
+            echo "本地看差：\`zx ${{ matrix.script }} diff latest\`；跟進前先看差再逐件定層級。"
           } > body.txt
           gh issue create --label "upstream,$label" \
             --title "上游漂移：${{ matrix.upstream }}（$(date +%F)）" \
