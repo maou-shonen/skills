@@ -20,9 +20,9 @@ jobs:
       matrix:
         include:
           - upstream: matt
-            script: scripts/follow-matt.ts
+            script: scripts/matt.ts
           - upstream: pstack
-            script: scripts/follow-pstack.ts
+            script: scripts/pstack.ts
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:

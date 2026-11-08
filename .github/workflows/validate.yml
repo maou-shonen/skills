@@ -28,5 +28,5 @@ jobs:
 
       - name: Audit upstream records
         run: |
-          zx scripts/follow-matt.ts audit
-          zx scripts/follow-pstack.ts audit
+          zx scripts/matt.ts audit
+          zx scripts/pstack.ts audit

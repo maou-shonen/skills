@@ -2,9 +2,9 @@
 
 只跟 `skills/engineering/`。`to-questionnaire` 是唯一的例外（在 `productivity/`，已引入）。其他分類與目錄一律不跟、不列。
 
-路徑：上游 `skills/engineering/X` 對本地 `skills/follow-matt/X`（`diff --port` 已轉好，可直接 `git apply --reject`）。
+路徑：上游 `skills/engineering/X` 對本地 `skills/matt/X`（`diff --port` 已轉好，可直接 `git apply --reject`）。
 
-`audit` 讀最新版本節：pin 上游 `skills/engineering/` 每個 skill 要嘛在 `skills/follow-matt/` 有同名資料夾，要嘛在不引／待定有名；引列點名的非 engineering 路徑是已引入的例外。待定放行但提醒。
+`audit` 讀最新版本節：pin 上游 `skills/engineering/` 每個 skill 要嘛在 `skills/matt/` 有同名資料夾，要嘛在不引／待定有名；引列點名的非 engineering 路徑是已引入的例外。待定放行但提醒。
 
 ## 1.3.2
 
