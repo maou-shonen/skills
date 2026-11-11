@@ -14,10 +14,11 @@
 - 每 skill 下的 `agents/openai.yaml`（純展示名）→ 丟掉，本地 skill 無此目錄。
 - `setup-matt-pocock-skills` 寫 `CLAUDE.md` 優先 → 寫 `AGENTS.md`（本 repo 只有它）。
 - `glab` / GitLab tracker 模板 → 刪，只留 `gh` + local（沒裝 glab 也沒需求；真要時從上游原樣拿回）。
+- `triage` 的 grill 步驟改跑 `draft-a-task`（grill 系列不引，用自撰版代）。
 
 引：
 
-- `codebase-design`、`domain-modeling`、`prototype`、`research`、`retro`、`setup-matt-pocock-skills`、`to-spec`、`to-tickets`、`wizard`
+- `codebase-design`、`domain-modeling`、`prototype`、`research`、`retro`、`setup-matt-pocock-skills`、`to-spec`、`to-tickets`、`triage`、`wizard`
 - `skills/productivity/to-questionnaire`（唯一的例外，已引入）
 
 不引：
@@ -30,7 +31,6 @@
 - `implement-spec`：等多 ticket 併發再說。
 - `pr`：`technical-writing` 已涵蓋 PR 描述。
 - `tdd`：與 pstack `tdd` 同名，留 pstack 版。
-- `triage`：`setup-matt-pocock-skills` Section B 自動跳過。
 - `wayfinder`：與 `figure-it-out`、`to-tickets` 重疊。
 
 待定：

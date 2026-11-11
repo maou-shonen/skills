@@ -8,10 +8,10 @@
   "plugins": [
     {
       "name": "maou-dev",
-      "version": "2026.1108.2",
+      "version": "2026.1111.1",
       "source": "./",
       "strict": false,
-      "description": "All 71 dev skills: pstack + matt (both omp-adapted) + self-authored.",
+      "description": "All 72 dev skills: pstack + matt (both omp-adapted) + self-authored.",
       "skills": [
         "./skills/pstack/architect",
         "./skills/pstack/arena",
@@ -80,6 +80,7 @@
         "./skills/matt/to-questionnaire",
         "./skills/matt/to-spec",
         "./skills/matt/to-tickets",
+        "./skills/matt/triage",
         "./skills/matt/wizard",
         "./skills/own/draft-a-adr",
         "./skills/own/draft-a-task",
