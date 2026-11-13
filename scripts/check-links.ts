@@ -1,7 +1,8 @@
 #!/usr/bin/env zx
 
-// zx CLI 注入 fs、path、echo。檢查 skills/ 內 Markdown 相對連結，以「安裝後扁平」解析：
-// repo 裡 skills/<分類>/<skill>/，安裝後是 <skill>/。跳出 skill 根的 ../X/ 只能指向另一個 skill。
+// zx CLI 注入 fs、path、echo。檢查 skills/ 內 Markdown 連結：
+// - skill 自己目錄內的檔案用相對路徑；跨 skill 一律 skill://<name> 或 skill://<name>/<相對路徑>，目標必須存在。
+// - 相對連結跳出自己的 skill 根即失敗：安裝後是扁平的，那種路徑會斷。
 // 另查 SKILL.md frontmatter（嚴格 YAML、name/description、name = 資料夾名）與
 // .claude-plugin/marketplace.json（每個 skill 恰屬一個 plugin、列出的路徑存在）。
 // 不改檔。有任何問題就 exit 1。
@@ -102,12 +103,23 @@ for (const [name, real] of flat) {
     text = text.replace(/^```[\s\S]*?^```/gm, '')
     for (const m of text.matchAll(/\]\(([^)\s#]+)/g)) {
       const link = m[1]
-      if (/^(https?:|mailto:|skill:|<)/.test(link)) continue
+      if (link.startsWith('skill://')) {
+        const [skill, ...restParts] = link.slice('skill://'.length).split('/')
+        const base = flat.get(skill)
+        if (!base) { echo(`skill:// 不存在的 skill ${name}/${rel}: ${link}`); bad++ }
+        else if (restParts.length && !(await fs.pathExists(path.join(base, ...restParts)))) {
+          echo(`skill:// 路徑不存在 ${name}/${rel}: ${link}`)
+          bad++
+        }
+        continue
+      }
+      if (/^(https?:|mailto:|<)/.test(link)) continue
       if (ignore.has(`${name}/${rel} ${link}`)) continue
       // 在扁平安裝根下解析：<root>/<name>/<rel>
       const target = path.posix.normalize(path.posix.join(name, path.posix.dirname(rel.split(path.sep).join('/')), link))
       if (target.startsWith('..')) { echo(`跳出安裝根 ${name}/${rel}: ${link}`); bad++; continue }
       const [skill, ...restParts] = target.split('/')
+      if (skill !== name) { echo(`跨 skill 相對連結 ${name}/${rel}: ${link}，改寫 skill://${target}`); bad++; continue }
       const base = flat.get(skill)
       if (!base || !(await fs.pathExists(path.join(base, ...restParts)))) {
         echo(`壞連結 ${name}/${rel}: ${link}`)

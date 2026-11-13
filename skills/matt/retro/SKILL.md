@@ -6,11 +6,11 @@ disable-model-invocation: true
 
 The user has asked for a **retrospective**. You are suggesting improvements to the coding agent's **environment** to improve future runs.
 
-Division of labor: `retro` improves the repo environment (checks, AGENTS.md, standards). To improve skills instead, use the **reflect** skill.
+Division of labor: `retro` improves the repo environment (checks, AGENTS.md, standards). To improve skills instead, use the [**reflect**](skill://reflect) skill.
 
 ## Steps
 
-1. Run the **unslop** skill for the writing style of anything you propose.
+1. Run the [**unslop**](skill://unslop) skill for the writing style of anything you propose.
 
 2. Read the primary sources for the session the user specifies, using your harness's session history (on omp, `history://`: bare lists sessions, `history://<id>` pages one). If the user doesn't specify a session, default to the current one.
 
@@ -34,7 +34,7 @@ Division of labor: `retro` improves the repo environment (checks, AGENTS.md, sta
 
 All work goes through two stages: implementation and review. The implementing worker has the most **context pressure**. It is responsible for exploration, writing code, and debugging failures.
 
-The review step has the least context pressure - it receives a diff, so no exploration needed. Here the review step is the coordinator reviewing each worker's diff (see "You own every subagent's work" in the **poteto-mode** skill), plus any PR review bot.
+The review step has the least context pressure - it receives a diff, so no exploration needed. Here the review step is the coordinator reviewing each worker's diff (see "You own every subagent's work" in the [**poteto-mode**](skill://poteto-mode) skill), plus any PR review bot.
 
 This means that the review step should be responsible for imposing coding standards, not the implementing worker.
 
@@ -43,4 +43,4 @@ This means that the review step should be responsible for imposing coding standa
 - `AGENTS.md`: pushed to the context window of any agent working in this repo. Use it incredibly sparingly, usually only for **navigation pointers** to other files.
 - Coding standards: no skill here ships a standards file. Propose judgement-call rules into a repo doc the review step reads (an existing `CONTRIBUTING.md` or standards doc; otherwise propose creating `docs/coding-standards.md`), never into AGENTS.md. Add **navigation pointers** to docs folders if the standards doc gets more than 1,000 lines long.
 - Docs: use docs as references files, pointed to by other files. Look for existing docs before writing new ones.
-- Skills: use skills for docs (since their description goes into the agent's context window), or for user-invoked commands. Changes to skills belong to the **reflect** skill.
+- Skills: use skills for docs (since their description goes into the agent's context window), or for user-invoked commands. Changes to skills belong to the [**reflect**](skill://reflect) skill.

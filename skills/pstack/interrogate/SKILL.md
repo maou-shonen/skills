@@ -10,11 +10,11 @@ Adversaries try to break a change or a design. A finding survives only when a ru
 
 ## Frame
 
-The scope is what the user names. Otherwise it is the branch diff from its merge base with the base branch, through the working tree. State the intent with the **in-your-own-words** skill, from the user's message, the commits, and the PR description. Ask the user with `ask` when the intent is unclear.
+The scope is what the user names. Otherwise it is the branch diff from its merge base with the base branch, through the working tree. State the intent with the [**in-your-own-words**](skill://in-your-own-words) skill, from the user's message, the commits, and the PR description. Ask the user with `ask` when the intent is unclear.
 
 ## Fan out
 
-Run Phase A steps 3 and 4 and Phase B of the **arena** skill, with three changes. Default to two adversaries, and add more when the scope spans unrelated areas. Copy the scope's uncommitted changes into each worktree. Spawn each adversary as its own `task` call with `agent: task` and `isolated: true`. In place of the arena task and rationale, give each adversary the scope, the intent, and this brief:
+Run Phase A steps 3 and 4 and Phase B of the [**arena**](skill://arena) skill, with three changes. Default to two adversaries, and add more when the scope spans unrelated areas. Copy the scope's uncommitted changes into each worktree. Spawn each adversary as its own `task` call with `agent: task` and `isolated: true`. In place of the arena task and rationale, give each adversary the scope, the intent, and this brief:
 
 > Break this change. Prove each finding with a run against the real code, such as a failing test, a repro script, or command output that shows the wrong behavior. For a design or plan, run a prototype or probe the current tree. Keep repros in your own worktree. Report each finding with a title, the exact command, the output it printed, and the output the intent requires. Leave out anything you did not run. That covers style, naming, structure, and risks that need a future change to matter. No findings is a valid result.
 

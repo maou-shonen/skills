@@ -22,6 +22,7 @@
 - `control-ui` / `control-cli` / `deslop`（`cursor-team-kit`）→ `browser` / `computer`（eval prelude）、`hub` 加 bash、`skill://unslop` 加 `omp cleanse --all`。
 - Cursor `create-skill` → `playbooks/authoring-a-skill.md`；`manage_skill` 只寫 `~/.omp/agent/managed-skills`。
 - `~/.cursor/skills/` → `skill://`，裝在哪裡就解析到哪裡。
+- 跨 skill 引用一律 `skill://<skill>`，指向另一個 skill 裡的檔案用 `skill://<skill>/<相對路徑>`（omp 的 skill URI 吃子路徑，解析到該 skill 根）。`../<skill>/SKILL.md` 在安裝後扁平佈局下會斷，`check-links` 直接擋；正文用粗體提到 skill 當「去載入它」的指標時，也寫成 `[**<skill>**](skill://<skill>)`。
 - Graphite `gt` → 不要求；單 PR 走 `gh`，`command -v origin` 成功才用 Origin。
 - `poteto-help` 連 pstack repo 的相對路徑 → 絕對網址（本 repo 沒有那些文件，安裝後是扁平的）。
 - `poteto-help` 的 Claude Code 安裝段（+`docs/harness/claude-code.md`）→ 不引（不用 Claude Code；要用時從上游 0.15.28 原樣補回該段）。

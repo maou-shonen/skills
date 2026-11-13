@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Mine the current conversation for durable learnings, then route them into skill edits.
 
-Division of labor: `reflect` improves skills. To improve the repo environment (checks, AGENTS.md, standards), use the **retro** skill.
+Division of labor: `reflect` improves skills. To improve the repo environment (checks, AGENTS.md, standards), use the [**retro**](skill://retro) skill.
 
 Invoke when the user says "reflect" or "/reflect". Skip when the conversation is trivial, off-topic, or already covered by an existing skill the parent followed correctly. One-offs are not learnings.
 
@@ -20,7 +20,7 @@ Find this conversation's transcript with your harness's history tool (on omp, `h
 
 One `task` call per reviewer, each on the code tier's worker (on omp, `agent`: `task`), full tools per spawn. Reviewers need MCP access to look up the tickets, chat threads, and observability traces the transcript references. There is no `readonly` field, so nothing strips MCP. The brief still forbids writes.
 
-Model per tier is the harness's business: each tier runs on whatever the worker config assigns. Pick each subagent's tier (sonic / task / deep) per the Subagents section of the **poteto-mode** skill.
+Model per tier is the harness's business: each tier runs on whatever the worker config assigns. Pick each subagent's tier (sonic / task / deep) per the Subagents section of the [**poteto-mode**](skill://poteto-mode) skill.
 
 | Lens | Prompt template |
 |---|---|
@@ -36,7 +36,7 @@ One `task` call, on the code tier's worker (on omp, `agent`: `task`), full tools
 
 ## 4. Structural enforcement check
 
-Move any Accepted item that a lint rule, script, metadata flag, or runtime check would enforce more reliably to Backlog. See the **encode-lessons-in-structure** principle skill.
+Move any Accepted item that a lint rule, script, metadata flag, or runtime check would enforce more reliably to Backlog. See the [**encode-lessons-in-structure**](skill://principle-encode-lessons-in-structure) principle skill.
 
 ## 5. Apply
 
