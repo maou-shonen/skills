@@ -15,7 +15,6 @@ const ignore = new Set([
   'domain-modeling/GLOSSARY-FORMAT.md ./src/ordering/GLOSSARY.md',
   'domain-modeling/GLOSSARY-FORMAT.md ./src/billing/GLOSSARY.md',
   'domain-modeling/GLOSSARY-FORMAT.md ./src/fulfillment/GLOSSARY.md',
-  'why/references/synthesizer-prompt.md url',
 ])
 
 const flat = new Map() // skill 名 → repo 內實際資料夾

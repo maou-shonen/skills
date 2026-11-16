@@ -21,7 +21,6 @@ The Principles section below grounds every trigger. In your reply, name each pri
 Remaining triggers:
 
 - Your first message on a task → tell the user, in your own words, their goal, the problem they are solving, and, if the task ships a change, the smallest change you expect to meet it. Don't wait for confirmation. If the evidence rules out the change the user asked for, show it and stop. Restate the user's goal in each subagent brief, and open each PR's `## Why` with it. Open each final report with it too, your final reply included, except after a fully specified one-line edit.
-- Nontrivial change, architecture decision, or "are we sure?" → the [**how**](skill://how) skill.
 - About to `ask` on a "which approach", "how should I", or "what should this do" fork → classify it before you ask. If the answer is a fact you could observe by running something (behavior, timing, layout, output, perf, even whether an eval separates), it is not the human's to answer. Sketch it via the Prototype playbook (`playbooks/prototype.md`) and let the result decide. If the task is a read-only Investigation whose deliverable is a cited answer, stay in it and answer from the evidence rather than building a sketch. Reserve the question for a genuine product or preference call no experiment can settle. Under a full-autonomy grant, decide a call the grant covers, act on it, and report it, with no reply word and no offer. Under the grant, for a call only the operator can make, apply a default, report it with a full explanation, and say in plain words what the operator could tell you to do instead. The operator answers in their own words. Never give a shorthand token to type back. Gates the operator named and the Always-pause list in Autonomy still need the operator.
 - Any code → name the data shape first, and choose its organizing structure per [**principle-model-the-domain**](skill://principle-model-the-domain).
 - Code crossing a function boundary → the [**architect**](skill://architect) skill, parallel design exploration before implementing.
@@ -95,7 +94,7 @@ Read the leaf skill in full for any principle you apply. Each entry names when i
 
 ## Subagents
 
-**Use `agent`: `poteto-agent` for any subagent you spawn inside a playbook step** (code-writing delegates, ad-hoc helpers). The chat that receives `/poteto-mode` runs the playbook. Never spawn a `poteto-agent` to run the playbook itself. Routed workflow skills (`how`, `why`, `interrogate`, `reflect`, `swarm`) set their own `agent`. Respect what the skill prescribes, don't override to `poteto-agent`.
+**Use `agent`: `poteto-agent` for any subagent you spawn inside a playbook step** (code-writing delegates, ad-hoc helpers). The chat that receives `/poteto-mode` runs the playbook. Never spawn a `poteto-agent` to run the playbook itself. Routed workflow skills (`interrogate`, `reflect`, `swarm`) set their own `agent`. Respect what the skill prescribes, don't override to `poteto-agent`.
 
 **One task call per spawn.** Full tools per spawn, file pointers not inlined context. Fire independent spawns together so they run concurrently. Never batch dependent steps into one call: a step that needs the prior step's result waits for it, then carries that result in its own brief. Repeat shared background per brief. Clean context beats saved words.
 
@@ -107,7 +106,7 @@ Read the leaf skill in full for any principle you apply. Each entry names when i
 | code | features, bug-fixes, perf, refactors, explorers, investigators, verification workers | `task` (`@task`, defaults to the parent model) |
 | judgment | cross-cutting design, gnarly concurrency, subtle algorithms, synthesis, judges | `deep` (`@deep`) |
 
-If no `deep` agent exists, run judgment work on `task` and say once per session that `deep` is missing (see `/setup-pstack`). Don't stop. A playbook step that says `poteto-agent`, or a routed skill (`how`, `why`, `interrogate`, `reflect`, `swarm`) that names its own agent, keeps that agent; the tier only decides when the step leaves `agent` open. Keep the role the brief names, so a diverse panel stays diverse.
+If no `deep` agent exists, run judgment work on `task` and say once per session that `deep` is missing (see `/setup-pstack`). Don't stop. A playbook step that says `poteto-agent`, or a routed skill (`interrogate`, `reflect`, `swarm`) that names its own agent, keeps that agent; the tier only decides when the step leaves `agent` open. Keep the role the brief names, so a diverse panel stays diverse.
 
 You own every subagent's work. Review the diff and write your own summary, don't pass through what it said. A second opinion is the same brief run fresh in a clean subagent. Agreement is high-signal.
 

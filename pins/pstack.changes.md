@@ -4,9 +4,31 @@
 
 `audit` 讀最新版本節：pin 上游每個 `pstack/skills/<skill>` 要在 `skills/pstack/` 有同名資料夾，`pstack/agents/*`、`pstack/automations/*` 要在引／不引／待定有名。待定放行但提醒。
 
-## 0.15.36
+## 0.15.42
 
-基底：`pins/pstack.pin`。
+基底：`pins/pstack.pin`。替換規則沿用 0.15.36 節。
+
+- `how` 縮成單檔：一個唯讀 subagent 帶短 brief 探索並解說，刪複雜度分流、explorer、explainer 與 `references/` → 引；那席走 `task`，唯讀寫在 brief。
+- `why` 縮成一段：從 commit 與 PR 討論作答、線索薄才擴大來源、引作者原話、標推論、說紀錄答不了什麼；刪 investigator、synthesizer、輸出格式與 `references/` → 引。
+- poteto-mode 不再路由 `how`（刪觸發行）；playbooks（investigation／feature／bug-fix／hillclimb／perf-issue／refactoring）、architect、no-comments、`comment-sicko` 改「自己 trace 程式碼」→ 引。routed skill 清單去掉 `how`、`why`。
+- recall 不再借 `why` 的 investigator → 每個來源一個 `task` investigator（全工具，MCP 可用；不寫檔）。
+- blast-radius、teach 刪掉指向 `why` 舊步驟的句子 → 引。
+- sharpen 改寫後的 prompt 要 agent 對實驗能決定的選擇先做 prototype、依觀察推薦；產品與偏好選擇留給使用者 → 引。
+- reflect synthesizer 的漂移範例改成函式改名 → 引。
+- statechart：SANY 讀不了 spec 時回報行列；箭頭從 parent 邊框進入 → 引（腳本與測試原樣）。
+- 預設模型換成 Fable 5.2／Opus 5.5／Gemini 4 Carbon、arena 跨評改按 vendor、Fable／Gemini 檔位註記、`# defaults: 2` 標記、setup-pstack 刪 how／why 角色 → 不引：沿用「不選模型」，skill 側不寫 slug，`setup-pstack` 是 omp 配置鏡子。
+
+引：上游 `pstack/skills/` 全引（本地 `skills/pstack/` 即全部）。
+
+- `pstack/agents/poteto-agent.md`、`pstack/agents/comment-sicko.md` → `agents/`。
+
+不引：
+
+- `pstack/automations/benny`：Cursor automation（Slack 回報分類與修復），omp 無對應機制。
+
+`pstack/docs/`、`assets/`、`README.md` 不跟、不列（`poteto-help` 改連網址）。
+
+## 0.15.36
 
 - `Task` 的 `model` 欄位、`~/.cursor/rules/pstack-models.mdc` → 不選模型：omp task 無此欄位。每席跑配置給的模型（未配跑父模型），角色用 agent 名隔離；slug 只在 `~/.omp/agent/config.yml` 的 `modelRoles` / `task.agentModelOverrides`，skill 側永不出現；`setup-pstack` 是只寫別名的鏡子。
 - `Task` 的 `tasks[]` 批量 → 一任務一調用：omp 批量把 `context` 渲染進每席 system prompt，寫一次各付一次；各席自帶 brief 同時發，有依賴拆步，共享背景走 `local://` 自讀。
