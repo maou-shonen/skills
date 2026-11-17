@@ -14,7 +14,7 @@ Every candidate gets the same prompt, so the prompt is the contract.
 
 1. State the artifact each candidate is producing.
 2. Derive the rubric, 3-6 concrete gradeable criteria for what success looks like on *this* task. It is the picker's tool in Phase D. Candidates only see the task.
-3. Set N from the design directions. Default 2-3. Spawn more runners when the arena covers multiple design directions. Use the same configuration N times when the work is generation-bound rather than judgment-sensitive. Model per tier is the harness's business: each tier runs on whatever the worker config assigns.
+3. Set N from the design directions. Default 2-3. Spawn more for multiple design directions, and repeat one configuration when the work is generation-bound, not judgment-sensitive. Model per tier is the harness's business: each tier runs on whatever the worker config assigns.
 4. Give each candidate its own output location (a git worktree where possible, otherwise `/tmp/arena-<slug>/candidate-<n>/`), per the [**separate-before-serializing-shared-state**](skill://principle-separate-before-serializing-shared-state) principle skill.
 
 ## Phase B: Fan out
@@ -25,11 +25,11 @@ If a candidate produces no output, proceed with N-1 and note the dropout.
 
 ## Phase C: Cross-judge
 
-After all Phase B candidates complete, spawn one judge in an isolated subagent that saw none of the candidates being written. It sees the rubric and the candidates by path label, scores each criterion, and recommends a base with rationale. It runs in parallel with your reading in Phase D. Don't spawn it while candidates are still writing.
+After all Phase B candidates complete, spawn one judge in an isolated subagent that saw none of the candidates being written. While you read in Phase D, it scores each candidate, by path label, on each rubric criterion and recommends a base. If no judge can be spawned, skip it and say so.
 
 ## Phase D: Pick a base
 
-Read every candidate end to end before picking. Score each against the rubric criterion by criterion, not on holistic feel, and compare with the cross-judge. Agreement on the base confirms the pick. Disagreement means one of you is biased or the rubric was ambiguous. Read both rationales before deciding.
+Read every candidate end to end before picking. Score each against the rubric criterion by criterion, not on holistic feel, and compare with the cross-judge when Phase C ran one. Agreement on the base confirms the pick. Disagreement means one of you is biased or the rubric was ambiguous. Read both rationales before deciding.
 
 Pick the base a future maintainer can extend most easily without breaking invariants. When two feel tied, prefer the cleaner boundary or smaller API, per the Laziness Protocol.
 

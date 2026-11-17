@@ -26,7 +26,7 @@ Present one table, one row per tier agent (`sonic`, `task`, `deep`), with its al
 
 Ask per tier whether to keep the default or point the agent at another alias. Judgment deserves the best model, code a cheap fast one, mechanical whatever is free. Prefer `ask` over free text.
 
-Budget tiers (`unlimited` / `large` / `medium` / `small` effort scaling) are not supported yet. Quota gaps across providers are tenfold and reset weekly, so effort scaling without wallet awareness misleads. Leave budget control to `modelRoles`.
+Budget tiers (`large` / `medium` / `small` effort scaling) are not supported yet. Quota gaps across providers are tenfold and reset weekly, so effort scaling without wallet awareness misleads. Leave budget control to `modelRoles`.
 
 ### 3. Validate
 

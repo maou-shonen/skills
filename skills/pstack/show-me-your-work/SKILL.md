@@ -64,7 +64,7 @@ Correct the log, not the story. The audit never edits or removes a row, even an 
 
 ## Independent review of the trail
 
-Before handing back, spawn a subagent in a fresh subagent that never saw the work happen. Self-review is not a substitute. The subagent reads the audit trail and the run's transcript, then flags what the user should pay attention to. Not a redo of the work, a scan for what's suboptimal or risky. Pick each subagent's tier (sonic / task / deep) per the Subagents section of the [**poteto-mode**](skill://poteto-mode) skill.
+Before handing back, spawn a subagent in another fresh subagent that never saw the work happen. Self-review is not a substitute. The subagent reads the audit trail and the run's transcript, then flags what the user should pay attention to. Not a redo of the work, a scan for what's suboptimal or risky. Pick each subagent's tier (sonic / task / deep) per the Subagents section of the [**poteto-mode**](skill://poteto-mode) skill.
 
 - Decisions logged with weak or absent evidence.
 - Verification steps skipped or claimed without proof in the transcript.

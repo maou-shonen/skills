@@ -4,6 +4,33 @@
 
 `audit` 讀最新版本節：pin 上游每個 `pstack/skills/<skill>` 要在 `skills/pstack/` 有同名資料夾，`pstack/agents/*`、`pstack/automations/*` 要在引／不引／待定有名。待定放行但提醒。
 
+## 0.15.43
+
+基底：`pins/pstack.pin`。替換規則沿用 0.15.36 節。
+
+- principle 葉子（attack-the-premise、boundary-discipline、build-the-lever、explain-the-number、fix-root-causes、foundational-thinking、make-operations-idempotent、minimize-reader-load、model-the-domain、prove-it-works、separate-before-serializing-shared-state、sequence-verifiable-units、test-behavior-not-implementation、type-system-discipline）、`unslop`、`technical-writing` 縮短 → 引；只換上游文字，`skill://` 連結照舊。
+- `architect` 縮成短 brief：先 trace、畫兩種形狀、挑 state 單一 owner 的那個；大型或有爭議的設計改走 `arena`；刪 `references/`（design-red-flags、rationale-template、runner-prompt） → 引。
+- `arena`：runner／judge 步驟縮短 → 部分引：只引 judge 敘述（隔離、Phase D 閱讀時評分、起不來就略過並說明）與 Phase A 的「同配置重複」句；`~/.cursor/rules/pstack-models.mdc` 的 `arena runners` / `cross-judge pool` 清單、預設 slug、vendor 判斷 → 不引（不選模型）。Phase B 維持「一候選一個 `task` 調用」，不採「同一則訊息 `run_in_background`」。
+- `reflect` 併成單檔、不再起 subagent：自己讀整份 transcript，只留六個月後仍成立且改變未來行為的發現，分 Accepted／Rejected／Backlog 並等核准才改 skill；刪三個 reviewer 與 synthesizer 的 `references/` → 引。transcript 走 `history://`；核准前顯示的複本位置 `.cursor/skills/…` 改為 `.omp/skills/<skill>/` 或 `~/.omp/agent/skills/<skill>/`。
+- `poteto-mode`：觸發縮成十條短句；Subagents、Writing the reply、Playbooks 縮短；刪 Comments 段；Orchestrate playbook 與 `scripts/check-plan.mjs`（含測試與 `package.json` 的 test 指令）移除，program 規模工作改走 `figure-it-out`（本地已有） → 引。刪掉的 omp 版觸發（ask 分流、throughput checkpoint、bugbot 單條、broken skill 單條）隨上游一併刪除。模型選擇段（Defaults for every `Task` call、Fable 例外、Match the model to the job、no role above xhigh、`# defaults: 3` 提示）→ 不引：本地 Subagents 維持三層 tier 表（sonic／task／deep）。
+- 新增 `poteto-mode/worker.md` → 引為同名檔：每個被啟動的 agent 第一行讀它。omp 端寫成 `Read skill://poteto-mode/worker.md before anything else.`（skill URI 吃子路徑，裝在哪都解析得到，不必傳絕對路徑）；「不得呼叫會向人提問的工具」明寫 `ask`。其餘規則（bar 即全部門檻、只因失敗或使用者會踩到的 bug 才擋、PR 開 ready、標題與 40 行內本文標題順序、證據放檔案或 PR comment）原樣。
+- playbooks 縮短或改字（Opening a PR、Babysit、Multi-phase plan 與其他）→ 引：Babysit 改條列、刪「取代 Cursor 內建 babysit」與 `/loop` 句；Multi-phase plan 縮成五步並刪 `check-plan` 與十 lane 驗證骨架；Opening a PR 只留 worktree、小 commit、標題本文格式、ready 開 PR，`/deslop` 仍改 `unslop` skill＋`omp cleanse --all`，刪「subagent 開 PR 後不 babysit」段。各 playbook 的 model 預設行（`claude-opus-5-5-xhigh-fast` 等）與「fast／standard 速度」措辭 → 不引（不選模型，維持 tier 寫法）。
+- `recall`、`show-me-your-work`、`swarm`、`automate-me`、`figure-it-out`、`no-comments`、`benchmark-checklist`、`poteto-help`：移除速度檔位、vendor 用語、Orchestrate 說明 → 引；`swarm workers` 模型行與 pstack-models.mdc 讀法 → 不引。
+- `setup-pstack`：`# defaults: 3` 標記、budget 階梯（large／medium／small 對應 xhigh／high／medium）、退役角色清單、舊規則遷移 → 不引：全都綁 `~/.cursor/rules/pstack-models.mdc`；本地是 omp 配置鏡子，沒有那個檔，早已捨棄舊 per-role 行，且 budget 沿用「尚不支援」。只把詞彙對齊上游（去掉 `unlimited`，上游已無 xhigh 以上檔位）。
+- `pstack/agents/poteto-agent.md` 新增 `model: claude-opus-5-5-xhigh-fast` → 不引：不選模型，本地維持 `model: "@task"`。
+- Opus 5.5 xhigh-fast 預設、不超過 xhigh、Opus 優先路由 → 不引：同上。
+- 沒有 skill 被新增或移除（`worker.md` 是 poteto-mode 內的檔案），`figure-it-out` 本地已有。
+
+引：上游 `pstack/skills/` 全引（本地 `skills/pstack/` 即全部）。
+
+- `pstack/agents/poteto-agent.md`、`pstack/agents/comment-sicko.md` → `agents/`（`poteto-agent` 的 `model` 欄位不引）。
+
+不引：
+
+- `pstack/automations/benny`：Cursor automation（Slack 回報分類與修復），omp 無對應機制。
+
+`pstack/docs/`、`assets/`、`README.md`、`.cursor-plugin/plugin.json`、`plugin.json` 不跟、不列（README、guide 與 Claude Code adapter 的跟進都在這些路徑）。
+
 ## 0.15.42
 
 基底：`pins/pstack.pin`。替換規則沿用 0.15.36 節。
