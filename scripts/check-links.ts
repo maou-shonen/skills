@@ -75,6 +75,16 @@ for (const f of await fs.readdir(path.join(root, 'agents'))) {
   }
   if (fm?.name !== name) { echo(`agent name 與檔名不符 ${f}: ${fm?.name}`); bad++ }
   if (['main', 'sub'].includes(String(fm?.name ?? '').trim().toLowerCase())) { echo(`agent 名保留字 ${f}`); bad++ }
+  const body = (await fs.readFile(file, 'utf8')).slice(m[0].length).replace(/^```[\s\S]*?^```/gm, '')
+  for (const hit of body.matchAll(/\bskill:\/\/([a-z0-9-]+(?:\/[^\s`'"()<>#,.;:]+)?)/g)) {
+    const [skill, ...restParts] = hit[1].split('/')
+    const base = flat.get(skill)
+    if (!base) { echo(`agent skill:// 不存在的 skill agents/${f}: skill://${hit[1]}`); bad++ }
+    else if (restParts.length && !(await fs.pathExists(path.join(base, ...restParts)))) {
+      echo(`agent skill:// 路徑不存在 agents/${f}: skill://${hit[1]}`)
+      bad++
+    }
+  }
 }
 
 // .claude-plugin/plugin.json 會讓 omp 把 agents/ 的 model: 當 Claude 別名丟掉，禁加。

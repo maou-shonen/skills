@@ -79,7 +79,7 @@ The default answer is `/poteto-mode`, which runs most of the others when its ste
 | Have isolated reviewers challenge a diff and try to break it | [`/interrogate`](skill://interrogate) |
 | Discuss terms, write a GLOSSARY or ADR | [`/domain-modeling`](skill://domain-modeling) |
 | Design a module interface, place a seam, deepen a module | [`/codebase-design`](skill://codebase-design) |
-| Align quickly before work, only load-bearing questions | [`/draft-a-task`](skill://draft-a-task) or [`/draft-a-adr`](skill://draft-a-adr) |
+| Align quickly before work, only load-bearing questions | [`/align`](skill://align) or [`/align-adr`](skill://align-adr) |
 | Turn the conversation into a spec on the tracker | [`/to-spec`](skill://to-spec) |
 | Split a spec into tickets with blocking edges | [`/to-tickets`](skill://to-tickets) |
 | Fix a bug test-first when a cheap local test exists | [`/tdd`](skill://tdd) |

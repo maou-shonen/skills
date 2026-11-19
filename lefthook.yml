@@ -5,4 +5,4 @@ pre-commit:
     - name: bump-version
       run: zx scripts/bump-version.ts && git add .claude-plugin/marketplace.json
       skip:
-        - run: git diff --cached --quiet -- skills/ .claude-plugin/marketplace.json
+        - run: git diff --cached --quiet -- skills/ agents/ .claude-plugin/marketplace.json
