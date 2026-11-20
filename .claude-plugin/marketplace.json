@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "maou-dev",
-      "version": "2026.1120.1",
+      "version": "2026.1120.2",
       "source": "./",
       "strict": false,
       "description": "All 72 dev skills: pstack + matt (both omp-adapted) + self-authored.",
@@ -84,7 +84,8 @@
         "./skills/matt/triage",
         "./skills/matt/wizard",
         "./skills/own/align",
-        "./skills/own/align-adr"
+        "./skills/own/align-adr",
+        "./skills/own/deliver"
       ]
     }
   ]
