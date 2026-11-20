@@ -15,10 +15,11 @@
 - `setup-matt-pocock-skills` 寫 `CLAUDE.md` 優先 → 寫 `AGENTS.md`（本 repo 只有它）。
 - `glab` / GitLab tracker 模板 → 刪，只留 `gh` + local（沒裝 glab 也沒需求；真要時從上游原樣拿回）。
 - `triage` 的 grill 步驟改跑 `align`（grill 系列不引，用自撰版代）。
+- `improve-codebase-architecture` 的 grilling 迴圈改跑 `align-adr`（已含 `domain-modeling`），描述與小節標題的 grill 字樣同改。
 
 引：
 
-- `codebase-design`、`domain-modeling`、`prototype`、`research`、`retro`、`setup-matt-pocock-skills`、`to-spec`、`to-tickets`、`triage`、`wizard`
+- `codebase-design`、`domain-modeling`、`improve-codebase-architecture`、`prototype`、`research`、`retro`、`setup-matt-pocock-skills`、`to-spec`、`to-tickets`、`triage`、`wizard`
 - `skills/productivity/to-questionnaire`（唯一的例外，已引入）
 
 不引：
@@ -32,7 +33,3 @@
 - `pr`：`technical-writing` 已涵蓋 PR 描述。
 - `tdd`：與 pstack `tdd` 同名，留 pstack 版。
 - `wayfinder`：與 `figure-it-out`、`to-tickets` 重疊。
-
-待定：
-
-- `improve-codebase-architecture`：依賴 grill 鏈，且需先與 `architect` 比對分工。

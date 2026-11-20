@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "maou-dev",
-      "version": "2026.1120.0",
+      "version": "2026.1120.1",
       "source": "./",
       "strict": false,
       "description": "All 72 dev skills: pstack + matt (both omp-adapted) + self-authored.",
@@ -73,6 +73,7 @@
         "./skills/pstack/why",
         "./skills/matt/codebase-design",
         "./skills/matt/domain-modeling",
+        "./skills/matt/improve-codebase-architecture",
         "./skills/matt/prototype",
         "./skills/matt/research",
         "./skills/matt/retro",
