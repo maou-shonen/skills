@@ -4,7 +4,7 @@
 
 - **pstack**（`cursor/plugins` 的 `pstack/`）：orchestration、poteto 風格、驗證 playbook、`principle-*` 原則卡。版本見 `pins/pstack.pin`，機制映射見 `pins/pstack.changes.md`。
 - **matt**（`mattpocock/skills`）：只跟 `skills/engineering/`（`to-questionnaire` 是唯一的例外）。版本見 `pins/matt.pin`，映射見 `pins/matt.changes.md`。
-- **自撰**：`align`、`align-adr`（取代 matt 的 grill 系列）。
+- **自撰**：`align`、`align-adr`（取代 matt 的 grill 系列）、`deliver`（主 agent 委派實作與審核 agent，把共識好的目標落地，有沒有 issue 都可）。
 
 ## 安裝
 
