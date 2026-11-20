@@ -4,6 +4,24 @@
 
 `audit` 讀最新版本節：pin 上游每個 `pstack/skills/<skill>` 要在 `skills/pstack/` 有同名資料夾，`pstack/agents/*`、`pstack/automations/*` 要在引／不引／待定有名。待定放行但提醒。
 
+## 0.15.46
+
+基底：`pins/pstack.pin`。替換規則沿用 0.15.36 節。
+
+- `statechart` 支援原生 Windows 與 TLC 的 `\r\n` 行尾：行讀取改切 `\r?\n`；group kill 與 janitor 不再經 `/bin/sh`（新增 `scripts/kill.ts`、`scripts/janitor.ts`）；janitor 放過被 Windows 重用的 pid；java／mise 以 `windowsHide` 啟動；SKILL.md 補原生 Windows 用 `node --disable-warning=ExperimentalWarning` 直接跑 `statechart.ts` 的一句；新增 `cli.test.ts`、`messages.test.ts` 測試 → 引（腳本、測試與 SKILL.md 原樣，本地與上游無分歧）。
+- Gemini panel 席改跑 `gemini-4-neon-xhigh`（0.15.44、0.15.45：`arena` runners／cross-judge 預設、`poteto-mode` 的 Gemini 檔位規則與 diverse panel 行、`setup-pstack` 的舊預設遷移與 budget 對 Gemini 的換算）→ 不引：沿用「不選模型」，skill 側不寫 slug，`setup-pstack` 是 omp 配置鏡子。
+- 沒有 skill、agent、automation 被新增或移除。
+
+引：上游 `pstack/skills/` 全引（本地 `skills/pstack/` 即全部）。
+
+- `pstack/agents/poteto-agent.md`、`pstack/agents/comment-sicko.md` → `agents/`（`poteto-agent` 的 `model` 欄位不引）。
+
+不引：
+
+- `pstack/automations/benny`：Cursor automation（Slack 回報分類與修復），omp 無對應機制。
+
+`pstack/docs/`、`assets/`、`README.md`、`.cursor-plugin/plugin.json`、`plugin.json` 不跟、不列（README 與 `docs/harness/claude-code.md` 的 Gemini 檔位改動都在這些路徑）。
+
 ## 0.15.43
 
 基底：`pins/pstack.pin`。替換規則沿用 0.15.36 節。
