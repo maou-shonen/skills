@@ -90,7 +90,7 @@
     },
     {
       "name": "maou",
-      "version": "2026.1122.0",
+      "version": "2026.1122.1",
       "source": "./plugins/claude",
       "strict": false,
       "description": "Claude Code only. pstack (upstream Claude Code tree) plus self-authored skills."

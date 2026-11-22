@@ -5,14 +5,14 @@
 | plugin | 目錄 | harness | 狀態 |
 |---|---|---|---|
 | `maou-dev` | `plugins/omp/` | oh-my-pi（omp） | 使用中 |
-| `maou` | `plugins/claude/` | Claude Code | pstack 上游 Claude 樹原樣＋自撰；matt 待適配 |
+| `maou` | `plugins/claude/` | Claude Code | pstack 上游 Claude 樹原樣＋matt 適配＋自撰 |
 
 兩個 plugin 共用上游追蹤（`pins/`、`scripts/`），內容不互相引用：plugin 安裝時只複製自己的目錄，跨 plugin 的路徑會斷。
 
 上游：
 
 - **pstack**（`cursor/plugins` 的 `pstack/`）：orchestration、poteto 風格、驗證 playbook、`principle-*` 原則卡。omp 版跟 `pstack/`（`pins/pstack.pin`、`pins/pstack.changes.md`）；Claude 版跟上游產生的 `harness/pstack/claude-code/`（`pins/pstack-claude.pin`、`pins/pstack-claude.changes.md`，`scripts/pstack.ts --claude`）。
-- **matt**（`mattpocock/skills`）：只跟 `skills/engineering/`（`to-questionnaire` 是唯一的例外）。版本見 `pins/matt.pin`，omp 版的映射見 `pins/matt.changes.md`。
+- **matt**（`mattpocock/skills`）：只跟 `skills/engineering/`（`to-questionnaire` 是唯一的例外）。omp 版見 `pins/matt.pin`、`pins/matt.changes.md`；Claude 版見 `pins/matt-claude.pin`、`pins/matt-claude.changes.md`（`scripts/matt.ts --claude`）。
 - **自撰**：`align`、`align-adr`（取代 matt 的 grill 系列）、`deliver`（主 agent 委派實作與審核 agent，把共識好的目標落地，有沒有 issue 都可）。
 
 ## 安裝（omp）
