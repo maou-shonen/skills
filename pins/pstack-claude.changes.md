@@ -27,4 +27,4 @@
 
 引：上游 `harness/pstack/claude-code/skills/` 全引。
 
-- `harness/pstack/claude-code/agents/poteto-agent.md`、`harness/pstack/claude-code/agents/comment-sicko.md` → `agents/`（原樣）。
+- `harness/pstack/claude-code/agents/poteto-agent.md`、`harness/pstack/claude-code/agents/comment-sicko.md` → `agents/`（只改 `model`／`effort`，見上）。
