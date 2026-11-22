@@ -122,7 +122,8 @@ ${c.portHelp}`)
       const item = c.upstreamItem(file)
       if (item) items.set(item.path, item.skill)
     }
-    const local = new Set(await fs.readdir(c.localDir))
+    const local = new Set()
+    for (const name of await fs.readdir(c.localDir)) if (!(c.isForeign && (await c.isForeign(name)))) local.add(name)
     const records = await readRecords()
     const missing = []
     const deferred = []

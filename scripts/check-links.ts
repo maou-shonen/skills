@@ -1,8 +1,9 @@
 #!/usr/bin/env zx
 
-// zx CLI 注入 fs、path、echo。每個 plugins/<harness>/ 各自檢查，plugin 之間不互相解析（安裝時各自獨立）：
-// - skill 自己目錄內的檔案用相對路徑；跨 skill 一律 skill://<name> 或 skill://<name>/<相對路徑>，目標必須存在於同一 plugin。
-// - 相對連結跳出自己的 skill 根即失敗：安裝後是扁平的，那種路徑會斷。
+// zx CLI 注入 fs、path、echo。每個 plugins/<harness>/ 各自檢查，plugin 之間不互相解析（安裝時各自獨立）。
+// 佈局依 harness：
+// - omp：skills/<來源>/<skill>/，安裝後扁平。skill 內用相對路徑；跨 skill 一律 skill://<name>[/<相對路徑>]，相對連結跳出 skill 根即失敗。
+// - claude：skills/<skill>/，整棵樹原樣安裝（跟上游 pstack 的 Claude 樹）。相對連結照樹解析，只要不跳出 plugin 根；不用 skill://。
 // 另查 SKILL.md frontmatter（嚴格 YAML、name/description、name = 資料夾名）、agents/ frontmatter 與
 // .claude-plugin/marketplace.json（每個 plugin 的 source 在 plugins/ 下，每個 skill 恰列一次）。
 // 不改檔。有任何問題就 exit 1。
@@ -41,11 +42,19 @@ async function checkSkillUri(flat, uri, where) {
 }
 
 // 回傳 skill 名 → 實際資料夾，供 marketplace 對帳。
+const layouts = { omp: 'categorized', claude: 'tree' }
+
 async function checkPlugin(harness) {
+  const layout = layouts[harness]
+  if (!layout) { echo(`未知 harness plugins/${harness}，先在 layouts 登記佈局`); bad++; return new Map() }
   const pluginRoot = path.join(pluginsDir, harness)
   const skillsDir = path.join(pluginRoot, 'skills')
   const flat = new Map()
-  if (await fs.pathExists(skillsDir)) {
+  if (layout === 'tree' && (await fs.pathExists(skillsDir))) {
+    for (const e of await fs.readdir(skillsDir, { withFileTypes: true })) {
+      if (e.isDirectory()) flat.set(e.name, path.join(skillsDir, e.name))
+    }
+  } else if (await fs.pathExists(skillsDir)) {
     for (const cat of await fs.readdir(skillsDir)) {
       if (!(await fs.stat(path.join(skillsDir, cat))).isDirectory()) continue
       for (const e of await fs.readdir(path.join(skillsDir, cat), { withFileTypes: true })) {
@@ -103,6 +112,25 @@ async function checkPlugin(harness) {
     echo('禁加 plugins/omp/.claude-plugin/plugin.json：會丟掉 agents/ 的 model'); bad++
   }
 
+  if (layout === 'tree') {
+    for (const file of await walk(pluginRoot)) {
+      const rel = path.relative(pluginRoot, file)
+      const inSkill = rel.match(/^skills\/([^/]+)\/(.*)$/)
+      const key = inSkill ? `${inSkill[1]}/${inSkill[2]}` : rel
+      const text = (await fs.readFile(file, 'utf8')).replace(/^```[\s\S]*?^```/gm, '')
+      for (const m of text.matchAll(/\]\(([^)\s#?]+)/g)) {
+        const link = m[1]
+        if (link.startsWith('skill://')) { echo(`claude 不用 skill:// ${harness}/${rel}: ${link}`); bad++; continue }
+        if (/^(https?:|mailto:|<)/.test(link)) continue
+        if (ignore.has(`${key} ${link}`)) continue
+        const target = path.resolve(path.dirname(file), decodeURI(link))
+        if (path.relative(pluginRoot, target).startsWith('..')) { echo(`跳出 plugin 根 ${harness}/${rel}: ${link}`); bad++; continue }
+        if (!(await fs.pathExists(target))) { echo(`壞連結 ${harness}/${rel}: ${link}`); bad++ }
+      }
+    }
+    return flat
+  }
+
   for (const [name, real] of flat) {
     for (const file of await walk(real)) {
       const rel = path.relative(real, file) // 安裝後相對 skill 根
@@ -140,6 +168,10 @@ for (const pl of market.plugins ?? []) {
   if (!harness || !harnesses.includes(harness)) { echo(`plugin source 應為 ./plugins/<harness> ${pl.name}: ${source}`); bad++; continue }
   listed.add(harness)
   const base = path.join(root, source)
+  if (!pl.skills) { // 沒列 skills：Claude Code 掃預設 skills/，整個 plugin 都算列入
+    for (const real of (skillsByHarness.get(harness) ?? new Map()).values()) owner.set(path.resolve(real), pl.name)
+    continue
+  }
   for (const s of pl.skills ?? []) {
     const dir = path.resolve(base, s)
     if (!(await fs.pathExists(path.join(dir, 'SKILL.md')))) { echo(`列出的路徑不存在 ${pl.name}: ${s}`); bad++; continue }
