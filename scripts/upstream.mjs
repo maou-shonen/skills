@@ -1,6 +1,6 @@
 // 上游追蹤共用核心：matt.ts / pstack.ts 只傳配置與鉤子。
 // zx 注入 $、argv、echo、fs、path；相對 import，不需 node_modules。
-// 只寫 pins/<name>.pin 與 .follow/ 快取。永不改 skills/。
+// 只寫 pins/<name>.pin 與 .follow/ 快取。永不改 plugins/。
 
 let fetched = false // 每次執行只 fetch 一次（diff 會解兩次版）
 
@@ -22,7 +22,7 @@ ${c.name}.ts audit [版本]
 
 ${c.versionHelp}
 diff 省略版本等於 latest，也就是${c.latestHelp}。
-apply 只更新 pins/${c.name}.pin。不改 skills/。
+apply 只更新 pins/${c.name}.pin。不改 plugins/。
 ${c.auditHelp}
 ${c.portHelp}`)
     process.exit(1)
@@ -122,7 +122,8 @@ ${c.portHelp}`)
       const item = c.upstreamItem(file)
       if (item) items.set(item.path, item.skill)
     }
-    const local = new Set(await fs.readdir(c.localDir))
+    const local = new Set()
+    for (const name of await fs.readdir(c.localDir)) if (!(c.isForeign && (await c.isForeign(name)))) local.add(name)
     const records = await readRecords()
     const missing = []
     const deferred = []
