@@ -18,6 +18,8 @@
 - `improve-codebase-architecture` 的 grilling 迴圈改讀 `align-adr`，描述與小節標題的 grill 字樣同改；呼叫 `codebase-design` 的 Skill tool 原樣（上游讓它可被模型呼叫）。
 - `setup-matt-pocock-skills/domain.md` 的 `/grill-with-docs` → `/align-adr`。
 - `retro` 的 `writing-for-agents`（未引入）→ pstack `unslop`；改 skill 的建議交給 pstack `reflect`，開頭加一句分工。
+- 派 subagent 的地方標上 tier（表在 pstack `poteto-mode` 的 Subagents）：`research` 的背景 agent、`improve-codebase-architecture` 的探索 agent 走 default；`codebase-design` design-it-twice 的平行 sub-agent 走 deep。沒標的話這些 spawn 不會讀到 tier 表，會跟著主 session 的模型跑。
+- `setup-matt-pocock-skills` 的兩份 issue-tracker 範本刪 `## Wayfinding operations` 節：只給未引入的 `wayfinder` 用，範本會被抄進使用者 repo 成為雜訊。
 - `setup-matt-pocock-skills` 刪 GitLab（`glab` 與 `issue-tracker-gitlab.md`）：沒有需求，真要時從上游原樣拿回。`CLAUDE.md` 優先的邏輯照上游保留（omp 版才改成只寫 `AGENTS.md`）。
 
 引：

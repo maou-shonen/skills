@@ -5,7 +5,7 @@ metadata:
   source: matt
 ---
 
-Spin up a **background agent** to do the research, so you keep working while it reads. Start it with a fresh context window.
+Spin up a **background agent** on the default tier (the Subagents section of [poteto-mode](../poteto-mode/SKILL.md)) to do the research, so you keep working while it reads. Start it with a fresh context window.
 
 Its job:
 

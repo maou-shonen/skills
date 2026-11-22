@@ -20,7 +20,7 @@ You own the goal's outcome. Implementation agents own the code. You don't write 
 
 ## Current tools (Claude Code)
 
-- **Spawn** each implementer with `Agent`, `subagent_type: "maou:poteto-agent"`, `isolation: "worktree"`, on a branch off the latest default branch. Pass `model` and `effort` per the Models table in [the Claude Code adapter](../../docs/harness/claude-code.md). The brief is the goal, the unit, its acceptance criteria, and pointers (issue links, shared notes), not pasted context.
+- **Spawn** each implementer with `Agent`, `subagent_type: "maou:poteto-agent"`, `isolation: "worktree"`, on a branch off the latest default branch. Every spawn in this skill takes `model` and `effort` from the tier table in the Subagents section of [poteto-mode](../poteto-mode/SKILL.md). The brief is the goal, the unit, its acceptance criteria, and pointers (issue links, shared notes), not pasted context.
 - **Explore once, share it.** When units need the same background, one exploration subagent writes notes outside the repo and every brief points to them.
 - **Pilot one unit first:** the riskiest ready one. Read its report and diff, fix the brief, then spawn the rest of the ready set together. When a unit merges, recompute the ready set and spawn the next ones.
 - **Each implementer** builds with [**tdd**](../tdd/SKILL.md) when the unit has a cheap test path, opens its own PR ready for review with `gh pr create`, and reports `PASS`, `ISSUES`, or `BLOCKED` with the PR link and evidence. `BLOCKED` means the unit is wrong; fix the unit, then spawn fresh.
