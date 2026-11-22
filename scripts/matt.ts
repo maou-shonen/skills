@@ -12,16 +12,16 @@ await run({
   cache: path.join(root, '.follow/matt-skills'),
   sparse: 'skills',
   fetchTags: true,
-  localDir: path.join(root, 'skills/matt'),
+  localDir: path.join(root, 'plugins/omp/skills/matt'),
   diffPaths: 'skills/engineering',
   auditRoots: 'skills/engineering',
   versionHelp: '版本是 package.json 版本（1.3.1）或 latest。pin 只存版本號，對應 tag v<版本>。',
   latestHelp: '最新 v* tag（發版）。main 上同版號的 sha 漂移不算',
   whereLatest: ' latest-tag',
   auditHelp: 'audit 檢查該版（省略＝pin）上游 engineering 每一項都有本地資料夾或 changes.md 最新版本節的不引／待定一名，並報過期紀錄；有缺就 exit 1。',
-  portHelp: '--port 把補丁路徑改成本地分類（skills/<分類>/X → skills/matt/X），用 git apply --reject 套。',
+  portHelp: '--port 把補丁路徑改成本地分類（skills/<分類>/X → plugins/omp/skills/matt/X），用 git apply --reject 套。',
   portFrom: /(^|[ \/])skills\/[^/\s]+\/([^/\s]+\/)/g,
-  portTo: '$1skills/matt/$2',
+  portTo: '$1plugins/omp/skills/matt/$2',
 
   async latestVersion(ctx) {
     // 只認發版：最新 v* tag。main 上同版號的 sha 漂移不算漂移。

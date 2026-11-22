@@ -1,6 +1,6 @@
 #!/usr/bin/env zx
 
-// 由 lefthook pre-commit 在 skills/ 或 catalog 有 staged 變更時呼叫（lefthook.yml 進版控，mise 裝完跑 lefthook install）。
+// 由 lefthook pre-commit 在 plugins/ 或 catalog 有 staged 變更時呼叫（lefthook.yml 進版控，mise 裝完跑 lefthook install）。
 
 const root = path.dirname(globalThis.__dirname)
 const file = path.join(root, '.claude-plugin/marketplace.json')

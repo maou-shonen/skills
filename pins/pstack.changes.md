@@ -1,8 +1,10 @@
 # pstack
 
-路徑：上游 `pstack/skills/X` 對本地 `skills/pstack/X`（`diff --port` 已轉好，可直接 `git apply --reject`）。
+本檔記 omp plugin（`plugins/omp/`）的取捨；Claude 版開始跟上游時另開一份。
 
-`audit` 讀最新版本節：pin 上游每個 `pstack/skills/<skill>` 要在 `skills/pstack/` 有同名資料夾，`pstack/agents/*`、`pstack/automations/*` 要在引／不引／待定有名。待定放行但提醒。
+路徑：上游 `pstack/skills/X` 對本地 `plugins/omp/skills/pstack/X`（`diff --port` 已轉好，可直接 `git apply --reject`）。
+
+`audit` 讀最新版本節：pin 上游每個 `pstack/skills/<skill>` 要在 `plugins/omp/skills/pstack/` 有同名資料夾，`pstack/agents/*`、`pstack/automations/*` 要在引／不引／待定有名。待定放行但提醒。
 
 ## 0.15.46
 

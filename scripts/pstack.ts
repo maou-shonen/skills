@@ -30,16 +30,16 @@ await run({
   cache: path.join(root, '.follow/cursor-plugins'),
   sparse: 'pstack',
   fetchTags: false,
-  localDir: path.join(root, 'skills/pstack'),
+  localDir: path.join(root, 'plugins/omp/skills/pstack'),
   diffPaths: 'pstack/',
   auditRoots: ['pstack/skills', 'pstack/agents', 'pstack/automations'],
   versionHelp: '版本是 plugin 版本（0.15.21）或 latest。pin 只存版本號，sha 每次用版本現算，不跟 main HEAD。',
   latestHelp: ' origin/main 上的 pstack/',
   whereLatest: ' main',
   auditHelp: 'audit 檢查該版（省略＝pin）上游每一項都有本地資料夾或 changes.md 最新版本節的引／不引／待定一名，並報過期紀錄；有缺就 exit 1。',
-  portHelp: '--port 把補丁路徑改成本地分類（pstack/skills/X → skills/pstack/X），用 git apply --reject 套。',
+  portHelp: '--port 把補丁路徑改成本地分類（pstack/skills/X → plugins/omp/skills/pstack/X），用 git apply --reject 套。',
   portFrom: /(^|[ \/])pstack\/skills\//g,
-  portTo: '$1skills/pstack/',
+  portTo: '$1plugins/omp/skills/pstack/',
 
   async latestVersion(ctx) {
     const sha = (await $`git -C ${ctx.cache} rev-parse origin/main`.quiet()).stdout.trim()
