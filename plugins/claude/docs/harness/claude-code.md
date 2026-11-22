@@ -18,7 +18,7 @@ pstack skills use Cursor names. In Claude Code, read this file once per session,
 | --- | --- |
 | `subagent_type: generalPurpose` | `subagent_type: "general-purpose"` |
 | `poteto-agent`, `comment-sicko` | `maou:poteto-agent`, `maou:comment-sicko` |
-| The `model:` line in `poteto-agent`'s file | It holds a Cursor slug. Pass `model` and `effort` on every `Agent` call that spawns `maou:poteto-agent`, mapped with the Models table, so that slug never reaches the API. |
+| The `model:` line in `poteto-agent`'s file | It sets the default tier. Still pass the job's tier `model` and `effort` on every `Agent` call that spawns `maou:poteto-agent`. |
 | `readonly: true` | `subagent_type: "Explore"`. It keeps `Bash`, so the brief also says "do not edit files", and you check `git status` afterward. |
 | `readonly: false` | `general-purpose`. It keeps the session's MCP servers. |
 | `environment: "cloud"` | `isolation: "worktree"`. Name the branch or commit the worker checks out. |
@@ -30,21 +30,7 @@ pstack skills use Cursor names. In Claude Code, read this file once per session,
 
 ## Models
 
-| Cursor | Claude Code |
-| --- | --- |
-| `claude-<family>-<version>-<effort>[-fast]`, such as `claude-opus-5-5-xhigh` | `model: "opus"` and `effort: "xhigh"`. `model` takes only `opus`, `sonnet`, `haiku`, `fable`. Drop `-fast`. |
-| A `gemini-*` or other non-Claude slug | Omit `model` so the agent runs on the session model, and say so. |
-| `auto` or `inherit-parent` | Omit `model`. |
-| The `pstack-models.mdc` rule, `~/.cursor/rules/pstack-models.mdc` | `~/.claude/rules/pstack-models.md`. Claude Code loads it into every new session, so its role lines are already in context. If they are not, read the file. If the file or the role's line is missing, use the skill's default slug. |
-| A role value `<model> <effort>`, such as `opus high` | `model: "opus"` and `effort: "high"`. |
-
-## setup-pstack
-
-Claude Code loads every `.md` file in `~/.claude/rules/` into each new session, so `setup-pstack` writes its rule there. Follow its steps with these changes:
-
-- Detect. The detected models are the `model` values that the `Agent` tool schema lists, each with an effort from its `effort` values. Write a real model as `<model> <effort>`, such as `opus xhigh`. The effort is the last token, so the budget step works as written.
-- Defaults. Map each default slug with the rows above: `claude-opus-5-5-xhigh-fast` is `opus xhigh`, `claude-opus-5-5-high-fast` is `opus high`, `claude-fable-5-2-high` is `fable high`, and `gemini-4-neon-xhigh` is `inherit-parent`.
-- Write. Write `~/.claude/rules/pstack-models.md` with no frontmatter, then the comment lines, the `# budget` line, and one line per role from step 5. Overwrite the whole file. Never put the role lines in `CLAUDE.md` or `AGENTS.md`.
+This plugin picks every model from the tier table in the Subagents section of [poteto-mode](../../skills/poteto-mode/SKILL.md). Pass that tier's `model` and `effort` on every `Agent` call. Never pass `fable`. Treat a Cursor slug (`claude-*`, `gemini-*`), `auto`, `inherit-parent`, or the `pstack-models.mdc` rule elsewhere in pstack as out of date: the tier table wins. `setup-pstack` only shows that table and writes no rule.
 
 ## Paths
 
