@@ -4,8 +4,8 @@
 
 | plugin | 目錄 | harness | 狀態 |
 |---|---|---|---|
-| `maou-dev` | `plugins/omp/` | oh-my-pi（omp） | 使用中 |
-| `maou` | `plugins/claude/` | Claude Code | pstack 上游 Claude 樹原樣＋matt 適配＋自撰 |
+| `maou-omp` | `plugins/omp/` | oh-my-pi（omp） | 使用中 |
+| `maou-claude` | `plugins/claude/` | Claude Code | pstack 上游 Claude 樹原樣＋matt 適配＋自撰 |
 
 兩個 plugin 共用上游追蹤（`pins/`、`scripts/`），內容不互相引用：plugin 安裝時只複製自己的目錄，跨 plugin 的路徑會斷。
 
@@ -19,7 +19,7 @@
 
 ```bash
 omp plugin marketplace add maou-shonen/skills
-omp plugin install maou-dev@maou-shonen-skills
+omp plugin install maou-omp@maou-shonen-skills
 omp plugin marketplace update maou-shonen-skills && omp plugin upgrade   # 之後更新（有 version 就不具名全升）
 ```
 
@@ -27,7 +27,7 @@ omp plugin marketplace update maou-shonen-skills && omp plugin upgrade   # 之�
 
 ```bash
 claude plugin marketplace add maou-shonen/skills
-claude plugin install maou@maou-shonen-skills
+claude plugin install maou-claude@maou-shonen-skills
 ```
 
 `npx skills add` 會掃到每個 plugin 的 skill，兩邊有同名 skill，不再建議使用。

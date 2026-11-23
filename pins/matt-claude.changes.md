@@ -1,6 +1,6 @@
 # matt（Claude Code）
 
-本檔記 Claude Code plugin（`plugins/claude/`，plugin 名 `maou`）的取捨，與 omp 版（`pins/matt.changes.md`）分開。只跟 `skills/engineering/`，`to-questionnaire` 是唯一的例外。
+本檔記 Claude Code plugin（`plugins/claude/`，plugin 名 `maou-claude`）的取捨，與 omp 版（`pins/matt.changes.md`）分開。只跟 `skills/engineering/`，`to-questionnaire` 是唯一的例外。
 
 路徑：上游 `skills/<分類>/X` 對本地 `plugins/claude/skills/X`（攤平；`scripts/matt.ts --claude diff --port` 已轉好，可直接 `git apply --reject`）。
 
