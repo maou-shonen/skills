@@ -4,10 +4,10 @@
     "name": "maou-shonen",
     "url": "https://github.com/maou-shonen"
   },
-  "description": "Personal dev skills, one plugin per coding agent harness: maou-dev for omp, maou for Claude Code.",
+  "description": "Personal dev skills, one plugin per coding agent harness: maou-omp for omp, maou-claude for Claude Code.",
   "plugins": [
     {
-      "name": "maou-dev",
+      "name": "maou-omp",
       "version": "2026.1122.0",
       "source": "./plugins/omp",
       "strict": false,
@@ -89,8 +89,8 @@
       ]
     },
     {
-      "name": "maou",
-      "version": "2026.1122.3",
+      "name": "maou-claude",
+      "version": "2026.1123.0",
       "source": "./plugins/claude",
       "strict": false,
       "description": "Claude Code only. pstack (upstream Claude Code tree) plus self-authored skills."

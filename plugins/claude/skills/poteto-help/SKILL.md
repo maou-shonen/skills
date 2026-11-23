@@ -33,7 +33,7 @@ Models are fixed by tier in the Subagents section of [`poteto-mode`](../poteto-m
 
 ## Get set up
 
-1. Install with `claude plugin marketplace add maou-shonen/skills`, then `claude plugin install maou@maou-shonen-skills`.
+1. Install with `claude plugin marketplace add maou-shonen/skills`, then `claude plugin install maou-claude@maou-shonen-skills`.
 2. Optionally run [`/setup-pstack`](../setup-pstack/SKILL.md). It shows which model each tier runs on, then offers once each to generate a verification skill and a formal verification skill for the project, unless the project already has one.
 3. Start a real task with `/poteto-mode`, a goal, and a check that can pass or fail.
 
