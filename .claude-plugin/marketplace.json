@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "maou-omp",
-      "version": "2026.1124.0",
+      "version": "2026.1124.1",
       "source": "./plugins/omp",
       "strict": false,
       "description": "omp only. All 73 dev skills: pstack + matt (both omp-adapted) + self-authored.",
@@ -91,7 +91,7 @@
     },
     {
       "name": "maou-claude",
-      "version": "2026.1124.0",
+      "version": "2026.1124.1",
       "source": "./plugins/claude",
       "strict": false,
       "description": "Claude Code only. pstack (upstream Claude Code tree) plus self-authored skills."
