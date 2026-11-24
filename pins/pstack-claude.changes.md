@@ -8,6 +8,18 @@
 
 原則：先照上游原樣，矛盾之後再逐條修，每條修正記在這裡。
 
+## 0.15.48
+
+基底：`pins/pstack-claude.pin`。0.15.46 節的修正全部沿用。
+
+- 新增 `skills/reframe`（教使用者所做之物的專家術語、從鄰近領域借詞、用新詞改寫描述；描述可能指多個問題時先列候選）→ 引（原樣）。
+- `poteto-help` 路由表、`README.md` 技能表、`docs/guide/02-poteto-mode.md` 各加 `/reframe` 介紹 → 引（原樣）。
+- `plugin.json`、`.claude-plugin/plugin.json` 版號 → 不引（理由同 0.15.46）。
+
+引：上游 `harness/pstack/claude-code/skills/` 全引。
+
+- `harness/pstack/claude-code/agents/poteto-agent.md`、`harness/pstack/claude-code/agents/comment-sicko.md` → `agents/`（只改 `model`／`effort`，見 0.15.46）。
+
 ## 0.15.46
 
 基底：`pins/pstack-claude.pin`。首次引入。

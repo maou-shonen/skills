@@ -6,6 +6,24 @@
 
 `audit` 讀最新版本節：pin 上游每個 `pstack/skills/<skill>` 要在 `plugins/omp/skills/pstack/` 有同名資料夾，`pstack/agents/*`、`pstack/automations/*` 要在引／不引／待定有名。待定放行但提醒。
 
+## 0.15.48
+
+基底：`pins/pstack.pin`。替換規則沿用 0.15.36 節。
+
+- 新增 `reframe`（0.15.47 新增、0.15.48 補「描述可能指多個問題時先列出兩三個候選與區分訊號，挑最可能的」）：從使用者自己的檔案與描述出發，給 8–12 個依影響排序的專家術語（各附對應描述片段、實際專案連結並親自確認、能拿來跟 agent 要什麼），從 2–3 個鄰近領域借詞並說明類比在哪裡斷，點出沒提到但該在意的事，最後用新詞改寫描述；只在使用者打 `/reframe` 時跑 → 引（SKILL.md 原樣，無模型或 Cursor 專屬內容）。
+- `poteto-help` 的路由表加 `/reframe` 一列 → 引（連結照本地規則寫 `skill://reframe`）。
+- 沒有 agent、automation 被新增或移除；沒有模型路由變更。
+
+引：上游 `pstack/skills/` 全引（本地 `skills/pstack/` 即全部）。
+
+- `pstack/agents/poteto-agent.md`、`pstack/agents/comment-sicko.md` → `agents/`（`poteto-agent` 的 `model` 欄位不引）。
+
+不引：
+
+- `pstack/automations/benny`：Cursor automation（Slack 回報分類與修復），omp 無對應機制。
+
+`pstack/docs/`、`assets/`、`README.md`、`.cursor-plugin/plugin.json`、`plugin.json` 不跟、不列（README 與 `docs/guide/02-poteto-mode.md` 的 `/reframe` 介紹都在這些路徑）。
+
 ## 0.15.46
 
 基底：`pins/pstack.pin`。替換規則沿用 0.15.36 節。

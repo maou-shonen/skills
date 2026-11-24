@@ -8,10 +8,10 @@
   "plugins": [
     {
       "name": "maou-omp",
-      "version": "2026.1122.0",
+      "version": "2026.1124.0",
       "source": "./plugins/omp",
       "strict": false,
-      "description": "omp only. All 72 dev skills: pstack + matt (both omp-adapted) + self-authored.",
+      "description": "omp only. All 73 dev skills: pstack + matt (both omp-adapted) + self-authored.",
       "skills": [
         "./skills/pstack/architect",
         "./skills/pstack/arena",
@@ -59,6 +59,7 @@
         "./skills/pstack/principle-test-behavior-not-implementation",
         "./skills/pstack/principle-type-system-discipline",
         "./skills/pstack/recall",
+        "./skills/pstack/reframe",
         "./skills/pstack/reflect",
         "./skills/pstack/setup-pstack",
         "./skills/pstack/sharpen",
@@ -90,7 +91,7 @@
     },
     {
       "name": "maou-claude",
-      "version": "2026.1123.0",
+      "version": "2026.1124.0",
       "source": "./plugins/claude",
       "strict": false,
       "description": "Claude Code only. pstack (upstream Claude Code tree) plus self-authored skills."
